@@ -1,0 +1,729 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InkHaven</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/layout-docgia.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<style>
+    /* ---- Reset & base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+    --ih-font-sans:   'Inter', sans-serif;
+    --ih-font-serif:  'Merriweather', serif;
+
+    --ih-navy:        #1a1a2e;
+    --ih-primary:     #4f46e5;   /* indigo */
+    --ih-primary-h:   #4338ca;
+    --ih-xu:          #d97706;   /* amber */
+
+    --ih-bg:          #f8f7f4;
+    --ih-surface:     #ffffff;
+    --ih-border:      #e5e7eb;
+    --ih-border-s:    #d1d5db;
+
+    --ih-text:        #111827;
+    --ih-text-2:      #4b5563;
+    --ih-text-3:      #9ca3af;
+
+    --ih-nav-h:       56px;
+    --ih-sidebar-w:   220px;
+    --ih-radius:      8px;
+    --ih-radius-lg:   12px;
+}
+
+body {
+    font-family: var(--ih-font-sans);
+    font-size: 15px;
+    color: var(--ih-text);
+    background: var(--ih-bg);
+    margin: 0;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; margin: 0; padding: 0; }
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+.ih-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--ih-nav-h);
+    background: var(--ih-surface);
+    border-bottom: 1px solid var(--ih-border);
+}
+
+.ih-navbar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+/* Logo */
+.ih-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ih-primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Nav links */
+.ih-nav-links {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+}
+.ih-nav-links a {
+    padding: 6px 12px;
+    border-radius: var(--ih-radius);
+    font-size: 14px;
+    color: var(--ih-text-2);
+    transition: background .15s, color .15s;
+}
+.ih-nav-links a:hover { background: #f3f4f6; color: var(--ih-text); }
+.ih-nav-links a.active { background: #eef2ff; color: var(--ih-primary); font-weight: 500; }
+
+/* Right side */
+.ih-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Search */
+.ih-search-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid var(--ih-border);
+    border-radius: var(--ih-radius);
+    background: var(--ih-bg);
+    width: 230px;
+    transition: border-color .15s, box-shadow .15s;
+}
+.ih-search-form:focus-within {
+    border-color: var(--ih-primary);
+    box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+}
+.ih-search-form i { color: var(--ih-text-3); font-size: 14px; }
+.ih-search-form input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    color: var(--ih-text);
+    width: 100%;
+}
+.ih-search-form input::placeholder { color: var(--ih-text-3); }
+
+/* Auth buttons */
+.ih-btn-outline {
+    padding: 6px 14px;
+    border: 1px solid var(--ih-border-s);
+    border-radius: var(--ih-radius);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ih-text);
+    background: transparent;
+    transition: border-color .15s, background .15s;
+}
+.ih-btn-outline:hover { border-color: var(--ih-primary); color: var(--ih-primary); background: #eef2ff; }
+
+.ih-btn-filled {
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--ih-radius);
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--ih-primary);
+    transition: background .15s;
+}
+.ih-btn-filled:hover { background: var(--ih-primary-h); color: #fff; }
+
+/* User menu */
+.ih-user-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 4px;
+    border: 1px solid var(--ih-border);
+    border-radius: 20px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    transition: border-color .15s;
+}
+.ih-user-btn:hover { border-color: var(--ih-border-s); }
+.ih-user-btn::after { display: none; } /* bỏ caret bootstrap */
+
+.ih-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--ih-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ih-xu-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ih-xu);
+}
+.ih-xu-badge i { font-size: 14px; }
+
+/* Dropdown */
+.ih-dropdown {
+    min-width: 210px;
+    border: 1px solid var(--ih-border);
+    border-radius: var(--ih-radius-lg);
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    padding: 6px;
+    margin-top: 6px !important;
+}
+.ih-dropdown-header {
+    padding: 8px 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.ih-dropdown-name { font-size: 14px; font-weight: 500; color: var(--ih-text); }
+.ih-dropdown-role { font-size: 12px; color: var(--ih-text-3); }
+
+.ih-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ih-text-2);
+    border-radius: var(--ih-radius);
+    padding: 7px 10px;
+    transition: background .12s, color .12s;
+}
+.ih-dropdown .dropdown-item i { font-size: 15px; width: 18px; text-align: center; }
+.ih-dropdown .dropdown-item:hover { background: #f3f4f6; color: var(--ih-text); }
+.ih-dropdown .dropdown-item.ih-logout { color: #dc2626; }
+.ih-dropdown .dropdown-item.ih-logout:hover { background: #fef2f2; color: #dc2626; }
+.ih-dropdown .dropdown-divider { margin: 4px 0; border-color: var(--ih-border); }
+
+/* Mobile toggle */
+.ih-mobile-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--ih-border);
+    border-radius: var(--ih-radius);
+    padding: 6px 10px;
+    font-size: 18px;
+    color: var(--ih-text-2);
+    cursor: pointer;
+}
+
+/* Mobile menu */
+.ih-mobile-menu {
+    display: none;
+    flex-direction: column;
+    padding: 8px 16px 12px;
+    border-top: 1px solid var(--ih-border);
+    background: var(--ih-surface);
+    gap: 2px;
+}
+.ih-mobile-menu.open { display: flex; }
+.ih-mobile-menu a {
+    padding: 9px 12px;
+    border-radius: var(--ih-radius);
+    font-size: 14px;
+    color: var(--ih-text-2);
+}
+.ih-mobile-menu a:hover { background: #f3f4f6; color: var(--ih-text); }
+
+/* =========================================================
+   BODY WRAPPER
+   ========================================================= */
+.ih-body {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 24px;
+    min-height: calc(100vh - var(--ih-nav-h) - 180px);
+    padding-top: 28px;
+    padding-bottom: 40px;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+.ih-sidebar {
+    width: var(--ih-sidebar-w);
+    flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--ih-nav-h) + 16px);
+    height: fit-content;
+}
+
+.ih-sidebar-section {
+    margin-bottom: 20px;
+}
+
+.ih-sidebar-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--ih-text-3);
+    padding: 0 12px;
+    margin-bottom: 6px;
+}
+
+.ih-sidebar ul { display: flex; flex-direction: column; gap: 2px; }
+
+.ih-sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: var(--ih-radius);
+    font-size: 14px;
+    color: var(--ih-text-2);
+    transition: background .12s, color .12s;
+}
+.ih-sidebar a i { font-size: 16px; width: 18px; text-align: center; flex-shrink: 0; }
+.ih-sidebar a span { flex: 1; }
+.ih-sidebar a:hover { background: #f3f4f6; color: var(--ih-text); }
+.ih-sidebar a.active {
+    background: #eef2ff;
+    color: var(--ih-primary);
+    font-weight: 500;
+}
+.ih-sidebar a.active i { color: var(--ih-primary); }
+
+/* Badge số */
+.ih-badge {
+    background: var(--ih-primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 20px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+.ih-main {
+    flex: 1;
+    min-width: 0;
+}
+
+/* =========================================================
+   TOAST THÔNG BÁO
+   ========================================================= */
+.ih-toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--ih-radius);
+    font-size: 14px;
+    margin-bottom: 20px;
+    animation: ih-toast-in .2s ease;
+}
+.ih-toast--success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+.ih-toast--error   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.ih-toast i { font-size: 16px; }
+
+@@keyframes ih-toast-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.ih-footer {
+    background: var(--ih-navy);
+    color: #9ca3af;
+    margin-top: auto;
+}
+
+.ih-footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 24px 32px;
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+}
+
+.ih-footer-brand {
+    flex: 1;
+    min-width: 200px;
+}
+.ih-footer-brand .ih-logo {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+.ih-footer-brand p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #6b7280;
+}
+
+.ih-footer-links {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+}
+.ih-footer-links h6 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e5e7eb;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 12px;
+}
+.ih-footer-links ul { display: flex; flex-direction: column; gap: 8px; }
+.ih-footer-links a {
+    font-size: 13px;
+    color: #6b7280;
+    transition: color .15s;
+}
+.ih-footer-links a:hover { color: #e5e7eb; }
+
+.ih-footer-bottom {
+    border-top: 1px solid #1f2937;
+    padding: 16px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: #4b5563;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@@media (max-width: 1024px) {
+    .ih-sidebar { display: none; }
+    .ih-main--with-sidebar { margin-left: 0; }
+    .ih-nav-links { display: none; }
+}
+
+@@media (max-width: 768px) {
+    .ih-search-form { display: none; }
+    .ih-body { padding: 16px; }
+    .ih-footer-inner { flex-direction: column; gap: 28px; }
+    .ih-footer-links { gap: 28px; }
+}
+
+</style>
+
+<body>
+
+    <!-- ===================== NAVBAR ===================== -->
+    <nav class="ih-navbar">
+        <div class="ih-navbar-inner">
+
+            <!-- Logo -->
+            <a class="ih-logo" asp-controller="KhachHang" asp-action="TrangChu">
+                <img src="~/images/logo2_Wed.png" alt="Logo" style="height: 50px;" />
+            </a>
+
+            <!-- Nav links (giữa) -->
+            <ul class="ih-nav-links">
+                <li>
+                    <a asp-controller="Home" asp-action="Index"
+                           class="@(ViewData["ActivePage"]?.ToString() == "Home" ? "active" : "")">
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="TheLoai" asp-action="Index"
+                           class="@(ViewData["ActivePage"]?.ToString() == "TheLoai" ? "active" : "")">
+                        Thể loại
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Truyen" asp-action="XepHang"
+                           class="@(ViewData["ActivePage"]?.ToString() == "XepHang" ? "active" : "")">
+                        Xếp hạng
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Truyen" asp-action="MoiCapNhat"
+                           class="@(ViewData["ActivePage"]?.ToString() == "MoiCapNhat" ? "active" : "")">
+                        Mới cập nhật
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Phải: tìm kiếm + tài khoản -->
+            <div class="ih-nav-right">
+
+                <!-- Search -->
+                <form class="ih-search-form" asp-controller="Truyen" asp-action="TimKiem" method="get">
+                    <i class="bi bi-search"></i>
+                    <input type="text" name="q" placeholder="Tìm truyện, tác giả..." autocomplete="off" />
+                </form>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <!-- Đã đăng nhập -->
+                    <div class="ih-user-menu dropdown">
+                        <button class="ih-user-btn dropdown-toggle" data-bs-toggle="dropdown">
+                            <span class="ih-avatar">
+                                @User.Identity.Name?.Substring(0, 1).ToUpper()
+                            </span>
+                            <span class="ih-xu-badge">
+                                <i class="bi bi-coin"></i>
+                                @ViewData["SoXu"]
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end ih-dropdown">
+                            <li class="ih-dropdown-header">
+                                <span class="ih-dropdown-name">@User.Identity.Name</span>
+                                <span class="ih-dropdown-role">Độc giả</span>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="ThongTin">
+                                    <i class="bi bi-person"></i> Thông tin cá nhân
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="LichSuDoc">
+                                    <i class="bi bi-clock-history"></i> Lịch sử đọc
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="Bookmark">
+                                    <i class="bi bi-bookmark-star"></i> Bookmark
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="TheoDoi">
+                                    <i class="bi bi-heart"></i> Truyện đang theo dõi
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="NapXu" asp-action="Index">
+                                    <i class="bi bi-wallet2"></i> Nạp xu
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="HoTro" asp-action="Index">
+                                    <i class="bi bi-headset"></i> Liên hệ CSKH
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item ih-logout" asp-controller="Auth" asp-action="Logout">
+                                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <!-- Chưa đăng nhập -->
+                    <a class="ih-btn-outline" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
+                    <a class="ih-btn-filled" asp-controller="Auth" asp-action="Register">Đăng ký</a>
+                }
+            </div>
+
+            <!-- Mobile toggle -->
+            <button class="ih-mobile-toggle d-lg-none" id="mobileMenuToggle">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="ih-mobile-menu" id="mobileMenu">
+            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+            <a asp-controller="TheLoai" asp-action="Index">Thể loại</a>
+            <a asp-controller="Truyen" asp-action="XepHang">Xếp hạng</a>
+            <a asp-controller="Truyen" asp-action="MoiCapNhat">Mới cập nhật</a>
+        </div>
+    </nav>
+
+    <!-- ===================== BODY ===================== -->
+    <div class="ih-body">
+
+        <!-- Sidebar (chỉ hiện khi đã đăng nhập) -->
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <aside class="ih-sidebar" id="sidebar">
+                <div class="ih-sidebar-section">
+                    <span class="ih-sidebar-label">Cá nhân</span>
+                    <ul>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="TheoDoi"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "TheoDoi" ? "active" : "")">
+                                <i class="bi bi-heart"></i>
+                                <span>Theo dõi</span>
+                                @if (ViewData["SoTheoDoiMoi"] != null)
+                                {
+                                    <span class="ih-badge">@ViewData["SoTheoDoiMoi"]</span>
+                                }
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="LichSuDoc"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "LichSuDoc" ? "active" : "")">
+                                <i class="bi bi-clock-history"></i>
+                                <span>Lịch sử đọc</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="Bookmark"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "Bookmark" ? "active" : "")">
+                                <i class="bi bi-bookmark-star"></i>
+                                <span>Bookmark</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="ih-sidebar-section">
+                    <span class="ih-sidebar-label">Tài khoản</span>
+                    <ul>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="ThongTin"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "ThongTin" ? "active" : "")">
+                                <i class="bi bi-person-circle"></i>
+                                <span>Thông tin cá nhân</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="NapXu" asp-action="Index"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "NapXu" ? "active" : "")">
+                                <i class="bi bi-wallet2"></i>
+                                <span>Nạp xu</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="NapXu" asp-action="LichSu"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "LichSuNap" ? "active" : "")">
+                                <i class="bi bi-receipt"></i>
+                                <span>Lịch sử nạp</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="HoTro" asp-action="Index"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "HoTro" ? "active" : "")">
+                                <i class="bi bi-headset"></i>
+                                <span>Liên hệ CSKH</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        }
+
+        <!-- Main content -->
+        <main class="ih-main @(User.Identity != null && User.Identity.IsAuthenticated ? "ih-main--with-sidebar" : "")">
+
+            <!-- Toast thông báo -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="ih-toast ih-toast--success">
+                    <i class="bi bi-check-circle-fill"></i>
+                    @TempData["Success"]
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="ih-toast ih-toast--error">
+                    <i class="bi bi-x-circle-fill"></i>
+                    @TempData["Error"]
+                </div>
+            }
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="ih-footer">
+        <div class="ih-footer-inner">
+            <div class="ih-footer-brand">
+                <a class="ih-logo" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo1_Wed.png" alt="Logo" style="height: 100px; border-radius: 50%;" />
+                </a>
+                <p>Kho truyện không giới hạn. Đọc mọi lúc, mọi nơi.</p>
+            </div>
+
+            <div class="ih-footer-links">
+                <div>
+                    <h6>Khám phá</h6>
+                    <ul>
+                        <li><a asp-controller="TheLoai" asp-action="Index">Thể loại</a></li>
+                        <li><a asp-controller="Truyen" asp-action="XepHang">Xếp hạng</a></li>
+                        <li><a asp-controller="Truyen" asp-action="MoiCapNhat">Mới cập nhật</a></li>
+                        <li><a asp-controller="Truyen" asp-action="HoanThanh">Truyện hoàn thành</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6>Hỗ trợ</h6>
+                    <ul>
+                        <li><a asp-controller="HoTro" asp-action="Index">Liên hệ CSKH</a></li>
+                        <li><a asp-controller="Home" asp-action="CauHoi">Câu hỏi thường gặp</a></li>
+                        <li><a asp-controller="Home" asp-action="DieuKhoan">Điều khoản sử dụng</a></li>
+                        <li><a asp-controller="Home" asp-action="BaoMat">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ih-footer-bottom">
+            <span>© @DateTime.Now.Year TeenNovel. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="~/js/layout-docgia.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

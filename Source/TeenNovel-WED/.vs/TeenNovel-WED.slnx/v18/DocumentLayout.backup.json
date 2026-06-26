@@ -1,0 +1,156 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|d:\\hoc tap\\du_an_tot_nghiep\\code\\teennovel-wed\\views\\shared\\_layoutkhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|solutionrelative:views\\shared\\_layoutkhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Views\\KhachHang\\TrangChu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Views\\KhachHang\\TrangChu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|d:\\hoc tap\\du_an_tot_nghiep\\code\\teennovel-wed\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|solutionrelative:controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|d:\\hoc tap\\du_an_tot_nghiep\\code\\teennovel-wed\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|d:\\hoc tap\\du_an_tot_nghiep\\code\\teennovel-wed\\views\\shared\\_layoutquanly.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|solutionrelative:views\\shared\\_layoutquanly.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|d:\\hoc tap\\du_an_tot_nghiep\\code\\teennovel-wed\\controllers\\quanlycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|solutionrelative:controllers\\quanlycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|d:\\hoc tap\\du_an_tot_nghiep\\code\\teennovel-wed\\controllers\\login_registercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|solutionrelative:controllers\\login_registercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|d:\\hoc tap\\du_an_tot_nghiep\\code\\teennovel-wed\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{22237761-0BD3-4E09-AC53-55E235F63588}|TeenNovel-WED.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TrangChu.cshtml",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Views\\KhachHang\\TrangChu.cshtml",
+              "RelativeDocumentMoniker": "Views\\KhachHang\\TrangChu.cshtml",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Views\\KhachHang\\TrangChu.cshtml",
+              "RelativeToolTip": "Views\\KhachHang\\TrangChu.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-26T08:54:47.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACAAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-26T08:53:48.763Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_LayoutKhachHang.cshtml",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Views\\Shared\\_LayoutKhachHang.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_LayoutKhachHang.cshtml",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Views\\Shared\\_LayoutKhachHang.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_LayoutKhachHang.cshtml",
+              "ViewState": "AgIAALYBAAAAAAAAAAAAAP0BAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-26T08:53:13.16Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "KhachHangController.cs",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Controllers\\KhachHangController.cs",
+              "RelativeDocumentMoniker": "Controllers\\KhachHangController.cs",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Controllers\\KhachHangController.cs",
+              "RelativeToolTip": "Controllers\\KhachHangController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-26T08:47:47.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_LayoutQuanLy.cshtml",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Views\\Shared\\_LayoutQuanLy.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_LayoutQuanLy.cshtml",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Views\\Shared\\_LayoutQuanLy.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_LayoutQuanLy.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-26T08:52:58.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "QuanLyController.cs",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Controllers\\QuanLyController.cs",
+              "RelativeDocumentMoniker": "Controllers\\QuanLyController.cs",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Controllers\\QuanLyController.cs",
+              "RelativeToolTip": "Controllers\\QuanLyController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-26T08:47:31.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Login_RegisterController.cs",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Controllers\\Login_RegisterController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Login_RegisterController.cs",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\Controllers\\Login_RegisterController.cs",
+              "RelativeToolTip": "Controllers\\Login_RegisterController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-26T08:45:59.017Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-26T08:38:33.73Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
