@@ -4,7 +4,7 @@ namespace TeenNovel_WED.Controllers
 {
     public class QuanLyController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Dashboard()
         {
             return View();
         }

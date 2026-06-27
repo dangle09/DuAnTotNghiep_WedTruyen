@@ -6,12 +6,12 @@ namespace TeenNovel_WED.Controllers
 {
     public class Login_RegisterController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Register()
         {
             return View();
         }

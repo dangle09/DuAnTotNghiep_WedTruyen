@@ -566,8 +566,8 @@ ul { list-style: none; margin: 0; padding: 0; }
                 else
                 {
                     <!-- Chưa đăng nhập -->
-                    <a class="ih-btn-outline" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
-                    <a class="ih-btn-filled" asp-controller="Auth" asp-action="Register">Đăng ký</a>
+                    <a class="ih-btn-outline" asp-controller="Login_Register" asp-action="Login">Đăng nhập</a>
+                    <a class="ih-btn-filled" asp-controller="Login_Register" asp-action="Register">Đăng ký</a>
                 }
             </div>
 
@@ -725,5 +725,48 @@ ul { list-style: none; margin: 0; padding: 0; }
     <script src="~/js/layout-docgia.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // InkHaven — layout-docgia.js
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu   = document.getElementById('mobileMenu');
+
+        if (mobileToggle && mobileMenu) {
+            mobileToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+                const icon = mobileToggle.querySelector('i');
+                if (icon) {
+                    icon.className = mobileMenu.classList.contains('open')
+                        ? 'bi bi-x-lg'
+                        : 'bi bi-list';
+                }
+            });
+        }
+
+        // Tự ẩn toast sau 4 giây
+        document.querySelectorAll('.ih-toast').forEach(toast => {
+            setTimeout(() => {
+                toast.style.transition = 'opacity .3s, transform .3s';
+                toast.style.opacity    = '0';
+                toast.style.transform  = 'translateY(-6px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        });
+
+        // Active link: tự highlight nav theo URL hiện tại
+        const currentPath = window.location.pathname.toLowerCase();
+        document.querySelectorAll('.ih-nav-links a, .ih-mobile-menu a').forEach(link => {
+            const href = link.getAttribute('href')?.toLowerCase();
+            if (href && currentPath.startsWith(href) && href !== '/') {
+                link.classList.add('active');
+            }
+            if (href === '/' && currentPath === '/') {
+                link.classList.add('active');
+            }
+        });
+
+    </script>
 </body>
 </html>

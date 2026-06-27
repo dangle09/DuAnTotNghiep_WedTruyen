@@ -6130,11 +6130,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\TeenNovel-WED.csproj",
+      "projectUniqueName": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\DuAnTotNghiep_WedTruyen\\Source\\TeenNovel-WED\\TeenNovel-WED.csproj",
       "projectName": "TeenNovel-WED",
-      "projectPath": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\TeenNovel-WED.csproj",
+      "projectPath": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\DuAnTotNghiep_WedTruyen\\Source\\TeenNovel-WED\\TeenNovel-WED.csproj",
       "packagesPath": "C:\\Users\\namnh\\.nuget\\packages\\",
-      "outputPath": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\Code\\TeenNovel-WED\\obj\\",
+      "outputPath": "D:\\HOC TAP\\DU_AN_TOT_NGHIEP\\DuAnTotNghiep_WedTruyen\\Source\\TeenNovel-WED\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
