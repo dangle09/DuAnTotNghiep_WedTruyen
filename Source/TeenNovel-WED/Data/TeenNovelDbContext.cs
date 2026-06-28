@@ -22,11 +22,11 @@ public partial class TeenNovelDbContext : DbContext
 
     public virtual DbSet<Chuong> Chuongs { get; set; }
 
-    public virtual DbSet<DanhGia> DanhGia { get; set; }
+    public virtual DbSet<DanhGia> DanhGias { get; set; }
 
     public virtual DbSet<DoanhThu> DoanhThus { get; set; }
 
-    public virtual DbSet<DocGia> DocGia { get; set; }
+    public virtual DbSet<DocGia> DocGias { get; set; }
     public virtual DbSet<HoTro> HoTros { get; set; }
 
     public virtual DbSet<LichSuDoc> LichSuDocs { get; set; }
@@ -39,7 +39,7 @@ public partial class TeenNovelDbContext : DbContext
 
     public virtual DbSet<TheoDoi> TheoDois { get; set; }
 
-    public virtual DbSet<TheoLoai> TheoLoais { get; set; }
+    public virtual DbSet<TheLoai> TheoLoais { get; set; }
 
     public virtual DbSet<Truyen> Truyens { get; set; }
 
@@ -104,11 +104,11 @@ public partial class TeenNovelDbContext : DbContext
 
             entity.Property(e => e.Ngaydanhgia).HasDefaultValueSql("(getdate())");
 
-            entity.HasOne(d => d.MaDocGiaNavigation).WithMany(p => p.DanhGia)
+            entity.HasOne(d => d.MaDocGiaNavigation).WithMany(p => p.DanhGias)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__DanhGia__MaDocGi__5CD6CB2B");
 
-            entity.HasOne(d => d.MatruyenNavigation).WithMany(p => p.DanhGia)
+            entity.HasOne(d => d.MatruyenNavigation).WithMany(p => p.DanhGias)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__DanhGia__Matruye__5DCAEF64");
         });
@@ -127,6 +127,11 @@ public partial class TeenNovelDbContext : DbContext
             entity.HasOne(d => d.MatkNavigation).WithOne(p => p.DocGia)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__DocGia__Matk__300424B4");
+            modelBuilder.Entity<DocGia>(entity =>
+            {
+                entity.ToTable("DocGia");
+                entity.HasKey(e => e.MaDocGia);
+            });
         });
 
         modelBuilder.Entity<HoTro>(entity =>
@@ -208,9 +213,12 @@ public partial class TeenNovelDbContext : DbContext
                 .HasConstraintName("FK__TheoDoi__Matruye__4CA06362");
         });
 
-        modelBuilder.Entity<TheoLoai>(entity =>
+        modelBuilder.Entity<TheLoai>(entity =>
         {
-            entity.HasKey(e => e.Matheloai).HasName("PK__TheoLoai__8E255930C1AA8552");
+            entity.HasKey(e => e.Matheloai)
+                  .HasName("PK__TheLoai__8E255930C1AA8552");
+
+            entity.ToTable("TheoLoai");
         });
 
         modelBuilder.Entity<Truyen>(entity =>

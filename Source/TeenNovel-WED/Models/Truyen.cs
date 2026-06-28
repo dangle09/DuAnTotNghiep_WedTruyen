@@ -54,7 +54,7 @@ public partial class Truyen
     public virtual ICollection<Chuong> Chuongs { get; set; } = new List<Chuong>();
 
     [InverseProperty("MatruyenNavigation")]
-    public virtual ICollection<DanhGia> DanhGia { get; set; } = new List<DanhGia>();
+    public virtual ICollection<DanhGia> DanhGias { get; set; } = new List<DanhGia>();
 
     [ForeignKey("Manv")]
     [InverseProperty("Truyens")]
@@ -62,7 +62,7 @@ public partial class Truyen
 
     [ForeignKey("Matheloai")]
     [InverseProperty("Truyens")]
-    public virtual TheoLoai MatheloaiNavigation { get; set; } = null!;
+    public virtual TheLoai MatheloaiNavigation { get; set; } = null!;
 
     [InverseProperty("MatruyenNavigation")]
     public virtual ICollection<TheoDoi> TheoDois { get; set; } = new List<TheoDoi>();

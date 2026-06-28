@@ -93,7 +93,7 @@ namespace TeenNovel_WED.Controllers
             // Thêm claim MaDocGia hoặc Manv tuỳ vai trò
             if (roleName == "docgia")
             {
-                var docgia = _context.DocGia
+                var docgia = _context.DocGias
                     .FirstOrDefault(d => d.Matk == taikhoan.Matk);
                 if (docgia != null)
                     claims.Add(new Claim("MaDocGia", docgia.MaDocGia.ToString()));
@@ -202,7 +202,7 @@ namespace TeenNovel_WED.Controllers
                 Soxu = 0,
                 Ngaytao = DateTime.Now
             };
-            _context.DocGia.Add(docgia);
+            _context.DocGias.Add(docgia);
             await _context.SaveChangesAsync();
 
             // 6. Tự động đăng nhập sau khi đăng ký
@@ -226,8 +226,8 @@ namespace TeenNovel_WED.Controllers
 
             return role switch
             {
-                "quantrivien" => RedirectToAction("Dashboard", "Admin"),
-                "nhanvien" => RedirectToAction("Dashboard", "Admin"),
+                "quantrivien" => RedirectToAction("Dashboard", "QuanLy"),
+                "nhanvien" => RedirectToAction("Dashboard", "QuanLy"),
                 _ => RedirectToAction("TrangChu", "DocGia")
             };
         }

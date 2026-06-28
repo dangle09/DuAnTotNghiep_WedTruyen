@@ -691,7 +691,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
                 <div class="ad-nav-section">
                     <span class="ad-nav-label">Tổng quan</span>
-                    <a asp-controller="Admin" asp-action="Dashboard"
+                    <a asp-controller="Quanly" asp-action="Dashboard"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "Dashboard" ? "active" : "")">
                         <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
@@ -700,22 +700,22 @@ ul { list-style: none; margin: 0; padding: 0; }
 
                 <div class="ad-nav-section">
                     <span class="ad-nav-label">Nội dung</span>
-                    <a asp-controller="AdminTruyen" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="QuanLyTruyen"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "Truyen" ? "active" : "")">
                         <i class="bi bi-book"></i>
                         <span>Quản lý truyện</span>
                     </a>
-                    <a asp-controller="AdminChuong" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="QuanLyChuong"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "Chuong" ? "active" : "")">
                         <i class="bi bi-file-earmark-text"></i>
                         <span>Quản lý chương</span>
                     </a>
-                    <a asp-controller="AdminTheLoai" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="QuanLyTheLoai"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "TheLoai" ? "active" : "")">
                         <i class="bi bi-tags"></i>
                         <span>Thể loại</span>
                     </a>
-                    <a asp-controller="AdminBinhLuan" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="Index"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "BinhLuan" ? "active" : "")">
                         <i class="bi bi-chat-dots"></i>
                         <span>Bình luận</span>
@@ -728,12 +728,12 @@ ul { list-style: none; margin: 0; padding: 0; }
 
                 <div class="ad-nav-section">
                     <span class="ad-nav-label">Người dùng</span>
-                    <a asp-controller="AdminDocGia" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="Index"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "DocGia" ? "active" : "")">
                         <i class="bi bi-people"></i>
                         <span>Độc giả</span>
                     </a>
-                    <a asp-controller="AdminNhanVien" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="Index"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "NhanVien" ? "active" : "")">
                         <i class="bi bi-person-gear"></i>
                         <span>Nhân viên</span>
@@ -742,12 +742,12 @@ ul { list-style: none; margin: 0; padding: 0; }
 
                 <div class="ad-nav-section">
                     <span class="ad-nav-label">Tài chính</span>
-                    <a asp-controller="AdminNapXu" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="Index"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "NapXu" ? "active" : "")">
                         <i class="bi bi-coin"></i>
                         <span>Nạp xu</span>
                     </a>
-                    <a asp-controller="AdminDoanhThu" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="Index"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "DoanhThu" ? "active" : "")">
                         <i class="bi bi-bar-chart-line"></i>
                         <span>Doanh thu</span>
@@ -756,7 +756,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
                 <div class="ad-nav-section">
                     <span class="ad-nav-label">Hỗ trợ</span>
-                    <a asp-controller="AdminHoTro" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="Index"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "HoTro" ? "active" : "")">
                         <i class="bi bi-headset"></i>
                         <span>CSKH</span>
@@ -771,7 +771,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
             <!-- Bottom: settings + user -->
             <div class="ad-sidebar-bottom">
-                <a asp-controller="Admin" asp-action="CaiDat"
+                <a asp-controller="Quanly" asp-action="CaiDat"
                        class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "CaiDat" ? "active" : "")">
                     <i class="bi bi-gear"></i>
                     <span>Cài đặt</span>
@@ -792,18 +792,18 @@ ul { list-style: none; margin: 0; padding: 0; }
                     </button>
                     <ul class="dropdown-menu ad-user-dropdown">
                         <li>
-                            <a class="dropdown-item" asp-controller="Admin" asp-action="ThongTin">
+                            <a class="dropdown-item" asp-controller="Quanly" asp-action="ThongTin">
                                 <i class="bi bi-person"></i> Thông tin cá nhân
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" asp-controller="Admin" asp-action="DoiMatKhau">
+                            <a class="dropdown-item" asp-controller="Quanly" asp-action="DoiMatKhau">
                                 <i class="bi bi-key"></i> Đổi mật khẩu
                             </a>
                         </li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
-                            <a class="dropdown-item ad-logout" asp-controller="Auth" asp-action="Logout">
+                            <a class="dropdown-item ad-logout" asp-controller="Login_Register" asp-action="Logout">
                                 <i class="bi bi-box-arrow-right"></i> Đăng xuất
                             </a>
                         </li>
