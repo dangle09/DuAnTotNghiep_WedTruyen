@@ -1,0 +1,185 @@
+﻿@model IEnumerable<TeenNovel_WED.Models.Truyen>
+@{
+    ViewData["Title"] = "QuanLyTruyen";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+}
+
+@section TopbarAction {
+    <a asp-action="ThemTruyen" class="ad-topbar-btn ad-topbar-btn--primary">
+        <i class="bi bi-plus-lg"></i> Thêm truyện
+    </a>
+}
+<link rel="stylesheet" href="~/css/quan-ly-truyen.css" asp-append-version="true" />
+
+<!-- ── BỘ LỌC ── -->
+<div class="ql-filter-bar">
+    <form method="get" asp-action="QuanLyTruyen" class="ql-filter-form">
+        <div class="ql-filter-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm tên truyện, tác giả..." />
+        </div>
+        <select name="theloai" class="ql-select">
+            <option value="">Tất cả thể loại</option>
+            @foreach (var tl in (SelectList)ViewBag.DsTheLoai)
+            {
+                <option value="@tl.Value" selected="@(tl.Selected)">@tl.Text</option>
+            }
+        </select>
+        <select name="trangthai" class="ql-select">
+            <option value="">Tất cả trạng thái</option>
+            <option value="dangtien" selected="@(ViewBag.TrangThai == "dangtien")">Đang ra</option>
+            <option value="hoanthanh" selected="@(ViewBag.TrangThai == "hoanthanh")">Hoàn thành</option>
+            <option value="tamngung" selected="@(ViewBag.TrangThai == "tamngung")">Tạm ngưng</option>
+        </select>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-funnel"></i> Lọc
+        </button>
+        @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()) || ViewBag.TheLoai != null || !string.IsNullOrEmpty(ViewBag.TrangThai?.ToString()))
+        {
+            <a asp-action="QuanLyTruyen" class="ql-clear-btn">
+                <i class="bi bi-x-circle"></i> Xoá lọc
+            </a>
+        }
+    </form>
+    <span class="ql-total">Tổng: <strong>@ViewBag.Total</strong> truyện</span>
+</div>
+
+<!-- ── BẢNG ── -->
+<div class="ad-table-wrap">
+    <table class="ad-table">
+        <thead>
+            <tr>
+                <th style="width:40%">Tên truyện</th>
+                <th>Thể loại</th>
+                <th>Lượt đọc</th>
+                <th>Chương</th>
+                <th>Trạng thái</th>
+                <th>Ngày đăng</th>
+                <th style="width:100px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" class="ql-empty">
+                        <i class="bi bi-inbox"></i>
+                        <span>Không có truyện nào</span>
+                    </td>
+                </tr>
+            }
+            @foreach (var t in Model)
+            {
+                var soChuong = ViewBag.SoChuongDict != null &&
+                               ((Dictionary<int, int>)ViewBag.SoChuongDict).ContainsKey(t.Matruyen)
+                               ? ((Dictionary<int, int>)ViewBag.SoChuongDict)[t.Matruyen] : 0;
+                <tr>
+                    <td>
+                        <div class="ql-story-row">
+                            @if (!string.IsNullOrEmpty(t.AnhBia))
+                            {
+                                <img src="@t.AnhBia" class="ql-cover" alt="@t.Tentruyen" />
+                            }
+                            else
+                            {
+                                <div class="ql-cover-placeholder"><i class="bi bi-book"></i></div>
+                            }
+                            <div>
+                                <div class="ql-story-name">@t.Tentruyen</div>
+                                <div class="ql-story-author">@(t.Tacgia ?? "—")</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="ad-chip ad-chip--blue">@(t.MatheloaiNavigation.Tentheloa ?? "—")</span>
+                    </td>
+                    <td>@t.LuotDoc.ToString("N0")</td>
+                    <td>@soChuong</td>
+                    <td>
+                        @switch (t.Trangthai)
+                        {
+                            case "dangtien":
+                                <span class="ad-chip ad-chip--green">Đang ra</span>
+                                break;
+                            case "hoanthanh":
+                                <span class="ad-chip ad-chip--blue">Hoàn thành</span>
+                                break;
+                            case "tamngung":
+                                <span class="ad-chip ad-chip--amber">Tạm ngưng</span>
+                                break;
+                            default:
+                                <span class="ad-chip ad-chip--gray">@t.Trangthai</span>
+                                break;
+                        }
+                    </td>
+                    <td>@t.Ngaydang.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="ql-actions">
+                            <a asp-action="ChiTietTruyen" asp-route-id="@t.Matruyen"
+                                   class="ql-action-btn ql-action-view" title="Chi tiết">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="SuaTruyen" asp-route-id="@t.Matruyen"
+                                   class="ql-action-btn ql-action-edit" title="Sửa">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button class="ql-action-btn ql-action-delete"
+                                    title="Xoá"
+                                    onclick="confirmDelete(@t.Matruyen, '@t.Tentruyen.Replace("'", "\\'")')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- ── PHÂN TRANG ── -->
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="ql-pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyTruyen"
+               asp-route-page="@i"
+               asp-route-search="@ViewBag.Search"
+               asp-route-theloai="@ViewBag.TheLoai"
+               asp-route-trangthai="@ViewBag.TrangThai"
+               class="ql-page-btn @(i == (int)ViewBag.Page ? "active" : "")">@i</a>
+        }
+    </div>
+}
+
+<!-- ── MODAL XOÁ ── -->
+<div class="ql-modal-overlay" id="deleteModal">
+    <div class="ql-modal">
+        <div class="ql-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+        <h3 class="ql-modal-title">Xác nhận xoá</h3>
+        <p class="ql-modal-msg">Bạn có chắc muốn xoá truyện <strong id="deleteName"></strong>?<br />Thao tác này không thể hoàn tác.</p>
+        <form id="deleteForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="ql-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeDelete()">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none">Xoá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id, name) {
+            document.getElementById('deleteName').textContent = name;
+            document.getElementById('deleteForm').action = '/QuanLy/XoaTruyen/' + id;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+        function closeDelete() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDelete();
+        });
+    </script>
+}
