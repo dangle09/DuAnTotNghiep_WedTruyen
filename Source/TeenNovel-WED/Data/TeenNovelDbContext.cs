@@ -22,12 +22,11 @@ public partial class TeenNovelDbContext : DbContext
 
     public virtual DbSet<Chuong> Chuongs { get; set; }
 
-    public virtual DbSet<DanhGium> DanhGia { get; set; }
+    public virtual DbSet<DanhGia> DanhGia { get; set; }
 
     public virtual DbSet<DoanhThu> DoanhThus { get; set; }
 
-    public virtual DbSet<DocGium> DocGia { get; set; }
-
+    public virtual DbSet<DocGia> DocGia { get; set; }
     public virtual DbSet<HoTro> HoTros { get; set; }
 
     public virtual DbSet<LichSuDoc> LichSuDocs { get; set; }
@@ -99,7 +98,7 @@ public partial class TeenNovelDbContext : DbContext
                 .HasConstraintName("FK__Chuong__Matruyen__46E78A0C");
         });
 
-        modelBuilder.Entity<DanhGium>(entity =>
+        modelBuilder.Entity<DanhGia>(entity =>
         {
             entity.HasKey(e => e.Madanhgia).HasName("PK__DanhGia__5FA2512DC78D2AF6");
 
@@ -119,13 +118,13 @@ public partial class TeenNovelDbContext : DbContext
             entity.HasKey(e => e.Madoanhthu).HasName("PK__DoanhThu__FE27492938DFE3AB");
         });
 
-        modelBuilder.Entity<DocGium>(entity =>
+        modelBuilder.Entity<DocGia>(entity =>
         {
             entity.HasKey(e => e.MaDocGia).HasName("PK__DocGia__F165F94585318669");
 
             entity.Property(e => e.Ngaytao).HasDefaultValueSql("(getdate())");
 
-            entity.HasOne(d => d.MatkNavigation).WithOne(p => p.DocGium)
+            entity.HasOne(d => d.MatkNavigation).WithOne(p => p.DocGia)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__DocGia__Matk__300424B4");
         });

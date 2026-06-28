@@ -27,7 +27,7 @@ public partial class BinhLuan
 
     [ForeignKey("MaDocGia")]
     [InverseProperty("BinhLuans")]
-    public virtual DocGium MaDocGiaNavigation { get; set; } = null!;
+    public virtual DocGia MaDocGiaNavigation { get; set; } = null!;
 
     [ForeignKey("Matruyen")]
     [InverseProperty("BinhLuans")]

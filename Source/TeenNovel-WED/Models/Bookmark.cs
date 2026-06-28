@@ -30,7 +30,7 @@ public partial class Bookmark
 
     [ForeignKey("MaDocGia")]
     [InverseProperty("Bookmarks")]
-    public virtual DocGium MaDocGiaNavigation { get; set; } = null!;
+    public virtual DocGia MaDocGiaNavigation { get; set; } = null!;
 
     [ForeignKey("Machuong")]
     [InverseProperty("Bookmarks")]

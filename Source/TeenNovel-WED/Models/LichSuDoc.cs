@@ -22,7 +22,7 @@ public partial class LichSuDoc
 
     [ForeignKey("MaDocGia")]
     [InverseProperty("LichSuDocs")]
-    public virtual DocGium MaDocGiaNavigation { get; set; } = null!;
+    public virtual DocGia MaDocGiaNavigation { get; set; } = null!;
 
     [ForeignKey("Machuong")]
     [InverseProperty("LichSuDocs")]

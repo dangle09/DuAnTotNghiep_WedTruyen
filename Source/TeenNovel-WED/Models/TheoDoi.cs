@@ -23,7 +23,7 @@ public partial class TheoDoi
 
     [ForeignKey("MaDocGia")]
     [InverseProperty("TheoDois")]
-    public virtual DocGium MaDocGiaNavigation { get; set; } = null!;
+    public virtual DocGia MaDocGiaNavigation { get; set; } = null!;
 
     [ForeignKey("Matruyen")]
     [InverseProperty("TheoDois")]

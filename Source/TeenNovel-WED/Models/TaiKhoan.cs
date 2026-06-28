@@ -32,7 +32,7 @@ public partial class TaiKhoan
     public string Trangthai { get; set; } = null!;
 
     [InverseProperty("MatkNavigation")]
-    public virtual DocGium? DocGium { get; set; }
+    public virtual DocGia? DocGia { get; set; }
 
     [ForeignKey("MaVaiTro")]
     [InverseProperty("TaiKhoans")]

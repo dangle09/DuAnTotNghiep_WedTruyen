@@ -32,5 +32,5 @@ public partial class NapXu
 
     [ForeignKey("MaDocGia")]
     [InverseProperty("NapXus")]
-    public virtual DocGium MaDocGiaNavigation { get; set; } = null!;
+    public virtual DocGia MaDocGiaNavigation { get; set; } = null!;
 }

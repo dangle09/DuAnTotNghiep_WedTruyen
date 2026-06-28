@@ -34,7 +34,7 @@ public partial class HoTro
 
     [ForeignKey("MaDocGia")]
     [InverseProperty("HoTros")]
-    public virtual DocGium MaDocGiaNavigation { get; set; } = null!;
+    public virtual DocGia MaDocGiaNavigation { get; set; } = null!;
 
     [ForeignKey("Manv")]
     [InverseProperty("HoTros")]
