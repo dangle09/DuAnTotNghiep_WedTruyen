@@ -247,16 +247,16 @@ GO
 -- MaVaiTro: 1=quantrivien | 2=nhanvien | 3=docgia
 INSERT INTO TaiKhoan (MaVaiTro, Email, Matkhau, Tendangnhap, Trangthai)
 VALUES
-(1, 'admin@gmail.com',    'ADMIN',  'admin',        N'hoatdong'),
-(2, 'binh1.nv@gmail.com',  'NV1',   'nhanvien01',   N'hoatdong'),
-(2, 'cam2.nv@gmail.com',   'NV2',   'nhanvien02',   N'hoatdong'),
-(3, 'duc1.lm@gmail.com',     'DG1',   'leMinh',       N'hoatdong'),
-(3, 'hoa2.pt@gmail.com',     'DG2',   'phamHoa',      N'hoatdong'),
-(3, 'hung3.nq@gmail.com',    'DG3',   'hungNQ',       N'hoatdong'),
-(3, 'lan4.vt@gmail.com',     'DG4',   'lanVT',        N'hoatdong'),
-(3, 'nam5.dh@gmail.com',     'DG5',   'namDH',        N'hoatdong'),
-(3, 'ngoc6.bt@gmail.com',    'DG6',   'buitngoc',     N'hoatdong'),
-(3, 'phuc7.hv@gmail.com',    'DG7',   'hoangPhuc',    N'khoatai');
+(1, 'danglntb02258@gmail.com',    '$2b$10$HASH_ADMIN',  'admin',        N'hoatdong'),
+(2, 'binh1.nv@gmail.com',  '$2b$10$HASH_NV1',   'nhanvien01',   N'hoatdong'),
+(2, 'cam2.nv@gmail.com',   '$2b$10$HASH_NV2',   'nhanvien02',   N'hoatdong'),
+(3, 'duc1.lm@gmail.com',     '$2b$10$HASH_DG1',   'leMinh',       N'hoatdong'),
+(3, 'hoa2.pt@gmail.com',     '$2b$10$HASH_DG2',   'phamHoa',      N'hoatdong'),
+(3, 'hung3.nq@gmail.com',    '$2b$10$HASH_DG3',   'hungNQ',       N'hoatdong'),
+(3, 'lan4.vt@gmail.com',     '$2b$10$HASH_DG4',   'lanVT',        N'hoatdong'),
+(3, 'nam5.dh@gmail.com',     '$2b$10$HASH_DG5',   'namDH',        N'hoatdong'),
+(3, 'ngoc6.bt@gmail.com',    '$2b$10$HASH_DG6',   'buitngoc',     N'hoatdong'),
+(3, 'phuc7.hv@gmail.com',    '$2b$10$HASH_DG7',   'hoangPhuc',    N'khoatai');
 GO
 
 -- ---------- NhanVien ----------
@@ -846,3 +846,19 @@ SELECT 'NapXu'      AS Bang, COUNT(*) AS SoBanGhi FROM NapXu       UNION ALL
 SELECT 'DoanhThu'   AS Bang, COUNT(*) AS SoBanGhi FROM DoanhThu    UNION ALL
 SELECT 'HoTro'      AS Bang, COUNT(*) AS SoBanGhi FROM HoTro;
 GO
+
+-- ADMIN (mật khẩu: Admin@123)
+UPDATE TaiKhoan SET Matkhau = '$2a$11$qjrhdnicY0D93PSJ.ziOxeESOfQJ0owwlX2simwUHXxidvmdovrG6' WHERE Email = 'danglntb02258@gmail.com';
+
+-- NHÂN VIÊN (mật khẩu: Nhanvien@123)
+UPDATE TaiKhoan SET Matkhau = '$2a$11$YQh2KynpvwoucWCZWr05leNdwm/5sOw5X0pLYLHO6YgtM.KnmmM7K' WHERE Email = 'binh1.nv@gmail.com';
+UPDATE TaiKhoan SET Matkhau = '$2a$11$YQh2KynpvwoucWCZWr05leNdwm/5sOw5X0pLYLHO6YgtM.KnmmM7K' WHERE Email = 'cam2.nv@gmail.com';
+
+-- ĐỘC GIẢ (mật khẩu: Docgia@123)
+UPDATE TaiKhoan SET Matkhau = '$2a$11$ABSZRY0N10wLMZncres1aul3LdOJ8bX/FKDWFau/08vPyS4H6NBI.' WHERE Email = 'duc1.lm@gmail.com';
+UPDATE TaiKhoan SET Matkhau = '$2a$11$ABSZRY0N10wLMZncres1aul3LdOJ8bX/FKDWFau/08vPyS4H6NBI.' WHERE Email = 'hoa2.pt@gmail.com';
+UPDATE TaiKhoan SET Matkhau = '$2a$11$ABSZRY0N10wLMZncres1aul3LdOJ8bX/FKDWFau/08vPyS4H6NBI.' WHERE Email = 'hung3.nq@gmail.com';
+UPDATE TaiKhoan SET Matkhau = '$2a$11$ABSZRY0N10wLMZncres1aul3LdOJ8bX/FKDWFau/08vPyS4H6NBI.' WHERE Email = 'lan4.vt@gmail.com';
+UPDATE TaiKhoan SET Matkhau = '$2a$11$ABSZRY0N10wLMZncres1aul3LdOJ8bX/FKDWFau/08vPyS4H6NBI.' WHERE Email = 'nam5.dh@gmail.com';
+UPDATE TaiKhoan SET Matkhau = '$2a$11$ABSZRY0N10wLMZncres1aul3LdOJ8bX/FKDWFau/08vPyS4H6NBI.' WHERE Email = 'ngoc6.bt@gmail.com';
+UPDATE TaiKhoan SET Matkhau = '$2a$11$ABSZRY0N10wLMZncres1aul3LdOJ8bX/FKDWFau/08vPyS4H6NBI.' WHERE Email = 'phuc7.hv@gmail.com';

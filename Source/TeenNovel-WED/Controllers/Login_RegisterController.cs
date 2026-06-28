@@ -48,7 +48,7 @@ namespace TeenNovel_WED.Controllers
             var taikhoan = _context.TaiKhoans
                 .FirstOrDefault(t => t.Email == email.Trim().ToLower());
 
-            if (taikhoan == null || taikhoan.Matkhau != password)
+            if (taikhoan == null || !BCrypt.Net.BCrypt.Verify(password, taikhoan.Matkhau))
             {
                 ViewBag.Error = "Email hoặc mật khẩu không chính xác.";
                 return View();
