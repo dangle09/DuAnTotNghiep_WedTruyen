@@ -2,7 +2,195 @@
 @{
     ViewData["Title"] = "TrangChu";
     Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+    ViewData["ActivePage"] = "Home";
+    var truyenNoiBat = ViewBag.TruyenNoiBat as IEnumerable<TeenNovel_WED.Models.Truyen> ?? Enumerable.Empty<TeenNovel_WED.Models.Truyen>();
+    var truyenXepHang = ViewBag.TruyenXepHang as IEnumerable<TeenNovel_WED.Models.Truyen> ?? Enumerable.Empty<TeenNovel_WED.Models.Truyen>();
+    var truyenMoi = ViewBag.TruyenMoi as IEnumerable<TeenNovel_WED.Models.Truyen> ?? Enumerable.Empty<TeenNovel_WED.Models.Truyen>();
+    var dsTheLoai = ViewBag.DsTheLoai as IEnumerable<TeenNovel_WED.Models.TheLoai> ?? Enumerable.Empty<TeenNovel_WED.Models.TheLoai>();
 }
 
-<h1>TrangChu</h1>
+<link rel="stylesheet" href="~/css/trang-chu.css" asp-append-version="true" />
 
+<!-- ── HERO ── -->
+<div class="tc-hero">
+    <div class="tc-hero-content">
+        <h1 class="tc-hero-title">Kho truyện không giới hạn ✦</h1>
+        <p class="tc-hero-sub">Hàng nghìn bộ truyện hay, cập nhật mỗi ngày</p>
+        <form class="tc-hero-search" asp-controller="Truyen" asp-action="TimKiem" method="get">
+            <i class="bi bi-search"></i>
+            <input type="text" name="q" placeholder="Tìm kiếm tên truyện, tác giả, thể loại..." autocomplete="off" />
+            <button type="submit">Tìm kiếm</button>
+        </form>
+    </div>
+</div>
+
+<!-- ── THỂ LOẠI ── -->
+<div class="tc-genre-wrap">
+    <div class="tc-genre-tabs">
+        <a asp-controller="Truyen" asp-action="Index"
+           class="tc-genre-tab @(ViewBag.TheLoaiId == null ? "active" : "")">Tất cả</a>
+        @foreach (var tl in dsTheLoai)
+        {
+            <a asp-controller="Truyen" asp-action="Index" asp-route-theloai="@tl.Matheloai"
+                   class="tc-genre-tab @(ViewBag.TheLoaiId == tl.Matheloai ? "active" : "")">
+                @tl.Tentheloa
+            </a>
+        }
+    </div>
+</div>
+
+<!-- ── TRUYỆN NỔI BẬT ── -->
+<div class="tc-section">
+    <div class="tc-section-head">
+        <h2 class="tc-section-title">
+            <i class="bi bi-fire"></i> Truyện nổi bật
+        </h2>
+        <a asp-controller="Truyen" asp-action="NoiBat" class="tc-section-more">
+            Xem tất cả <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    <div class="tc-cards-grid">
+        @foreach (var t in truyenNoiBat)
+        {
+            <a asp-controller="Truyen" asp-action="ChiTiet" asp-route-id="@t.Matruyen" class="tc-card">
+                <div class="tc-cover">
+                    @if (!string.IsNullOrEmpty(t.AnhBia))
+                    {
+                        <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                    }
+                    else
+                    {
+                        <div class="tc-cover-placeholder">
+                            <i class="bi bi-book"></i>
+                        </div>
+                    }
+                    <span class="tc-badge @(t.Trangthai == "hoanthanh" ? "tc-badge--blue" : t.Trangthai == "tamngung" ? "tc-badge--amber" : "tc-badge--green")">
+                        @(t.Trangthai == "hoanthanh" ? "Hoàn thành" : t.Trangthai == "tamngung" ? "Tạm ngưng" : "Đang ra")
+                    </span>
+                </div>
+                <div class="tc-card-info">
+                    <div class="tc-card-title">@t.Tentruyen</div>
+                    <div class="tc-card-author">@(t.Tacgia ?? "Đang cập nhật")</div>
+                    <div class="tc-card-meta">
+                        <span><i class="bi bi-eye"></i> @((t.LuotDoc).ToString("N0"))</span>
+                        <span><i class="bi bi-heart"></i> @((t.LuotThich).ToString("N0"))</span>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (!truyenNoiBat.Any())
+        {
+            <div class="tc-empty">Chưa có truyện nào</div>
+        }
+    </div>
+</div>
+
+<!-- ── XẾP HẠNG + MỚI CẬP NHẬT ── -->
+<div class="tc-two-col">
+
+    <!-- XẾP HẠNG -->
+    <div class="tc-section" style="padding:0">
+        <div class="tc-section-head">
+            <h2 class="tc-section-title">
+                <i class="bi bi-trophy"></i> Xếp hạng tuần
+            </h2>
+            <a asp-controller="Truyen" asp-action="XepHang" class="tc-section-more">
+                Xem thêm <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="tc-rank-list">
+            @{
+                int rank = 1;
+            }
+            @foreach (var t in truyenXepHang)
+            {
+                <a asp-controller="Truyen" asp-action="ChiTiet" asp-route-id="@t.Matruyen"
+                       class="tc-rank-item">
+                    <div class="tc-rank-num @(rank <= 3 ? "top-" + rank : "")">@rank</div>
+                    <div class="tc-rank-cover">
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-book"></i>
+                        }
+                    </div>
+                    <div class="tc-rank-info">
+                        <div class="tc-rank-title">@t.Tentruyen</div>
+                        <div class="tc-rank-meta">
+                            @(t.MatheloaiNavigation.Tentheloa ?? "—") · @(t.Tacgia ?? "—")
+                        </div>
+                    </div>
+                    <div class="tc-rank-views">
+                        <i class="bi bi-eye"></i> @((t.LuotDoc).ToString("N0"))
+                    </div>
+                </a>
+                rank++;
+            }
+            @if (!truyenXepHang.Any())
+            {
+                <div class="tc-empty">Chưa có dữ liệu xếp hạng</div>
+            }
+        </div>
+    </div>
+
+    <!-- MỚI CẬP NHẬT -->
+    <div class="tc-section" style="padding:0">
+        <div class="tc-section-head">
+            <h2 class="tc-section-title">
+                <i class="bi bi-clock-history"></i> Mới cập nhật
+            </h2>
+            <a asp-controller="Truyen" asp-action="MoiCapNhat" class="tc-section-more">
+                Xem thêm <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="tc-new-list">
+            @foreach (var t in truyenMoi)
+            {
+                var chuongMoi = ViewBag.ChuongMoiDict != null
+                    ? ((Dictionary<int, string>)ViewBag.ChuongMoiDict).GetValueOrDefault(t.Matruyen, "")
+                    : "";
+                <a asp-controller="Truyen" asp-action="ChiTiet" asp-route-id="@t.Matruyen"
+                       class="tc-new-item">
+                    <div class="tc-new-cover">
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-book"></i>
+                        }
+                    </div>
+                    <div class="tc-new-info">
+                        <div class="tc-new-title">@t.Tentruyen</div>
+                        @if (!string.IsNullOrEmpty(chuongMoi))
+                        {
+                            <div class="tc-new-chapter">@chuongMoi</div>
+                        }
+                    </div>
+                    <div class="tc-new-time">
+                        @{
+                            var khoangCach = DateTime.Now - t.Ngaydang;
+                        }
+
+                        @(khoangCach.TotalHours < 1
+                            ? "Vừa xong"
+                            : khoangCach.TotalHours < 24
+                                ? $"{(int)khoangCach.TotalHours} giờ trước"
+                                : $"{(int)khoangCach.TotalDays} ngày trước")
+                    </div>
+                </a>
+            }
+            @if (!truyenMoi.Any())
+            {
+                <div class="tc-empty">Chưa có truyện mới</div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<div style="height:32px"></div>

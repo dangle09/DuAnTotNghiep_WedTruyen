@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TeenNovel_WED.Models;
 
+[Table("DanhGia")]
 [Index("Matruyen", Name = "IX_DanhGia_Matruyen")]
 [Index("MaDocGia", "Matruyen", Name = "UQ__DanhGia__B8E2FF323E68D535", IsUnique = true)]
 public partial class DanhGia

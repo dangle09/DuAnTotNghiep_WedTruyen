@@ -111,6 +111,8 @@ public partial class TeenNovelDbContext : DbContext
             entity.HasOne(d => d.MatruyenNavigation).WithMany(p => p.DanhGias)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__DanhGia__Matruye__5DCAEF64");
+            modelBuilder.Entity<DanhGia>()
+                .ToTable("DanhGia");
         });
 
         modelBuilder.Entity<DoanhThu>(entity =>

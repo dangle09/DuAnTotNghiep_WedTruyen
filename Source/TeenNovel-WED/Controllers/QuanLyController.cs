@@ -111,7 +111,7 @@ namespace TeenNovel_WED.Controllers
 
             // Đánh giá
             var danhgias = await _context.DanhGias
-                .Include(d => d.MaDocGia)
+                .Include(d => d.MaDocGiaNavigation)
                 .Where(d => d.Matruyen == id)
                 .OrderByDescending(d => d.Ngaydanhgia)
                 .Take(10)
