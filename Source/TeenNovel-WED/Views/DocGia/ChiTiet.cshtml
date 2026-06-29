@@ -1,0 +1,387 @@
+﻿@model TeenNovel_WED.Models.Truyen
+
+@{
+    ViewData["Title"] = Model.Tentruyen;
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+
+@section Styles {
+
+    <link rel="stylesheet" href="~/css/chitiet-truyen.css" asp-append-version="true" />
+
+}
+
+
+
+<!-- BREADCRUMB -->
+
+<div class="ct-breadcrumb">
+
+
+    <a asp-controller="DocGia"
+           asp-action="TrangChu">
+
+        Trang chủ
+
+    </a>
+
+
+    >
+
+
+    <a asp-controller="DocGia"
+           asp-action="TheLoai"
+           asp-route-id="@Model.Matheloai">
+
+
+        @(Model.MatheloaiNavigation?.Tentheloa)
+
+    </a>
+
+
+
+    >
+
+
+    <span>
+
+        @Model.Tentruyen
+
+    </span>
+
+
+
+</div>
+
+
+
+
+
+<div class="ct-box">
+
+
+
+
+
+    <div class="ct-info-wrap">
+
+
+
+        <!-- POSTER -->
+
+        <div class="ct-poster">
+
+
+            <img src="@Model.AnhBia" />
+
+
+
+
+            <div class="rating">
+
+
+                @{
+
+                    double sao = ViewBag.DiemDanhGia ?? 0;
+
+                    int full = (int)sao;
+
+                }
+
+
+
+                @for (int i = 1; i <= 5; i++)
+                {
+
+                    if (i <= full)
+                    {
+                        <span>★</span>
+                    }
+                    else
+                    {
+                        <span>☆</span>
+                    }
+
+                }
+
+
+                <br />
+
+                Đánh giá:
+
+                <b>
+                    @sao / 5
+                </b>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <!-- THÔNG TIN -->
+
+        <div class="ct-info">
+
+
+            <h1>
+
+                @Model.Tentruyen
+
+            </h1>
+
+
+
+            <hr />
+
+
+
+
+
+            <p>
+
+                <i class="bi bi-eye"></i>
+
+                Lượt xem:
+
+                <b>
+                    @Model.LuotDoc.ToString("N0")
+                </b>
+
+
+            </p>
+
+
+
+
+
+            <p>
+
+                <i class="bi bi-heart"></i>
+
+                Lượt thích:
+
+                <b>
+                    @Model.LuotThich.ToString("N0")
+                </b>
+
+
+            </p>
+
+
+
+
+
+
+            <p>
+
+                <b>Tác giả:</b>
+
+                @(Model.Tacgia ?? "Đang cập nhật")
+
+
+            </p>
+
+
+
+
+
+
+            <p>
+
+                <b>Thể loại:</b>
+
+                <span class="tag">
+
+                    @Model.MatheloaiNavigation?.Tentheloa
+
+                </span>
+
+
+            </p>
+
+
+
+
+
+            <p>
+
+                <b>Số chương:</b>
+
+                @Model.Chuongs.Count
+
+
+            </p>
+
+
+
+
+
+            <p>
+
+                <b>Trạng thái:</b>
+
+
+                <span class="status">
+
+                    @Model.Trangthai
+
+                </span>
+
+
+            </p>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- MÔ TẢ -->
+
+
+    <div class="ct-description">
+
+
+        <h2>
+
+            Giới thiệu
+
+        </h2>
+
+
+        <p>
+
+            @Model.Mota
+
+        </p>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- NÚT ĐỌC -->
+
+
+    <div class="ct-buttons">
+
+
+        <a class="btn-read"
+               asp-controller="DocGia"
+               asp-action="Doc"
+               asp-route-id="@Model.Matruyen">
+
+
+            Đọc từ đầu
+
+
+        </a>
+
+
+
+
+
+        @if (ViewBag.ChuongMoi != null)
+        {
+
+            <a class="btn-new"
+                   asp-controller="DocGia"
+                   asp-action="DocChuong"
+                   asp-route-id="@ViewBag.ChuongMoi.Machuong">
+
+
+                Đọc chương mới
+
+
+            </a>
+
+
+        }
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- DANH SÁCH CHƯƠNG -->
+
+
+    <div class="chapter-title">
+
+
+        <span>
+
+            Danh sách chương
+
+        </span>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="chapter-list">
+
+
+        @foreach (var c in Model.Chuongs.OrderBy(x => x.Thutu))
+        {
+
+            <a asp-controller="DocGia"
+                   asp-action="DocChuong"
+                   asp-route-id="@c.Machuong">
+
+
+                Chương @c.Thutu :
+                @c.Tenchuong
+
+
+            </a>
+
+
+        }
+
+
+    </div>
+
+
+
+
+
+</div>

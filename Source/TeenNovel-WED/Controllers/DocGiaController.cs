@@ -94,5 +94,187 @@ namespace TeenNovel_WED.Controllers
 
             return View();
         }
+
+        public IActionResult TopNoiBat()
+        {
+            var data = _context.Truyens
+                .OrderByDescending(x => x.LuotDoc)
+                .Take(20)
+                .ToList();
+
+            return View(data);
+        }
+
+
+
+        public IActionResult TopXepHang()
+        {
+            var data = _context.Truyens
+                .OrderByDescending(x => x.LuotThich)
+                .Take(20)
+                .ToList();
+
+
+            return View(data);
+        }
+
+
+        public IActionResult TopMoiCapNhat()
+        {
+
+            var data = _context.Truyens
+                .OrderByDescending(x => x.Ngaydang)
+                .Take(20)
+                .ToList();
+
+
+            return View(data);
+
+        }
+
+
+        public async Task<IActionResult> TheLoai(int id)
+        {
+            var data = await _context.Truyens
+                .Include(t => t.MatheloaiNavigation)
+                .Where(t => t.Matheloai == id)
+                .OrderByDescending(t => t.LuotDoc)
+                .ToListAsync();
+
+            var theLoai = await _context.TheoLoais
+
+                .FirstOrDefaultAsync(x => x.Matheloai == id);
+            ViewBag.TenTheLoai = theLoai?.Tentheloa;
+
+            return View(data);
+
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> TimKiem(string q)
+        {
+
+
+            if (string.IsNullOrEmpty(q))
+            {
+
+                TempData["Error"] = "Vui lòng nhập từ khóa tìm kiếm";
+
+                return RedirectToAction("TrangChu");
+
+            }
+
+
+
+            var truyen = await _context.Truyens
+
+                .Include(t => t.MatheloaiNavigation)
+
+                .FirstOrDefaultAsync(t =>
+
+
+                    t.Tentruyen.Contains(q)
+
+                    ||
+
+                    t.Tacgia.Contains(q)
+
+
+                    ||
+
+                    t.MatheloaiNavigation.Tentheloa.Contains(q)
+
+                );
+
+
+
+
+
+            if (truyen == null)
+            {
+
+                TempData["Error"] =
+                $"Không tìm thấy truyện với từ khóa: {q}";
+
+
+                return RedirectToAction("TrangChu");
+
+            }
+
+
+
+
+            return RedirectToAction(
+                "ChiTiet",
+                new { id = truyen.Matruyen }
+            );
+
+
+        }
+
+        // ─── CHI TIẾT TRUYỆN ─────────────────────────
+
+        public async Task<IActionResult> ChiTiet(int id)
+        {
+
+            var truyen = await _context.Truyens
+
+                .Include(t => t.MatheloaiNavigation)
+
+                .Include(t => t.Chuongs)
+
+                .Include(t => t.DanhGias)
+
+                .FirstOrDefaultAsync(t => t.Matruyen == id);
+
+
+
+            if (truyen == null)
+            {
+                return NotFound();
+            }
+
+
+
+
+            // tính điểm đánh giá trung bình
+
+            double diemDanhGia = 0;
+
+
+            if (truyen.DanhGias != null && truyen.DanhGias.Any())
+            {
+
+                diemDanhGia = truyen.DanhGias
+                    .Average(x => x.Sosao);
+
+            }
+
+
+
+            ViewBag.DiemDanhGia = Math.Round(diemDanhGia, 1);
+
+
+
+
+            // lấy chương mới nhất
+
+            var chuongMoi = truyen.Chuongs
+
+                .OrderByDescending(x => x.Thutu)
+
+                .FirstOrDefault();
+
+
+
+            ViewBag.ChuongMoi = chuongMoi;
+
+
+
+
+            return View(truyen);
+
+        }
     }
 }

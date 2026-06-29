@@ -9,17 +9,108 @@
     padding: 40px 24px 32px;
     text-align: center;
 }
-.tc-hero-title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #3b0764;
-    margin-bottom: 8px;
-    letter-spacing: -.01em;
-}
-.tc-hero-sub {
-    font-size: 15px;
-    color: #7c3aed;
+.tc-banner {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
     margin-bottom: 20px;
+    border-radius: 18px;
+}
+
+
+
+.tc-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: .7s;
+}
+
+
+
+    .tc-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+
+    .tc-slide.active {
+        opacity: 1;
+    }
+
+
+
+/* nút trái phải */
+
+
+.tc-prev,
+.tc-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    border: none;
+    background: rgba(0,0,0,.35);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+.tc-prev {
+    left: 20px;
+}
+
+
+.tc-next {
+    right: 20px;
+}
+
+
+
+
+
+/* dots */
+
+
+.tc-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    opacity: .5;
+    margin: 5px;
+    cursor: pointer;
+}
+
+
+    .dot.active {
+        opacity: 1;
+    }
+
+
+
+
+/* đẩy search cách banner */
+
+
+.tc-hero-content {
+    margin-top: 20px;
 }
 .tc-hero-search {
     display: flex;
@@ -93,6 +184,62 @@
     color: #fff;
     border-color: #7c3aed;
 }
+/* ================= THỂ LOẠI KÉO NGANG ================= */
+
+
+.tc-genre-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+
+
+
+.tc-genre-tabs {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    flex: 1;
+    padding: 5px;
+}
+
+
+    /* ẩn thanh kéo mặc định */
+
+    .tc-genre-tabs::-webkit-scrollbar {
+        display: none;
+    }
+.tc-genre-tab {
+    white-space: nowrap;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: #f2e8ff;
+    color: #7b3fe4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .3s;
+}
+    .tc-genre-tab:hover,
+    .tc-genre-tab.active {
+        background: #8b4dff;
+        color: white;
+    }
+.genre-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #8b4dff;
+    color: white;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+    .genre-btn:hover {
+        opacity: .8;
+    }
 
 /* ── SECTION ── */
 .tc-section {
@@ -367,6 +514,280 @@
     text-align: center;
     font-size: 13px;
     color: #c4b5fd;
+}
+
+.ih-navbar {
+    background: #080812 !important;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+}
+
+
+
+.ih-nav-links a {
+    color: #c084fc !important;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    transition: .3s;
+}
+
+
+
+
+    /* hover navbar */
+
+
+    .ih-nav-links a:hover {
+        background: #000 !important;
+        border: 1px solid white;
+        color: #e9d5ff !important;
+        box-shadow: 0 0 15px rgba(168,85,247,.8);
+    }
+
+
+
+
+
+
+    /* active navbar */
+
+
+    .ih-nav-links a.active {
+        background: #000 !important;
+        border: 1px solid white;
+        font-weight: 600;
+        color: #d8b4fe !important;
+        box-shadow: 0 0 18px rgba(168,85,247,.8);
+    }
+
+
+
+
+
+/* ================= LOGO ================= */
+
+
+.ih-logo {
+    color: #c084fc !important;
+    filter: drop-shadow(0 0 8px rgba(168,85,247,.8));
+}
+
+
+
+
+
+
+/* ================= SIDEBAR DỌC ================= */
+
+
+
+.ih-sidebar {
+    background: #080812 !important;
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 16px;
+    padding: 15px;
+}
+
+
+
+
+
+.ih-sidebar-label {
+    color: #a855f7 !important;
+}
+
+
+
+
+
+.ih-sidebar a {
+    color: #c084fc !important;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    transition: .3s;
+}
+
+
+
+
+
+
+    /* hover sidebar */
+
+
+    .ih-sidebar a:hover {
+        background: #000 !important;
+        border: 1px solid white;
+        color: #f3e8ff !important;
+        box-shadow: 0 0 15px rgba(168,85,247,.7);
+    }
+
+
+
+
+
+
+    /* active sidebar */
+
+
+    .ih-sidebar a.active {
+        background: #000 !important;
+        border: 1px solid white;
+        color: #e9d5ff !important;
+        font-weight: 600;
+        box-shadow: 0 0 18px rgba(168,85,247,.9);
+    }
+
+
+
+
+
+        .ih-sidebar a.active i {
+            color: #d8b4fe !important;
+        }
+
+
+
+
+
+
+
+/* ================= DROPDOWN USER ================= */
+
+
+
+.ih-dropdown {
+    background: #080812 !important;
+    border: 1px solid white;
+}
+
+
+
+
+.ih-dropdown-name {
+    color: #f3e8ff !important;
+}
+
+
+
+
+.ih-dropdown-role {
+    color: #c084fc !important;
+}
+
+
+
+
+.ih-dropdown .dropdown-item {
+    color: #c084fc !important;
+}
+
+
+
+
+
+    .ih-dropdown .dropdown-item:hover {
+        background: #000 !important;
+        border: 1px solid white;
+        color: #f5d0fe !important;
+    }
+
+
+
+
+
+
+/* ================= MOBILE MENU ================= */
+
+
+.ih-mobile-menu {
+    background: #080812 !important;
+    border-color: white;
+}
+
+
+
+    .ih-mobile-menu a {
+        color: #c084fc !important;
+    }
+
+
+
+
+
+        .ih-mobile-menu a:hover {
+            background: #000;
+            border: 1px solid white;
+            color: #f5d0fe !important;
+        }
+
+
+
+
+
+
+/* ================= NÚT ĐĂNG NHẬP ================= */
+
+
+
+.ih-btn-outline {
+    color: #c084fc !important;
+    border: 1px solid #c084fc !important;
+    background: #000 !important;
+}
+
+
+
+    .ih-btn-outline:hover {
+        color: white !important;
+        border-color: white !important;
+        box-shadow: 0 0 15px rgba(168,85,247,.8);
+    }
+
+
+
+
+
+
+.ih-btn-filled {
+    background: #9333ea !important;
+    color: white !important;
+    border: 1px solid transparent;
+}
+
+
+
+
+
+    .ih-btn-filled:hover {
+        background: #000 !important;
+        border: 1px solid white;
+        color: #e9d5ff !important;
+        box-shadow: 0 0 15px rgba(168,85,247,.8);
+    }
+
+
+
+
+
+
+/* ================= ICON ================= */
+
+
+
+.ih-sidebar i,
+.ih-nav-links i {
+    color: #c084fc;
+}
+
+
+
+
+
+/* ================= BODY DARK NHẸ ================= */
+
+
+.ih-body {
+    background: #0b0b14;
 }
 
 /* ── RESPONSIVE ── */

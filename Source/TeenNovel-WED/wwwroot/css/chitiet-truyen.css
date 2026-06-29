@@ -1,0 +1,566 @@
+/* =====================================================
+   CHI TIẾT TRUYỆN - TEENNOVEL STYLE
+===================================================== */
+
+body,
+.ih-main {
+    background: #090912 !important;
+}
+
+/* ================= BREADCRUMB ================= */
+
+
+.ct-breadcrumb {
+    margin: 20px;
+    padding: 15px 30px;
+    background: #090912;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    font-size: 17px;
+}
+
+
+
+    .ct-breadcrumb a {
+        color: #555;
+        text-decoration: none;
+    }
+
+
+
+        .ct-breadcrumb a:hover {
+            color: #9333ea;
+        }
+
+
+
+    .ct-breadcrumb span {
+        color: #9333ea;
+        font-weight: 600;
+    }
+
+
+
+
+
+
+
+
+/* ================= BOX CHÍNH ================= */
+
+
+
+.ct-box {
+    width: 95%;
+    margin: 35px auto;
+    background: #11111c;
+    color: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 25px rgba(168,85,247,.15);
+}
+
+
+
+
+
+
+
+
+/* ================= KHU VỰC THÔNG TIN ================= */
+
+
+
+.ct-info-wrap {
+    display: flex;
+    gap: 45px;
+}
+
+
+
+
+
+
+
+
+
+/* ================= POSTER ================= */
+
+
+
+.ct-poster {
+    width: 280px;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+
+
+
+    .ct-poster img {
+        width: 260px;
+        height: 380px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 8px 25px rgba(0,0,0,.35);
+    }
+
+
+
+
+
+.no-img {
+    width: 260px;
+    height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ddd;
+    font-size: 60px;
+}
+
+
+
+
+
+
+
+
+/* ================= ĐÁNH GIÁ SAO ================= */
+
+
+
+.rating {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #555;
+}
+
+
+
+    .rating span {
+        color: #ffb000;
+        font-size: 25px;
+    }
+
+
+
+
+    .rating b {
+        color: #9333ea;
+    }
+
+
+
+
+
+
+
+
+
+/* ================= THÔNG TIN TRUYỆN ================= */
+
+
+
+.ct-info {
+    flex: 1;
+}
+
+
+
+    .ct-info h1 {
+        font-size: 35px;
+        color: #222;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+
+
+
+    .ct-info hr {
+        border: none;
+        height: 1px;
+        background: #ddd;
+        margin-bottom: 25px;
+    }
+
+
+
+
+
+    .ct-info p {
+        font-size: 18px;
+        margin: 16px 0;
+        color: #333;
+    }
+
+
+
+
+
+    .ct-info i {
+        color: #9333ea;
+        margin-right: 8px;
+    }
+
+
+
+
+
+
+/* ================= TAG THỂ LOẠI ================= */
+
+
+
+.tag {
+    display: inline-block;
+    background: #f3e8ff;
+    color: #9333ea;
+    padding: 6px 15px;
+    border-radius: 20px;
+    margin-right: 5px;
+    font-weight: 600;
+}
+
+
+
+
+
+
+
+/* ================= TRẠNG THÁI ================= */
+
+
+
+.status {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+/* ================= MÔ TẢ ================= */
+
+
+
+.ct-description {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #ddd;
+}
+
+
+
+
+
+    .ct-description h2 {
+        font-size: 25px;
+        color: #222;
+        margin-bottom: 15px;
+    }
+
+
+
+    .ct-description p {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #444;
+    }
+
+
+
+
+
+
+
+
+/* ================= BUTTON ================= */
+
+
+
+.ct-buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 25px;
+}
+
+
+
+
+
+
+.btn-read,
+.btn-new {
+    padding: 13px 35px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+
+
+
+
+.btn-read {
+    background: #9333ea;
+}
+
+
+
+
+
+.btn-new {
+    background: #f97316;
+}
+
+
+
+
+
+    .btn-read:hover,
+    .btn-new:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,.25);
+        color: white;
+    }
+
+
+
+
+
+
+
+
+
+/* ================= TITLE CHƯƠNG ================= */
+
+
+
+.chapter-title {
+    margin-top: 45px;
+    border-top: 2px solid #f97316;
+    text-align: center;
+}
+
+
+
+
+
+    .chapter-title span {
+        position: relative;
+        top: -20px;
+        background: #11111c;
+        padding: 0 25px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #f97316;
+    }
+
+
+
+
+
+
+
+
+
+/* ================= DANH SÁCH CHƯƠNG ================= */
+
+
+
+.chapter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+
+
+
+    .chapter-list a {
+        padding: 14px 20px;
+        border-radius: 8px;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        color: #333;
+        text-decoration: none;
+        font-size: 17px;
+        transition: .25s;
+    }
+
+
+
+
+
+        .chapter-list a:hover {
+            background: #f3e8ff;
+            border-color: #9333ea;
+            color: #9333ea;
+            transform: translateX(8px);
+        }
+
+
+
+
+.ct-info h1,
+.ct-info p,
+.ct-description h2,
+.ct-description p,
+.chapter-title span {
+    color: #f5f3ff;
+}
+
+
+
+.ct-info hr {
+    background: rgba(255,255,255,.2);
+}
+
+
+
+.chapter-list a {
+    background: #090912;
+    border: 1px solid rgba(255,255,255,.15);
+    color: #d8b4fe;
+}
+
+
+
+    .chapter-list a:hover {
+        background: #000;
+        border: 1px solid white;
+        color: #e9d5ff;
+    }
+
+/* ===============================
+   FIX KHÔNG ĐÈ LAYOUT DOCGIA
+================================ */
+
+
+.ih-navbar,
+.ih-navbar * {
+    box-sizing: border-box;
+}
+
+
+
+.ih-sidebar,
+.ih-sidebar * {
+    box-sizing: border-box;
+}
+
+
+
+
+
+.ih-navbar {
+    background: #090912 !important;
+}
+
+
+
+
+
+.ih-nav-links a {
+    color: #d8b4fe !important;
+}
+
+
+
+
+
+    .ih-nav-links a:hover,
+    .ih-nav-links a.active {
+        background: #000 !important;
+        border: 1px solid white;
+        color: #e9d5ff !important;
+    }
+
+
+
+
+
+.ih-sidebar {
+    background: #090912 !important;
+}
+
+
+
+
+
+    .ih-sidebar a {
+        color: #94a3b8 !important;
+    }
+
+
+
+        .ih-sidebar a:hover,
+        .ih-sidebar a.active {
+            background: #000 !important;
+            border: 1px solid white;
+            color: #d8b4fe !important;
+        }
+
+
+
+/* ================= RESPONSIVE ================= */
+
+
+
+@media(max-width:768px) {
+
+
+
+    .ct-info-wrap {
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+
+    .ct-info {
+        width: 100%;
+    }
+
+
+
+
+        .ct-info h1 {
+            text-align: center;
+            font-size: 26px;
+        }
+
+
+
+
+    .ct-buttons {
+        flex-direction: column;
+    }
+
+
+
+
+    .btn-read,
+    .btn-new {
+        text-align: center;
+    }
+
+
+
+
+    .ct-box {
+        padding: 20px;
+    }
+}

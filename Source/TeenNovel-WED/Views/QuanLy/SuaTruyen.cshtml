@@ -1,0 +1,126 @@
+﻿@model TeenNovel_WED.Models.Truyen
+@{
+    ViewData["Title"] = "SuaTruyen";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["ActivePage"] = "Truyen";
+    ViewData["Breadcrumb"] = "Sửa truyện";
+}
+
+@section TopbarAction {
+    <a asp-action="ChiTietTruyen" asp-route-id="@Model.Matruyen"
+           class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+}
+
+<div class="ql-form-wrap">
+    <form asp-action="SuaTruyen" asp-route-id="@Model.Matruyen"
+          method="post" enctype="multipart/form-data" id="truyenForm" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="ql-form-grid">
+
+            <!-- CỘT TRÁI -->
+            <div class="ql-form-left">
+                <div class="ad-card" style="margin-bottom:16px">
+                    <div class="ad-card-head"><span class="ad-card-title">Thông tin cơ bản</span></div>
+                    <div class="ad-card-body">
+
+                        <div class="ql-field">
+                            <label>Tên truyện <span class="ql-required">*</span></label>
+                            <input type="text" name="tentruyen" id="tentruyen"
+                                   value="@Model.Tentruyen" maxlength="200" />
+                            <span class="ql-field-error" id="err-tentruyen"></span>
+                        </div>
+
+                        <div class="ql-field">
+                            <label>Tác giả</label>
+                            <input type="text" name="tacgia"
+                                   value="@Model.Tacgia" maxlength="100" />
+                        </div>
+
+                        <div class="ql-field-row">
+                            <div class="ql-field">
+                                <label>Thể loại chính <span class="ql-required">*</span></label>
+                                <select name="matheloai" id="matheloai" class="ql-select">
+                                    <option value="">-- Chọn thể loại --</option>
+                                    @foreach (var tl in (SelectList)ViewBag.DsTheLoai)
+                                    {
+                                        <option value="@tl.Value" selected="@tl.Selected">@tl.Text</option>
+                                    }
+                                </select>
+                                <span class="ql-field-error" id="err-matheloai"></span>
+                            </div>
+                            <div class="ql-field">
+                                <label>Trạng thái</label>
+                                <select name="trangthai" class="ql-select">
+                                    <option value="dangtien" selected="@(Model.Trangthai == "dangtien")">Đang ra</option>
+                                    <option value="hoanthanh" selected="@(Model.Trangthai == "hoanthanh")">Hoàn thành</option>
+                                    <option value="tamngung" selected="@(Model.Trangthai == "tamngung")">Tạm ngưng</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ql-field">
+                            <label>Thể loại phụ / Tag</label>
+                            <input type="text" name="theloai"
+                                   value="@Model.Theloai" maxlength="200"
+                                   placeholder="VD: Ngôn Tình, Hiện Đại, Tổng Tài..." />
+                            <span class="ql-field-hint">Phân cách bằng dấu phẩy</span>
+                        </div>
+
+                        <div class="ql-field">
+                            <label>Mô tả</label>
+                            <textarea name="mota" rows="5" maxlength="2000">@Model.Mota</textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI -->
+            <div class="ql-form-right">
+                <div class="ad-card">
+                    <div class="ad-card-head"><span class="ad-card-title">Ảnh bìa</span></div>
+                    <div class="ad-card-body">
+                        <div class="ql-upload-area" id="uploadArea">
+                            <img id="previewImg"
+                                 src="@(string.IsNullOrEmpty(Model.AnhBia) ? "" : Model.AnhBia)"
+                                 alt=""
+                                 style="@(string.IsNullOrEmpty(Model.AnhBia) ? "display:none" : "")" />
+                            <div id="uploadPlaceholder" style="@(!string.IsNullOrEmpty(Model.AnhBia) ? "display:none" : "")">
+                                <i class="bi bi-image" style="font-size:36px;color:#c4b5fd"></i>
+                                <p>Kéo thả hoặc click để đổi ảnh</p>
+                                <span>JPG, PNG, WEBP · Tối đa 5MB</span>
+                            </div>
+                            <input type="file" name="anhbia" id="anhbia"
+                                   accept="image/jpeg,image/png,image/webp" />
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.AnhBia))
+                        {
+                            <p class="ql-field-hint" style="margin-top:8px">
+                                <i class="bi bi-info-circle"></i>
+                                Chọn ảnh mới để thay thế ảnh hiện tại
+                            </p>
+                        }
+                        <span class="ql-field-error" id="err-anhbia"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ql-form-actions">
+            <a asp-action="ChiTietTruyen" asp-route-id="@Model.Matruyen"
+               class="ad-topbar-btn ad-topbar-btn--outline">Huỷ</a>
+            <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="submitBtn">
+                <i class="bi bi-check-lg"></i> Lưu thay đổi
+            </button>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/quan-ly-truyen.js" asp-append-version="true"></script>
+    <script> initTruyenForm(); </script>
+}
