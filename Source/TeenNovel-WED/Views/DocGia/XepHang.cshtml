@@ -1,0 +1,120 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+    ViewData["Title"] = "Xếp hạng";
+    ViewData["ActivePage"] = "XepHang";
+
+    var topNoiBat = ViewBag.TopNoiBat as IEnumerable<TeenNovel_WED.Models.Truyen> ?? Enumerable.Empty<TeenNovel_WED.Models.Truyen>();
+    var topXepHang = ViewBag.TopXepHang as IEnumerable<TeenNovel_WED.Models.Truyen> ?? Enumerable.Empty<TeenNovel_WED.Models.Truyen>();
+    var topMoiCapNhat = ViewBag.TopMoiCapNhat as IEnumerable<TeenNovel_WED.Models.Truyen> ?? Enumerable.Empty<TeenNovel_WED.Models.Truyen>();
+}
+
+<link rel="stylesheet" href="~/css/xep-hang.css" asp-append-version="true" />
+
+<div class="xh-wrap">
+
+    <!-- ── TOP NỔI BẬT ── -->
+    <section class="xh-section" id="top-noibat">
+        <div class="xh-title-row">
+            <h2 class="xh-title">
+                <i class="bi bi-fire"></i> Top Nổi Bật
+            </h2>
+            <div class="xh-divider"></div>
+        </div>
+        <div class="xh-list">
+            @{
+                int i = 1;
+            }
+            @foreach (var t in topNoiBat)
+            {
+                <a asp-controller="DocGia" asp-action="ChiTiet" asp-route-id="@t.Matruyen"
+                       class="xh-item">
+                    <div class="xh-rank @(i == 1 ? "gold" : i == 2 ? "silver" : i == 3 ? "bronze" : "")">
+                        @if (i <= 3)
+                        {
+                            <i class="bi bi-trophy-fill"></i>
+                        }
+                        else
+                        {
+                            @i
+                        }
+                    </div>
+                    <div class="xh-cover">
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-book"></i>
+                        }
+                    </div>
+                    <div class="xh-info">
+                        <div class="xh-name">@t.Tentruyen</div>
+                        <div class="xh-author">@(t.Tacgia ?? "Đang cập nhật")</div>
+                        <div class="xh-meta">
+                            <span><i class="bi bi-eye"></i> @t.LuotDoc.ToString("N0") lượt đọc</span>
+                            <span class="xh-badge @(t.Trangthai == "hoanthanh" ? "xh-badge--blue" : "xh-badge--green")">
+                                @(t.Trangthai == "hoanthanh" ? "Hoàn thành" : "Đang ra")
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                i++;
+            }
+        </div>
+    </section>
+
+    <!-- ── TOP XẾP HẠNG ── -->
+    <section class="xh-section" id="top-xephang">
+        <div class="xh-title-row">
+            <h2 class="xh-title">
+                <i class="bi bi-trophy"></i> Top Xếp Hạng
+            </h2>
+            <div class="xh-divider"></div>
+        </div>
+        <div class="xh-list">
+            @{
+                i = 1;
+            }
+            @foreach (var t in topXepHang)
+            {
+                <a asp-controller="DocGia" asp-action="ChiTiet" asp-route-id="@t.Matruyen"
+                       class="xh-item">
+                    <div class="xh-rank @(i == 1 ? "gold" : i == 2 ? "silver" : i == 3 ? "bronze" : "")">
+                        @if (i <= 3)
+                        {
+                            <i class="bi bi-trophy-fill"></i>
+                        }
+                        else
+                        {
+                            @i
+                        }
+                    </div>
+                    <div class="xh-cover">
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-book"></i>
+                        }
+                    </div>
+                    <div class="xh-info">
+                        <div class="xh-name">@t.Tentruyen</div>
+                        <div class="xh-author">@(t.Tacgia ?? "Đang cập nhật")</div>
+                        <div class="xh-meta">
+                            <span><i class="bi bi-heart"></i> @t.LuotThich.ToString("N0") lượt thích</span>
+                            <span class="xh-badge @(t.Trangthai == "hoanthanh" ? "xh-badge--blue" : "xh-badge--green")">
+                                @(t.Trangthai == "hoanthanh" ? "Hoàn thành" : "Đang ra")
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                i++;
+            }
+        </div>
+    </section>
+    
+
+</div>

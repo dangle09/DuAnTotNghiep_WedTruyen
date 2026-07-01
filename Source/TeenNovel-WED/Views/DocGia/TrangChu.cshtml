@@ -17,15 +17,15 @@
     <div class="tc-banner">
 
         <div class="tc-slide active">
-            <img src="~/images/banner/banner1.jpg" />
+            <img src="~/images/banner_trangchu_1.png" />
         </div>
 
         <div class="tc-slide">
-            <img src="~/images/banner/banner2.jpg" />
+            <img src="~/images/banner_trangchu_2.png" />
         </div>
 
         <div class="tc-slide">
-            <img src="~/images/banner/banner3.jpg" />
+            <img src="~/images/banner_trangchu_3..png" />
         </div>
 
 
@@ -120,14 +120,17 @@
         <h2 class="tc-section-title">
             <i class="bi bi-fire"></i> Truyện nổi bật
         </h2>
-        <a asp-controller="Truyen" asp-action="TopNoiBat" class="tc-section-more">
+        <a href="/DocGia/XepHang#top-noibat" class="tc-section-more">
             Xem tất cả <i class="bi bi-arrow-right"></i>
         </a>
     </div>
     <div class="tc-cards-grid">
         @foreach (var t in truyenNoiBat)
         {
-            <a asp-controller="Truyen" asp-action="ChiTiet" asp-route-id="@t.Matruyen" class="tc-card">
+            <a asp-controller="DocGia"
+                   asp-action="ChiTiet"
+                   asp-route-id="@t.Matruyen"
+                   class="tc-card">
                 <div class="tc-cover">
                     @if (!string.IsNullOrEmpty(t.AnhBia))
                     {
@@ -169,7 +172,7 @@
             <h2 class="tc-section-title">
                 <i class="bi bi-trophy"></i> Xếp hạng tuần
             </h2>
-            <a asp-controller="Truyen" asp-action="TopXepHang" class="tc-section-more">
+            <a href="/DocGia/XepHang#top-xephang" class="tc-section-more">
                 Xem thêm <i class="bi bi-arrow-right"></i>
             </a>
         </div>
@@ -179,7 +182,9 @@
             }
             @foreach (var t in truyenXepHang)
             {
-                <a asp-controller="Truyen" asp-action="ChiTiet" asp-route-id="@t.Matruyen"
+                <a asp-controller="DocGia"
+                       asp-action="ChiTiet"
+                       asp-route-id="@t.Matruyen"
                        class="tc-rank-item">
                     <div class="tc-rank-num @(rank <= 3 ? "top-" + rank : "")">@rank</div>
                     <div class="tc-rank-cover">
@@ -217,7 +222,7 @@
             <h2 class="tc-section-title">
                 <i class="bi bi-clock-history"></i> Mới cập nhật
             </h2>
-            <a asp-controller="Truyen" asp-action="TopMoiCapNhat" class="tc-section-more">
+            <a asp-controller="DocGia" asp-action="MoiCapNhat" class="tc-section-more">
                 Xem thêm <i class="bi bi-arrow-right"></i>
             </a>
         </div>
@@ -227,7 +232,9 @@
                 var chuongMoi = ViewBag.ChuongMoiDict != null
                     ? ((Dictionary<int, string>)ViewBag.ChuongMoiDict).GetValueOrDefault(t.Matruyen, "")
                     : "";
-                <a asp-controller="Truyen" asp-action="ChiTiet" asp-route-id="@t.Matruyen"
+                <a asp-controller="DocGia"
+                       asp-action="ChiTiet"
+                       asp-route-id="@t.Matruyen"
                        class="tc-new-item">
                     <div class="tc-new-cover">
                         @if (!string.IsNullOrEmpty(t.AnhBia))

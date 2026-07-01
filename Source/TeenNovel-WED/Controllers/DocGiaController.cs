@@ -95,41 +95,29 @@ namespace TeenNovel_WED.Controllers
             return View();
         }
 
-        public IActionResult TopNoiBat()
+        // ─── TRANG XẾP HẠNG ───────────────────────────────
+        // /DocGia/XepHang
+        public async Task<IActionResult> XepHang()
         {
-            var data = _context.Truyens
+            ViewData["ActivePage"] = "XepHang";
+            ViewData["Title"] = "Xếp hạng";
+
+            // Top nổi bật — lượt đọc cao nhất
+            var topNoiBat = await _context.Truyens
                 .OrderByDescending(x => x.LuotDoc)
                 .Take(20)
-                .ToList();
+                .ToListAsync();
 
-            return View(data);
-        }
-
-
-
-        public IActionResult TopXepHang()
-        {
-            var data = _context.Truyens
+            // Top xếp hạng — lượt thích cao nhất
+            var topXepHang = await _context.Truyens
                 .OrderByDescending(x => x.LuotThich)
                 .Take(20)
-                .ToList();
+                .ToListAsync();
 
+            ViewBag.TopNoiBat = topNoiBat;
+            ViewBag.TopXepHang = topXepHang;
 
-            return View(data);
-        }
-
-
-        public IActionResult TopMoiCapNhat()
-        {
-
-            var data = _context.Truyens
-                .OrderByDescending(x => x.Ngaydang)
-                .Take(20)
-                .ToList();
-
-
-            return View(data);
-
+            return View();
         }
 
 
@@ -148,6 +136,24 @@ namespace TeenNovel_WED.Controllers
 
             return View(data);
 
+        }
+
+        // ─── TRUYỆN MỚI CẬP NHẬT ─────────────────────
+        public async Task<IActionResult> MoiCapNhat()
+        {
+            ViewData["ActivePage"] = "MoiCapNhat";
+
+            var ngayBatDau = DateTime.Now.AddDays(-30);
+
+            var truyenMoi = await _context.Truyens
+                .Include(t => t.MatheloaiNavigation)
+                .Where(t => t.Ngaydang >= ngayBatDau)
+                .OrderByDescending(t => t.Ngaydang)
+                .ToListAsync();
+
+            ViewBag.TruyenMoi = truyenMoi;
+
+            return View(truyenMoi);
         }
 
         [HttpGet]

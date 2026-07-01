@@ -1,0 +1,204 @@
+/* =========================================================
+   TeenNovel_WED — xep-hang.css  (dark theme)
+   ========================================================= */
+
+.xh-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 48px;
+}
+
+/* ── SECTION ── */
+.xh-section {
+    margin-bottom: 56px;
+    scroll-margin-top: 80px;
+}
+
+/* ── TITLE ROW ── */
+.xh-title-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.xh-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e9d5ff;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+    .xh-title i {
+        color: #a855f7;
+        font-size: 20px;
+    }
+
+.xh-divider {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(168,85,247,.5), transparent);
+    border-radius: 2px;
+}
+
+/* ── DANH SÁCH ── */
+.xh-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ── ITEM ── */
+.xh-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: border-color .15s, background .15s, transform .1s, box-shadow .15s;
+}
+
+    .xh-item:hover {
+        border-color: white;
+        background: #000;
+        transform: translateX(4px);
+        box-shadow: 0 0 15px rgba(168,85,247,.5);
+    }
+
+/* ── SỐ THỨ TỰ ── */
+.xh-rank {
+    font-size: 17px;
+    font-weight: 700;
+    min-width: 36px;
+    text-align: center;
+    color: rgba(255,255,255,.25);
+    flex-shrink: 0;
+}
+
+    .xh-rank.gold {
+        color: #f59e0b;
+    }
+
+    .xh-rank.silver {
+        color: #9ca3af;
+    }
+
+    .xh-rank.bronze {
+        color: #c2774a;
+    }
+
+    .xh-rank i {
+        font-size: 18px;
+    }
+
+/* ── BÌA TRUYỆN ── */
+.xh-cover {
+    width: 48px;
+    height: 68px;
+    border-radius: 7px;
+    overflow: hidden;
+    background: #1a1a2e;
+    border: 1px solid rgba(255,255,255,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+    .xh-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .xh-cover i {
+        font-size: 18px;
+        color: #a855f7;
+    }
+
+/* ── THÔNG TIN ── */
+.xh-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.xh-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f3e8ff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.xh-author {
+    font-size: 12px;
+    color: #a855f7;
+}
+
+.xh-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+    flex-wrap: wrap;
+}
+
+    .xh-meta i {
+        font-size: 13px;
+        vertical-align: -1px;
+        margin-right: 3px;
+    }
+
+/* Badge trạng thái */
+.xh-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.xh-badge--green {
+    background: rgba(21,128,61,.2);
+    color: #4ade80;
+    border: 1px solid rgba(74,222,128,.3);
+}
+
+.xh-badge--blue {
+    background: rgba(29,78,216,.2);
+    color: #60a5fa;
+    border: 1px solid rgba(96,165,250,.3);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+    .xh-title {
+        font-size: 18px;
+    }
+
+    .xh-name {
+        font-size: 13px;
+    }
+
+    .xh-item {
+        padding: 8px 12px;
+        gap: 10px;
+    }
+
+    .xh-cover {
+        width: 40px;
+        height: 56px;
+    }
+}
