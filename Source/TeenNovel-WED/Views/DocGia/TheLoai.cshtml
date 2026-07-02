@@ -1,0 +1,74 @@
+﻿@model IEnumerable<TeenNovel_WED.Models.Truyen>
+@{
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+    ViewData["Title"] = ViewBag.TheLoaiName ?? "Thể loại";
+    ViewData["ActivePage"] = "TheLoai";
+    string tenTheLoai = ViewBag.TheLoaiName ?? "Thể loại";
+}
+
+<link rel="stylesheet" href="~/css/the-loai.css" asp-append-version="true" />
+
+<div class="tl-wrap">
+
+    <!-- HEADER -->
+    <div class="tl-header">
+        <div class="tl-breadcrumb">
+            <a href="/DocGia/TrangChu">Trang chủ</a>
+            <i class="bi bi-chevron-right"></i>
+            <span>Thể loại</span>
+            <i class="bi bi-chevron-right"></i>
+            <span class="tl-current">@tenTheLoai</span>
+        </div>
+        <h1 class="tl-title">
+            <i class="bi bi-bookmark-fill"></i>
+            @tenTheLoai
+        </h1>
+        <p class="tl-count">@Model.Count() truyện</p>
+    </div>
+
+    <!-- DANH SÁCH TRUYỆN -->
+    @if (!Model.Any())
+    {
+        <div class="tl-empty">
+            <i class="bi bi-inbox"></i>
+            <p>Chưa có truyện nào trong thể loại này</p>
+        </div>
+    }
+    else
+    {
+        <div class="tl-grid">
+            @foreach (var t in Model)
+            {
+                <a href="/DocGia/ChiTiet/@t.Matruyen" class="tl-card">
+                    <div class="tl-cover">
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                        }
+                        else
+                        {
+                            <div class="tl-cover-placeholder">
+                                <i class="bi bi-book"></i>
+                            </div>
+                        }
+                        <span class="tl-badge @(t.Trangthai == "hoanthanh" ? "tl-badge--blue" : t.Trangthai == "tamngung" ? "tl-badge--amber" : "tl-badge--green")">
+                            @(t.Trangthai == "hoanthanh" ? "Hoàn thành" : t.Trangthai == "tamngung" ? "Tạm ngưng" : "Đang ra")
+                        </span>
+                    </div>
+                    <div class="tl-info">
+                        <div class="tl-name">@t.Tentruyen</div>
+                        <div class="tl-author">@(t.Tacgia ?? "Đang cập nhật")</div>
+                        <div class="tl-meta">
+                            <span><i class="bi bi-eye"></i> @t.LuotDoc.ToString("N0")</span>
+                            <span><i class="bi bi-heart"></i> @t.LuotThich.ToString("N0")</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(t.Mota))
+                        {
+                            <div class="tl-mota">@t.Mota</div>
+                        }
+                    </div>
+                </a>
+            }
+        </div>
+    }
+</div>

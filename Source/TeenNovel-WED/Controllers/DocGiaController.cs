@@ -29,6 +29,11 @@ namespace TeenNovel_WED.Controllers
             var docGia = _context.DocGias.FirstOrDefault(d => d.MaDocGia == maDocGia);
             if (docGia != null)
                 ViewData["SoXu"] = docGia.Soxu;
+
+            // Inject danh sách thể loại vào navbar dropdown
+            ViewBag.NavTheLoai = _context.TheoLoais
+                .OrderBy(t => t.Tentheloa)
+                .ToList();
         }
 
         // ─── TRANG CHỦ ────────────────────────────────────
@@ -118,24 +123,6 @@ namespace TeenNovel_WED.Controllers
             ViewBag.TopXepHang = topXepHang;
 
             return View();
-        }
-
-
-        public async Task<IActionResult> TheLoai(int id)
-        {
-            var data = await _context.Truyens
-                .Include(t => t.MatheloaiNavigation)
-                .Where(t => t.Matheloai == id)
-                .OrderByDescending(t => t.LuotDoc)
-                .ToListAsync();
-
-            var theLoai = await _context.TheoLoais
-
-                .FirstOrDefaultAsync(x => x.Matheloai == id);
-            ViewBag.TenTheLoai = theLoai?.Tentheloa;
-
-            return View(data);
-
         }
 
         // ─── TRUYỆN MỚI CẬP NHẬT ─────────────────────
@@ -281,6 +268,31 @@ namespace TeenNovel_WED.Controllers
 
             return View(truyen);
 
+        }
+
+        // ─── THỂ LOẠI ─────────────────────────────────────
+        // /DocGia/TheLoai/{id}
+        public async Task<IActionResult> TheLoai(int id)
+        {
+            ViewData["ActivePage"] = "TheLoai";
+
+            var theloai = await _context.TheoLoais.FindAsync(id);
+            if (theloai == null)
+            {
+                TempData["Error"] = "Không tìm thấy thể loại này.";
+                return RedirectToAction("TrangChu");
+            }
+
+            ViewData["Title"] = theloai.Tentheloa;
+            ViewBag.TheLoaiName = theloai.Tentheloa;
+            ViewBag.TheLoaiId = id;
+
+            var truyens = await _context.Truyens
+                .Where(t => t.Matheloai == id)
+                .OrderByDescending(t => t.LuotDoc)
+                .ToListAsync();
+
+            return View(truyens);
         }
     }
 }

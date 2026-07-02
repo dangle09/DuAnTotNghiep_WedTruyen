@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/layout-docgia.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/genre-dropdown.css" asp-append-version="true" />
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
@@ -37,12 +38,28 @@
                         Trang chủ
                     </a>
                 </li>
-                <li>
-                    <a asp-controller="DocGia" asp-action="Index"
-                           class="@(ViewData["ActivePage"]?.ToString() == "TheLoai" ? "active" : "")">
-                        Thể loại
+                <!-- DROPDOWN THỂ LOẠI -->
+                <li class="ih-nav-genre" id="navGenreItem">
+                    <a class="ih-nav-genre-toggle @(ViewData["ActivePage"]?.ToString() == "TheLoai" ? "active" : "")"
+                           id="navGenreToggle">
+                        Thể loại <i class="bi bi-chevron-down ih-genre-arrow"></i>
                     </a>
+                    <div class="ih-genre-dropdown" id="genreDropdown">
+                        <div class="ih-genre-grid">
+                            @if (ViewBag.NavTheLoai != null)
+                            {
+                                foreach (var tl in (IEnumerable<TeenNovel_WED.Models.TheLoai>)ViewBag.NavTheLoai)
+                                {
+                                    <a href="/DocGia/TheLoai/@tl.Matheloai" class="ih-genre-item">
+                                        <i class="bi bi-bookmark"></i>
+                                        @tl.Tentheloa
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </div>
                 </li>
+
                 <li>
                     <a asp-controller="DocGia" asp-action="XepHang"
                            class="@(ViewData["ActivePage"]?.ToString() == "XepHang" ? "active" : "")">
@@ -279,6 +296,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
     <script src="~/js/layout-docgia.js" asp-append-version="true"></script>
+    <script src="~/js/genre-dropdown.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
