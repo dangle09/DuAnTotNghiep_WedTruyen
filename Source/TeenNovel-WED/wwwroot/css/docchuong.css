@@ -1,0 +1,252 @@
+.reader {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+}
+
+.reader-breadcrumb {
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+    .reader-breadcrumb a {
+        color: #b388ff;
+        text-decoration: none;
+    }
+
+.reader-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .reader-header h1 {
+        color: #fff;
+        font-size: 34px;
+    }
+
+    .reader-header h2 {
+        color: #c084fc;
+        margin-top: 15px;
+    }
+
+    .reader-header p {
+        color: #999;
+    }
+
+.reader-content {
+    background: #fff;
+    color: #333;
+    padding: 45px;
+    border-radius: 12px;
+    line-height: 2.2;
+    font-size: 22px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.3);
+}
+
+.reader-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+}
+
+.btn-nav {
+    background: #8b5cf6;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+    .btn-nav:hover {
+        background: #7c3aed;
+    }
+
+.btn-disable {
+    background: #444;
+    color: #999;
+    padding: 12px 24px;
+    border-radius: 8px;
+}
+
+.reader-top-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 25px 0 10px;
+}
+
+.reader-btn {
+    background: #7c3aed;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+    .reader-btn:hover {
+        background: #6d28d9;
+    }
+
+.disable {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.chapter-dropdown {
+    position: relative;
+}
+
+.chapter-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 220px;
+    max-height: 350px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.3);
+    display: none;
+    z-index: 1000;
+}
+
+    .chapter-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .chapter-menu a:hover {
+            background: #f2f2f2;
+        }
+
+.chapter-dropdown:hover .chapter-menu {
+    display: block;
+}
+
+.chapter-menu {
+    display: none;
+}
+
+    .chapter-menu.show {
+        display: block;
+    }
+
+/*=========================
+    COMMENT
+==========================*/
+
+.comment-section {
+    margin-top: 60px;
+}
+
+.comment-title {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+.comment-avatar {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#8b5cf6,#c084fc);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.comment-body {
+    flex: 1;
+}
+
+.comment-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.comment-user {
+    color: #8b5cf6;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.comment-time {
+    color: #999;
+    font-size: 14px;
+}
+
+.comment-content {
+    margin-top: 6px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #222;
+    white-space: pre-wrap;
+}
+
+.comment-form {
+    display: flex;
+    gap: 15px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 30px;
+}
+
+    .comment-form form {
+        flex: 1;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        min-height: 80px;
+        resize: vertical;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 18px;
+        outline: none;
+    }
+
+        .comment-form textarea:focus {
+            border-color: #8b5cf6;
+        }
+
+    .comment-form button {
+        margin-top: 12px;
+        background: #8b5cf6;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 22px;
+        font-weight: 600;
+    }
+
+        .comment-form button:hover {
+            background: #7c3aed;
+        }
+
+.comment-list {
+    margin-top: 20px;
+}

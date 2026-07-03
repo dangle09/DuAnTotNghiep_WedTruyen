@@ -1,0 +1,129 @@
+﻿@model IEnumerable<TeenNovel_WED.Models.TheoDoi>
+
+@{
+    ViewData["Title"] = "Truyện theo dõi";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+    ViewData["ActivePage"] = "TheoDoi";
+}
+
+<link rel="stylesheet"
+      href="~/css/trang-chu.css"
+      asp-append-version="true" />
+
+<div class="tc-section">
+
+    <div class="tc-section-head">
+
+        <h2 class="tc-section-title">
+
+            <i class="bi bi-heart-fill"></i>
+
+            Truyện đang theo dõi
+
+        </h2>
+
+    </div>
+
+    @if (Model.Any())
+    {
+
+        <div class="tc-cards-grid">
+
+            @foreach (var item in Model)
+            {
+                var t = item.MatruyenNavigation;
+
+                <a asp-controller="DocGia"
+                       asp-action="ChiTiet"
+                       asp-route-id="@t.Matruyen"
+                       class="tc-card">
+
+                    <div class="tc-cover">
+
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                        }
+                        else
+                        {
+                            <div class="tc-cover-placeholder">
+                                <i class="bi bi-book"></i>
+                            </div>
+                        }
+
+                        <span class="tc-badge
+                            @(t.Trangthai == "hoanthanh"
+                                                              ? "tc-badge--blue"
+                                                              : t.Trangthai == "tamngung"
+                                                                  ? "tc-badge--amber"
+                                                                  : "tc-badge--green")">
+
+                            @(t.Trangthai == "hoanthanh"
+                                ? "Hoàn thành"
+                                : t.Trangthai == "tamngung"
+                                    ? "Tạm ngưng"
+                                    : "Đang ra")
+
+                        </span>
+
+                    </div>
+
+                    <div class="tc-card-info">
+
+                        <div class="tc-card-title">
+
+                            @t.Tentruyen
+
+                        </div>
+
+                        <div class="tc-card-author">
+
+                            @(t.Tacgia ?? "Đang cập nhật")
+
+                        </div>
+
+                        <div class="tc-card-meta">
+
+                            <span>
+
+                                <i class="bi bi-eye"></i>
+
+                                @t.LuotDoc.ToString("N0")
+
+                            </span>
+
+                            <span>
+
+                                <i class="bi bi-heart"></i>
+
+                                @t.LuotThich.ToString("N0")
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            }
+
+        </div>
+
+    }
+    else
+    {
+
+        <div class="tc-empty">
+
+            <i class="bi bi-heart"></i>
+
+            <br />
+
+            Bạn chưa theo dõi truyện nào.
+
+        </div>
+
+    }
+
+</div>

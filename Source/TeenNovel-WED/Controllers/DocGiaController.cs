@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using TeenNovel_WED.Data;
 using TeenNovel_WED.Filters;
+using TeenNovel_WED.Models;
 
 namespace TeenNovel_WED.Controllers
 {
@@ -259,15 +260,147 @@ namespace TeenNovel_WED.Controllers
 
                 .FirstOrDefault();
 
+            // Danh sách đánh giá
+            var danhGias = await _context.DanhGias
+                .Include(d => d.MaDocGiaNavigation)
+                .Where(d => d.Matruyen == id)
+                .OrderByDescending(d => d.Ngaydanhgia)
+                .ToListAsync();
+
+            double diemTb = danhGias.Any()
+                ? Math.Round(danhGias.Average(d => (double)d.Sosao), 1)
+                : 0;
+
+
+
+            bool daTheoDoi = false;
+            bool daThich = false;
+            int? saoCuaToi = null;
+            string? nxCuaToi = null;
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var maDocGiaClaim = User.FindFirst("MaDocGia")?.Value;
+                if (int.TryParse(maDocGiaClaim, out int maDocGia))
+                {
+                    daTheoDoi = await _context.TheoDois
+                        .AnyAsync(t => t.MaDocGia == maDocGia && t.Matruyen == id);
+
+                    daThich = await _context.TheoDois
+                        .AnyAsync(t => t.MaDocGia == maDocGia && t.Matruyen == id);
+
+                    var dgCuaToi = await _context.DanhGias
+                        .FirstOrDefaultAsync(d => d.MaDocGia == maDocGia && d.Matruyen == id);
+
+                    if (dgCuaToi != null)
+                    {
+                        saoCuaToi = dgCuaToi.Sosao;
+                        nxCuaToi = dgCuaToi.Nhanxet;
+                    }
+                }
+            }
 
 
             ViewBag.ChuongMoi = chuongMoi;
-
-
-
+            ViewBag.MaTruyen = id;
+            ViewBag.DanhGias = danhGias;
+            ViewBag.DiemTb = diemTb;
+            ViewBag.DaTheoDoi = daTheoDoi;
+            ViewBag.SaoCuaToi = saoCuaToi;
+            ViewBag.NxCuaToi = nxCuaToi;
 
             return View(truyen);
 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TheoDoi(int matruyen)
+        {
+            var maDocGiaClaim = User.FindFirst("MaDocGia")?.Value;
+            if (!int.TryParse(maDocGiaClaim, out int maDocGia))
+                return RedirectToAction("Login", "Login_Register",
+                       new { returnUrl = $"/DocGia/ChiTiet/{matruyen}" });
+
+            var existing = await _context.TheoDois
+                .FirstOrDefaultAsync(t => t.MaDocGia == maDocGia && t.Matruyen == matruyen);
+
+            if (existing != null)
+            {
+                // Bỏ theo dõi
+                _context.TheoDois.Remove(existing);
+
+                // Giảm lượt thích
+                var truyen = await _context.Truyens.FindAsync(matruyen);
+                if (truyen != null && truyen.LuotThich > 0)
+                    truyen.LuotThich--;
+
+                TempData["Success"] = "Đã bỏ theo dõi truyện.";
+            }
+            else
+            {
+                // Theo dõi mới
+                _context.TheoDois.Add(new TeenNovel_WED.Models.TheoDoi
+                {
+                    MaDocGia = maDocGia,
+                    Matruyen = matruyen,
+                    Ngaytheodoi = DateTime.Now
+                });
+
+                // Tăng lượt thích
+                var truyen = await _context.Truyens.FindAsync(matruyen);
+                if (truyen != null) truyen.LuotThich++;
+
+                TempData["Success"] = "Đã theo dõi truyện!";
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ChiTiet", new { id = matruyen });
+        }
+
+        // ─── ĐÁNH GIÁ TRUYỆN ─────────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DanhGiaTruyen(int matruyen, int sosao, string? nhanxet)
+        {
+            var maDocGiaClaim = User.FindFirst("MaDocGia")?.Value;
+            if (!int.TryParse(maDocGiaClaim, out int maDocGia))
+                return RedirectToAction("Login", "Login_Register",
+                       new { returnUrl = $"/DocGia/ChiTiet/{matruyen}" });
+
+            if (sosao < 1 || sosao > 5)
+            {
+                TempData["Error"] = "Vui lòng chọn số sao từ 1 đến 5.";
+                return RedirectToAction("ChiTiet", new { id = matruyen });
+            }
+
+            // Kiểm tra đã đánh giá chưa
+            var existing = await _context.DanhGias
+                .FirstOrDefaultAsync(d => d.MaDocGia == maDocGia && d.Matruyen == matruyen);
+
+            if (existing != null)
+            {
+                // Cập nhật đánh giá cũ
+                existing.Sosao = (byte)sosao;
+                existing.Nhanxet = nhanxet?.Trim();
+                existing.Ngaydanhgia = DateTime.Now;
+                TempData["Success"] = "Đã cập nhật đánh giá của bạn!";
+            }
+            else
+            {
+                // Tạo đánh giá mới
+                _context.DanhGias.Add(new TeenNovel_WED.Models.DanhGia
+                {
+                    MaDocGia = maDocGia,
+                    Matruyen = matruyen,
+                    Sosao = (byte)sosao,
+                    Nhanxet = nhanxet?.Trim(),
+                    Ngaydanhgia = DateTime.Now
+                });
+                TempData["Success"] = "Cảm ơn bạn đã đánh giá!";
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ChiTiet", new { id = matruyen });
         }
 
         // ─── THỂ LOẠI ─────────────────────────────────────
@@ -293,6 +426,155 @@ namespace TeenNovel_WED.Controllers
                 .ToListAsync();
 
             return View(truyens);
+        }
+
+        public async Task<IActionResult> TheoDoi()
+        {
+            ViewData["ActivePage"] = "TheoDoi";
+
+            if (!User.Identity!.IsAuthenticated)
+                return RedirectToAction("Login", "Login_Register");
+
+            var maDocGiaClaim = User.FindFirst("MaDocGia")?.Value;
+
+            if (!int.TryParse(maDocGiaClaim, out int maDocGia))
+                return RedirectToAction("Login", "Login_Register");
+
+            var dsTheoDoi = await _context.TheoDois
+
+                .Include(td => td.MatruyenNavigation)
+                    .ThenInclude(t => t.MatheloaiNavigation)
+
+                .Where(td => td.MaDocGia == maDocGia)
+
+                .OrderByDescending(td => td.Ngaytheodoi)
+
+                .ToListAsync();
+
+            return View(dsTheoDoi);
+        }
+
+        //==============================================================
+        // ĐỌC CHƯƠNG
+        //==============================================================
+
+        public async Task<IActionResult> DocChuong(int id)
+        {
+            ViewData["ActivePage"] = "";
+
+            var chuong = await _context.Chuongs
+
+                .Include(c => c.MatruyenNavigation)
+                    .ThenInclude(t => t.MatheloaiNavigation)
+
+                .FirstOrDefaultAsync(c => c.Machuong == id);
+
+            if (chuong == null)
+                return NotFound();
+
+            var binhLuans = await _context.BinhLuans
+                .Include(x => x.MaDocGiaNavigation)
+                .Where(x => x.Matruyen == chuong.Matruyen)
+                .Where(x => x.TrangThai == 1) // chỉ hiện bình luận đã duyệt
+                .OrderByDescending(x => x.Ngaybinhluan)
+                .ToListAsync();
+
+            ViewBag.BinhLuans = binhLuans;
+
+
+
+            //---------------------------------------
+            // Tăng lượt đọc
+            //---------------------------------------
+
+            chuong.LuotDoc++;
+
+            chuong.MatruyenNavigation.LuotDoc++;
+
+            await _context.SaveChangesAsync();
+
+
+
+            //---------------------------------------
+            // Chương trước
+            //---------------------------------------
+
+            var chuongTruoc = await _context.Chuongs
+
+                .Where(c => c.Matruyen == chuong.Matruyen &&
+                            c.Thutu < chuong.Thutu)
+
+                .OrderByDescending(c => c.Thutu)
+
+                .FirstOrDefaultAsync();
+
+
+
+            //---------------------------------------
+            // Chương sau
+            //---------------------------------------
+
+            var chuongSau = await _context.Chuongs
+
+                .Where(c => c.Matruyen == chuong.Matruyen &&
+                            c.Thutu > chuong.Thutu)
+
+                .OrderBy(c => c.Thutu)
+
+                .FirstOrDefaultAsync();
+
+
+
+            //---------------------------------------
+            // Danh sách chương
+            //---------------------------------------
+
+            var dsChuong = await _context.Chuongs
+
+                .Where(c => c.Matruyen == chuong.Matruyen)
+
+                .OrderBy(c => c.Thutu)
+
+                .ToListAsync();
+
+
+
+            ViewBag.ChuongTruoc = chuongTruoc;
+
+            ViewBag.ChuongSau = chuongSau;
+
+            ViewBag.DanhSachChuong = dsChuong;
+
+
+
+            return View(chuong);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ThemBinhLuan(int maTruyen, string noiDung)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Login_Register");
+
+            if (string.IsNullOrWhiteSpace(noiDung))
+                return Redirect(Request.Headers["Referer"].ToString());
+
+            int maDocGia = int.Parse(User.FindFirst("MaDocGia")!.Value);
+
+            var bl = new BinhLuan
+            {
+                MaDocGia = maDocGia,
+                Matruyen = maTruyen,
+                Noidung = noiDung.Trim(),
+                TrangThai = 1,
+                Ngaybinhluan = DateTime.Now
+            };
+
+            _context.BinhLuans.Add(bl);
+
+            await _context.SaveChangesAsync();
+
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

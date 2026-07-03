@@ -1,0 +1,156 @@
+@* _ChiTietActions.cshtml — Theo dõi + Đánh giá *@
+
+@{
+    bool daDangNhap = User.Identity?.IsAuthenticated == true;
+    bool daTheoDoi = ViewBag.DaTheoDoi == true;
+    int maTruyen = ViewBag.MaTruyen ?? 0;
+    var danhGias = ViewBag.DanhGias as IEnumerable<TeenNovel_WED.Models.DanhGia>
+                       ?? Enumerable.Empty<TeenNovel_WED.Models.DanhGia>();
+    double diemTb = ViewBag.DiemTb is double d ? d : 0;
+    int soDanhGia = danhGias.Count();
+    int? saoCuaToi = ViewBag.SaoCuaToi as int?;
+    string? nxCuaToi = ViewBag.NxCuaToi as string;
+}
+
+<!-- ── 2 NÚT HÀNH ĐỘNG ── -->
+<div class="ct-actions">
+
+    <!-- Theo dõi -->
+    @if (daDangNhap)
+    {
+        <form method="post" asp-controller="DocGia" asp-action="TheoDoi"
+              asp-route-matruyen="@maTruyen" class="ct-action-form">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="ct-btn @(daTheoDoi ? "ct-btn--active" : "ct-btn--outline")">
+                <i class="bi @(daTheoDoi ? "bi-heart-fill" : "bi-heart")"></i>
+                @(daTheoDoi ? "Đang theo dõi" : "Theo dõi")
+            </button>
+        </form>
+    }
+    else
+    {
+        <a href="/Login_Register/Login?returnUrl=/DocGia/ChiTiet/@maTruyen"
+               class="ct-btn ct-btn--outline">
+            <i class="bi bi-heart"></i> Theo dõi
+        </a>
+    }
+
+    <!-- Đánh giá -->
+    @if (daDangNhap)
+    {
+        <button class="ct-btn ct-btn--rate" id="btnDanhGia" onclick="toggleDanhGia()">
+            <i class="bi bi-star-half"></i>
+            @(saoCuaToi.HasValue ? "Sửa đánh giá" : "Đánh giá")
+        </button>
+    }
+    else
+    {
+        <a href="/Login_Register/Login?returnUrl=/DocGia/ChiTiet/@maTruyen"
+               class="ct-btn ct-btn--rate">
+            <i class="bi bi-star-half"></i> Đánh giá
+        </a>
+    }
+
+</div>
+
+<!-- ── FORM ĐÁNH GIÁ (ẩn mặc định) ── -->
+@if (daDangNhap)
+{
+    <div class="ct-rate-form" id="formDanhGia" style="display:none">
+        <div class="ct-rate-form-inner">
+            <h4 class="ct-rate-title">
+                @(saoCuaToi.HasValue ? "Sửa đánh giá của bạn" : "Đánh giá truyện")
+            </h4>
+
+            <!-- Chọn sao -->
+            <div class="ct-stars-pick" id="starsPick">
+                @for (int s = 1; s <= 5; s++)
+                {
+                    <button type="button"
+                            class="ct-star-btn @(saoCuaToi.HasValue && s <= saoCuaToi ? "on" : "")"
+                            data-val="@s" onclick="pickStar(@s)">
+                        <i class="bi bi-star-fill"></i>
+                    </button>
+                }
+            </div>
+            <p class="ct-star-label" id="starLabel">
+                @(saoCuaToi.HasValue ? $"{saoCuaToi} sao" : "Chọn số sao")
+            </p>
+
+            <form method="post" asp-controller="DocGia" asp-action="DanhGiaTruyen"
+                  asp-route-matruyen="@maTruyen" id="formDanhGiaSubmit">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="sosao" id="hidSao"
+                       value="@(saoCuaToi ?? 0)" />
+                <textarea name="nhanxet" class="ct-rate-textarea"
+                          placeholder="Nhận xét của bạn (tuỳ chọn)..."
+                          maxlength="1000" rows="3">@nxCuaToi</textarea>
+                <div class="ct-rate-actions">
+                    <button type="button" class="ct-btn ct-btn--outline"
+                            onclick="toggleDanhGia()">
+                        Huỷ
+                    </button>
+                    <button type="submit" class="ct-btn ct-btn--primary"
+                            id="btnSubmitDG">
+                        Gửi đánh giá
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<!-- ── ĐIỂM TB + XEM CHI TIẾT ── -->
+<div class="ct-rating-summary">
+    <div class="ct-stars-display">
+        @for (int i = 1; i <= 5; i++)
+        {
+            <i class="bi @(i <= Math.Round(diemTb) ? "bi-star-fill" : "bi-star")"></i>
+        }
+    </div>
+    <span class="ct-rating-val">@diemTb.ToString("0.0") / 5</span>
+    <span class="ct-rating-count">(@soDanhGia đánh giá)</span>
+
+    @if (soDanhGia > 0)
+    {
+        <button class="ct-btn-link" id="btnXemDG" onclick="toggleXemDG()">
+            Xem chi tiết <i class="bi bi-chevron-down" id="iconXemDG"></i>
+        </button>
+    }
+</div>
+
+<!-- ── DANH SÁCH ĐÁNH GIÁ (ẩn mặc định) ── -->
+@if (soDanhGia > 0)
+{
+    <div class="ct-reviews" id="dsDanhGia" style="display:none">
+        @foreach (var dg in danhGias)
+        {
+            <div class="ct-review-item">
+                <div class="ct-review-avatar">
+                    @(dg.MaDocGiaNavigation?.Ten?.Substring(0, 1).ToUpper() ?? "?")
+                </div>
+                <div class="ct-review-body">
+                    <div class="ct-review-top">
+                        <span class="ct-review-name">
+                            @(dg.MaDocGiaNavigation?.Ten ?? "Ẩn danh")
+                        </span>
+                        <div class="ct-review-stars">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="bi @(i <= dg.Sosao ? "bi-star-fill" : "bi-star")"></i>
+                            }
+                        </div>
+                        <span class="ct-review-date">
+                            @dg.Ngaydanhgia.ToString("dd/MM/yyyy")
+                        </span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(dg.Nhanxet))
+                    {
+                        <p class="ct-review-text">@dg.Nhanxet</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
