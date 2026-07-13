@@ -1,0 +1,352 @@
+/* =========================================================
+   TeenNovel — auth.css  (Login + Register)
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+.auth-page {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
+.auth-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-color: #e8d5f5;
+
+    /* Nền tím hoa lãng mạn — mô phỏng background ảnh gốc */
+    background-image:
+        /* Lớp sáng trung tâm */
+        radial-gradient(ellipse 75% 55% at 50% 50%, rgba(255,255,255,.95) 0%, rgba(255,255,255,.5) 40%, transparent 70%),
+        /* Góc dưới trái — hoa tím đậm */
+        radial-gradient(ellipse 45% 50% at 5% 90%,  #b07fd4 0%, #c99adf 30%, transparent 65%),
+        /* Góc dưới phải — toà nhà tím */
+        radial-gradient(ellipse 40% 50% at 95% 88%, #b07fd4 0%, #c99adf 25%, transparent 60%),
+        /* Góc trên trái — nhạt hơn */
+        radial-gradient(ellipse 30% 35% at 3%  5%,  #d0a8ee 0%, transparent 55%),
+        /* Góc trên phải */
+        radial-gradient(ellipse 30% 35% at 97% 5%,  #d0a8ee 0%, transparent 55%),
+        /* Gợn giữa dưới */
+        radial-gradient(ellipse 60% 25% at 50% 95%, #cba8e8 0%, transparent 60%);
+}
+
+/* Bướm và sparkle trang trí */
+.auth-bg::before {
+    content: '✦  ✦    ✦';
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: rgba(120, 60, 170, .35);
+    letter-spacing: 32px;
+    white-space: nowrap;
+}
+.auth-bg::after {
+    content: '✦    ✦  ✦';
+    position: absolute;
+    bottom: 14%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: rgba(120, 60, 170, .25);
+    letter-spacing: 40px;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+.auth-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 360px;
+    background: rgba(248, 243, 255, .87);
+    border: 1px solid rgba(180, 130, 220, .28);
+    border-radius: 20px;
+    padding: 32px 28px 28px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+.auth-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+}
+.auth-logo img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+}
+.auth-logo-name {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: .01em;
+}
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+.auth-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #3b0764;
+    text-align: center;
+    margin: 0 0 20px;
+}
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+.auth-alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+.auth-alert--error {
+    background: #fdf2f8;
+    border: 1px solid #f0abdb;
+    color: #86198f;
+}
+.auth-icon-error {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   FIELDS
+   ========================================================= */
+.auth-field {
+    margin-bottom: 13px;
+}
+.auth-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6d28d9;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 5px;
+}
+
+/* Wrapper cho input + icon mắt */
+.auth-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.auth-input-wrap input {
+    padding-right: 38px !important;
+}
+
+/* Input base */
+.auth-field input {
+    width: 100%;
+    padding: 9px 13px;
+    font-size: 13px;
+    border: 1px solid #ddd6fe;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .95);
+    color: #1e1b4b;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+}
+.auth-field input:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .12);
+}
+.auth-field input::placeholder { color: #c4b5fd; }
+
+/* Input error state */
+.auth-field.has-error input {
+    border-color: #e879a0;
+    box-shadow: 0 0 0 3px rgba(232, 121, 160, .12);
+}
+
+/* Error message */
+.auth-error-msg {
+    display: block;
+    font-size: 11px;
+    color: #be185d;
+    margin-top: 4px;
+    min-height: 16px;
+    font-weight: 500;
+}
+
+/* Nút hiện/ẩn mật khẩu */
+.auth-eye {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    color: #a78bfa;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    transition: color .12s;
+}
+.auth-eye:hover { color: #7c3aed; }
+
+/* =========================================================
+   QUÊN MẬT KHẨU
+   ========================================================= */
+.auth-forgot {
+    text-align: right;
+    margin-top: -6px;
+    margin-bottom: 16px;
+}
+.auth-forgot a {
+    font-size: 12px;
+    color: #7c3aed;
+    text-decoration: none;
+    font-weight: 500;
+}
+.auth-forgot a:hover { text-decoration: underline; }
+
+/* =========================================================
+   NÚT CHÍNH
+   ========================================================= */
+.auth-btn-main {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    letter-spacing: .02em;
+    margin-bottom: 12px;
+    transition: opacity .15s, transform .1s;
+}
+.auth-btn-main:hover  { opacity: .88; }
+.auth-btn-main:active { transform: scale(.98); }
+.auth-btn-main:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e9d5ff;
+}
+.auth-divider span {
+    font-size: 11px;
+    color: #a78bfa;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* =========================================================
+   NÚT GOOGLE
+   ========================================================= */
+.auth-btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bfb8cc;
+    border-radius: 10px;
+    background: #ebe8f0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #3b0764;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 18px;
+    transition: background .15s, box-shadow .15s;
+    box-shadow:
+        0 2px 6px rgba(100, 60, 160, .18),
+        0 1px 2px rgba(100, 60, 160, .12);
+}
+.auth-btn-google:hover {
+    background: #ddd8e8;
+    color: #3b0764;
+    box-shadow:
+        0 4px 12px rgba(100, 60, 160, .22),
+        0 1px 3px rgba(100, 60, 160, .14);
+}
+.auth-btn-google:active { transform: scale(.98); }
+
+.auth-google-icon {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   SWITCH LINK
+   ========================================================= */
+.auth-switch {
+    text-align: center;
+    font-size: 13px;
+    color: #7c3aed;
+    margin: 0;
+}
+.auth-switch a {
+    color: #a855f7;
+    font-weight: 600;
+    text-decoration: none;
+}
+.auth-switch a:hover { text-decoration: underline; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 400px) {
+    .auth-card  { padding: 24px 18px 22px; }
+    .auth-logo img { width: 60px; height: 60px; }
+}

@@ -1,0 +1,80 @@
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Thêm nhân viên";
+    ViewData["ActivePage"] = "NhanVien";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-nguoidung.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="QuanLyNhanVien" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+}
+
+<div class="nd-form-wrap">
+    <form asp-action="ThemNhanVien" method="post" id="nvForm" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="ad-card">
+            <div class="ad-card-head"><span class="ad-card-title">Thông tin nhân viên</span></div>
+            <div class="ad-card-body">
+
+                <div class="nd-field">
+                    <label>Họ tên <span class="nd-required">*</span></label>
+                    <input type="text" name="ten" id="ten" placeholder="Nhập họ tên..." maxlength="100" />
+                    <span class="nd-err" id="err-ten"></span>
+                </div>
+
+                <div class="nd-field-row">
+                    <div class="nd-field">
+                        <label>Email <span class="nd-required">*</span></label>
+                        <input type="email" name="email" id="email" placeholder="email@example.com" />
+                        <span class="nd-err" id="err-email"></span>
+                    </div>
+                    <div class="nd-field">
+                        <label>Mật khẩu <span class="nd-required">*</span></label>
+                        <input type="password" name="matkhau" id="matkhau" placeholder="Ít nhất 6 ký tự" />
+                        <span class="nd-err" id="err-matkhau"></span>
+                    </div>
+                </div>
+
+                <div class="nd-field-row">
+                    <div class="nd-field">
+                        <label>Số điện thoại</label>
+                        <input type="text" name="sodienthoai" placeholder="09xxxxxxxx" />
+                    </div>
+                    <div class="nd-field">
+                        <label>Giới tính</label>
+                        <select name="gioitinh" class="nd-select">
+                            <option value="">-- Chọn --</option>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="nd-field">
+                    <label>Ngày sinh</label>
+                    <input type="date" name="ngaysinh" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="nd-form-actions">
+            <a asp-action="QuanLyNhanVien" class="ad-topbar-btn ad-topbar-btn--outline">Huỷ</a>
+            <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="submitBtn">
+                <i class="bi bi-plus-lg"></i> Thêm nhân viên
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/quan-ly-nguoidung.js" asp-append-version="true"></script>
+    <script>initNhanVienForm();</script>
+}

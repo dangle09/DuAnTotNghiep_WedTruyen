@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TeenNovel_Wed.Models.Bookmark>
+
+@{
+    ViewData["Title"] = "Bookmark";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+<link rel="stylesheet"
+      href="~/css/bookmark.css"
+      asp-append-version="true" />
+
+<div class="bookmark-page container-fluid">
+
+    <h2>
+        <i class="bi bi-bookmark-star-fill"></i>
+        Bookmark
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="bookmark-empty">
+            Bạn chưa lưu bookmark nào.
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            var truyen = item.MachuongNavigation.MatruyenNavigation;
+
+            <a class="bookmark-card"
+                   asp-controller="DocGia"
+                   asp-action="DocChuong"
+                   asp-route-id="@item.Machuong"
+                   asp-route-line="@item.SoDong">
+
+                <img src="@truyen.AnhBia" />
+
+                <div class="bookmark-info">
+
+                    <h4>@truyen.Tentruyen</h4>
+
+                    <p>@item.MachuongNavigation.Tenchuong</p>
+
+                    <span>
+                        Lưu lúc:
+                        @item.Ngaytao.ToString("dd/MM/yyyy HH:mm")
+                    </span>
+
+                </div>
+
+                <i class="bi bi-chevron-right"></i>
+
+            </a>
+        }
+    }
+
+</div>

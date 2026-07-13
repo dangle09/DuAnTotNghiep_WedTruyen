@@ -1,0 +1,131 @@
+/* =========================================================
+   TeenNovel_WED — genre-dropdown.css
+   ========================================================= */
+
+/* ── NAV ITEM CHỨA DROPDOWN ── */
+.ih-nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+.ih-nav-links > li { position: relative; }
+.ih-nav-links > li > a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition: all .15s;
+    text-decoration: none;
+}
+
+/* ── TOGGLE THỂ LOẠI ── */
+.ih-nav-genre-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition: all .15s;
+    user-select: none;
+}
+
+/* Mũi tên xoay khi mở */
+.ih-genre-arrow {
+    font-size: 12px;
+    transition: transform .2s ease;
+}
+.ih-nav-genre.open .ih-genre-arrow {
+    transform: rotate(180deg);
+}
+
+/* ── DROPDOWN PANEL ── */
+.ih-genre-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 500;
+    background: #080812;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 14px;
+    padding: 16px;
+    min-width: 380px;
+    box-shadow:
+        0 8px 32px rgba(0,0,0,.5),
+        0 0 20px rgba(168,85,247,.15);
+    animation: dropIn .18s ease;
+}
+.ih-nav-genre.open .ih-genre-dropdown {
+    display: block;
+}
+
+@keyframes dropIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── GRID 3 CỘT ── */
+.ih-genre-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+/* ── ITEM THỂ LOẠI ── */
+.ih-genre-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #c084fc;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all .15s;
+    white-space: nowrap;
+}
+.ih-genre-item i {
+    font-size: 13px;
+    color: #a855f7;
+    flex-shrink: 0;
+}
+.ih-genre-item:hover {
+    background: #000;
+    border-color: white;
+    color: #f3e8ff;
+    box-shadow: 0 0 12px rgba(168,85,247,.5);
+}
+.ih-genre-item:hover i { color: #d8b4fe; }
+
+/* ── OVERLAY (click ngoài để đóng) ── */
+.ih-genre-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 499;
+}
+
+@media (max-width: 991.98px) {
+    .ih-genre-dropdown { position: static; min-width: 0; width: 100%; box-shadow: none; }
+    .ih-genre-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 575.98px) {
+    .ih-genre-grid { grid-template-columns: 1fr; }
+}
+.ih-genre-overlay.show { display: block; }

@@ -1,0 +1,976 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TeenNovel Admin</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="~/css/layout-admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/quan-ly-truyen.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<style>
+    /* =========================================================
+   InkHaven — layout-admin.css
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+    --ad-font:        'Inter', sans-serif;
+
+    --ad-sidebar-w:   228px;
+    --ad-topbar-h:    56px;
+    --ad-radius:      8px;
+    --ad-radius-lg:   12px;
+
+    --ad-bg:          #f5f5f3;
+    --ad-surface:     #ffffff;
+    --ad-sidebar-bg:  #18181b;   /* zinc-900 */
+    --ad-sidebar-hover: rgba(255,255,255,.06);
+    --ad-sidebar-active: rgba(255,255,255,.10);
+
+    --ad-text:        #18181b;
+    --ad-text-2:      #52525b;
+    --ad-text-3:      #a1a1aa;
+    --ad-text-light:  #e4e4e7;
+    --ad-text-muted:  #71717a;
+
+    --ad-border:      #e4e7ec;
+    --ad-border-s:    #d0d5dd;
+
+    --ad-accent:      #4f46e5;
+    --ad-accent-h:    #4338ca;
+    --ad-accent-bg:   #eef2ff;
+    --ad-accent-text: #4338ca;
+
+    --ad-success:     #16a34a;
+    --ad-success-bg:  #f0fdf4;
+    --ad-warning:     #d97706;
+    --ad-warning-bg:  #fffbeb;
+    --ad-danger:      #dc2626;
+    --ad-danger-bg:   #fef2f2;
+}
+
+body {
+    font-family: var(--ad-font);
+    font-size: 14px;
+    color: var(--ad-text);
+    background: var(--ad-bg);
+    margin: 0;
+    overflow: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; margin: 0; padding: 0; }
+
+/* =========================================================
+   SHELL
+   ========================================================= */
+.ad-shell {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+.ad-sidebar {
+    width: var(--ad-sidebar-w);
+    flex-shrink: 0;
+    background: var(--ad-sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: transform .25s ease;
+    z-index: 200;
+}
+.ad-sidebar::-webkit-scrollbar { width: 4px; }
+.ad-sidebar::-webkit-scrollbar-track { background: transparent; }
+.ad-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
+
+/* Logo */
+.ad-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    flex-shrink: 0;
+}
+.ad-logo i {
+    font-size: 20px;
+    color: #818cf8;
+}
+.ad-logo > span:first-of-type {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+}
+.ad-logo-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: rgba(99,102,241,.3);
+    color: #a5b4fc;
+    letter-spacing: .04em;
+}
+
+/* Nav */
+.ad-nav {
+    flex: 1;
+    padding: 8px 0;
+    overflow-y: auto;
+}
+.ad-nav-section {
+    padding: 12px 8px 4px;
+}
+.ad-nav-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #52525b;
+    padding: 0 8px;
+    margin-bottom: 4px;
+}
+.ad-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 8px;
+    border-radius: var(--ad-radius);
+    font-size: 13px;
+    color: #a1a1aa;
+    cursor: pointer;
+    transition: background .12s, color .12s;
+    position: relative;
+}
+.ad-nav-item i {
+    font-size: 16px;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.ad-nav-item span:first-of-type { flex: 1; }
+.ad-nav-item:hover {
+    background: var(--ad-sidebar-hover);
+    color: #e4e4e7;
+}
+.ad-nav-item.active {
+    background: var(--ad-sidebar-active);
+    color: #fff;
+    font-weight: 500;
+}
+.ad-nav-item.active i { color: #818cf8; }
+
+/* Badge */
+.ad-badge {
+    background: #4f46e5;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 20px;
+    min-width: 18px;
+    text-align: center;
+}
+.ad-badge--red { background: #dc2626; }
+
+/* Sidebar bottom */
+.ad-sidebar-bottom {
+    padding: 8px;
+    border-top: 1px solid rgba(255,255,255,.07);
+    flex-shrink: 0;
+}
+
+/* User button */
+.ad-user { position: relative; }
+.ad-user-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 8px;
+    border-radius: var(--ad-radius);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background .12s;
+    text-align: left;
+}
+.ad-user-btn:hover { background: var(--ad-sidebar-hover); }
+.ad-user-btn::after { display: none; } /* bỏ caret bootstrap */
+
+.ad-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+.ad-user-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+.ad-user-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #e4e4e7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ad-user-role { font-size: 11px; color: #71717a; }
+.ad-user-dots { font-size: 14px; color: #71717a; flex-shrink: 0; }
+
+/* User dropdown */
+.ad-user-dropdown {
+    min-width: 190px;
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius-lg);
+    box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    padding: 6px;
+    bottom: 100%;
+    top: auto !important;
+    transform: none !important;
+    margin-bottom: 4px !important;
+}
+.ad-user-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 7px 10px;
+    border-radius: var(--ad-radius);
+    color: var(--ad-text-2);
+    transition: background .12s;
+}
+.ad-user-dropdown .dropdown-item i { font-size: 15px; width: 16px; text-align: center; }
+.ad-user-dropdown .dropdown-item:hover { background: #f4f4f5; color: var(--ad-text); }
+.ad-user-dropdown .ad-logout { color: var(--ad-danger); }
+.ad-user-dropdown .ad-logout:hover { background: var(--ad-danger-bg); color: var(--ad-danger); }
+.ad-user-dropdown .dropdown-divider { border-color: var(--ad-border); margin: 4px 0; }
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+.ad-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+.ad-topbar {
+    height: var(--ad-topbar-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: var(--ad-surface);
+    border-bottom: 1px solid var(--ad-border);
+    flex-shrink: 0;
+    gap: 16px;
+}
+
+.ad-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.ad-page-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ad-text);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.ad-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--ad-text-3);
+    margin-top: 2px;
+}
+.ad-breadcrumb a { color: var(--ad-text-muted); }
+.ad-breadcrumb a:hover { color: var(--ad-accent); }
+.ad-breadcrumb i { font-size: 10px; }
+.ad-breadcrumb span { color: var(--ad-text-2); }
+
+.ad-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Topbar buttons */
+.ad-topbar-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--ad-radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s;
+    border: none;
+}
+.ad-topbar-btn--primary {
+    background: var(--ad-accent);
+    color: #fff;
+}
+.ad-topbar-btn--primary:hover { background: var(--ad-accent-h); color: #fff; }
+.ad-topbar-btn--outline {
+    background: transparent;
+    color: var(--ad-text-2);
+    border: 1px solid var(--ad-border-s);
+}
+.ad-topbar-btn--outline:hover { background: var(--ad-bg); color: var(--ad-text); }
+
+/* Icon button */
+.ad-icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--ad-radius);
+    border: 1px solid var(--ad-border);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--ad-text-2);
+    cursor: pointer;
+    position: relative;
+    transition: background .12s, color .12s;
+}
+.ad-icon-btn:hover { background: var(--ad-bg); color: var(--ad-text); }
+.ad-icon-btn::after { display: none; }
+
+/* Mobile sidebar toggle */
+.ad-sidebar-toggle {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--ad-text-2);
+    cursor: pointer;
+}
+
+/* Notification dot */
+.ad-notif-dot {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ad-danger);
+    border: 1.5px solid var(--ad-surface);
+}
+
+/* Notification dropdown */
+.ad-notif-dropdown {
+    min-width: 280px;
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius-lg);
+    box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    padding: 6px;
+}
+.ad-notif-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ad-text-2);
+    padding: 6px 12px 8px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+.ad-notif-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 20px 0;
+    font-size: 13px;
+    color: var(--ad-text-3);
+}
+.ad-notif-empty i { font-size: 22px; }
+.ad-notif-item {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    padding: 8px 10px !important;
+    border-radius: var(--ad-radius) !important;
+    color: var(--ad-text-2) !important;
+}
+.ad-notif-item i { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+.ad-notif-item div { display: flex; flex-direction: column; gap: 2px; }
+.ad-notif-item small { font-size: 11px; color: var(--ad-text-3); }
+.ad-notif-item:hover { background: #f4f4f5 !important; }
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+.ad-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    background: var(--ad-bg);
+}
+.ad-content::-webkit-scrollbar { width: 5px; }
+.ad-content::-webkit-scrollbar-track { background: transparent; }
+.ad-content::-webkit-scrollbar-thumb { background: var(--ad-border-s); border-radius: 4px; }
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+.ad-toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--ad-radius);
+    font-size: 13px;
+    margin-bottom: 20px;
+    animation: adToastIn .2s ease;
+}
+.ad-toast--success { background: var(--ad-success-bg); color: var(--ad-success); border: 1px solid #bbf7d0; }
+.ad-toast--error   { background: var(--ad-danger-bg);  color: var(--ad-danger);  border: 1px solid #fecaca; }
+.ad-toast--warning { background: var(--ad-warning-bg); color: var(--ad-warning); border: 1px solid #fde68a; }
+.ad-toast i { font-size: 16px; flex-shrink: 0; }
+.ad-toast span { flex: 1; }
+.ad-toast-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: inherit;
+    opacity: .6;
+    padding: 0;
+    line-height: 1;
+}
+.ad-toast-close:hover { opacity: 1; }
+
+@@keyframes adToastIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   CONTENT HELPERS (dùng trong các trang con)
+   ========================================================= */
+
+/* Card trắng */
+.ad-card {
+    background: var(--ad-surface);
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius-lg);
+    overflow: hidden;
+}
+.ad-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--ad-border);
+}
+.ad-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ad-text);
+}
+.ad-card-body { padding: 18px; }
+
+/* Stat card */
+.ad-stat-card {
+    background: var(--ad-surface);
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius-lg);
+    padding: 16px 18px;
+}
+.ad-stat-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--ad-text-3);
+    margin-bottom: 8px;
+}
+.ad-stat-label i { font-size: 16px; }
+.ad-stat-val {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ad-text);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.ad-stat-sub {
+    font-size: 12px;
+    color: var(--ad-text-3);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.ad-stat-sub.up   { color: var(--ad-success); }
+.ad-stat-sub.down { color: var(--ad-danger); }
+
+/* Table */
+.ad-table-wrap {
+    background: var(--ad-surface);
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius-lg);
+    overflow: hidden;
+}
+.ad-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.ad-table thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ad-text-3);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 1px solid var(--ad-border);
+    background: var(--ad-bg);
+    white-space: nowrap;
+}
+.ad-table tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--ad-border);
+    color: var(--ad-text-2);
+    vertical-align: middle;
+}
+.ad-table tbody tr:last-child td { border-bottom: none; }
+.ad-table tbody tr:hover td { background: #fafafa; }
+
+/* Chips / badges trong table */
+.ad-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.ad-chip--green   { background: #f0fdf4; color: #15803d; }
+.ad-chip--amber   { background: #fffbeb; color: #b45309; }
+.ad-chip--red     { background: #fef2f2; color: #dc2626; }
+.ad-chip--blue    { background: #eff6ff; color: #1d4ed8; }
+.ad-chip--gray    { background: #f4f4f5; color: #52525b; }
+.ad-chip--purple  { background: #f5f3ff; color: #6d28d9; }
+
+/* Grid stat */
+.ad-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+/* =========================================================
+   MOBILE OVERLAY & RESPONSIVE
+   ========================================================= */
+.ad-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 150;
+}
+.ad-overlay.show { display: block; }
+
+@@media (max-width: 1200px) {
+    .ad-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+    }
+    .ad-sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0,0,0,.2);
+    }
+    .ad-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@@media (max-width: 640px) {
+    .ad-search { display: none; }
+    .ad-content { padding: 16px; }
+    .ad-stats-grid { grid-template-columns: 1fr 1fr; }
+
+    .ad-topbar { height: auto; min-height: var(--ad-topbar-h); padding: 10px 12px; gap: 8px; }
+    .ad-topbar-left { gap: 8px; }
+    .ad-page-title { font-size: 14px; }
+    .ad-breadcrumb { display: none; }
+    .ad-topbar-right { gap: 6px; }
+    .ad-topbar-btn { padding: 7px 10px; font-size: 12px; }
+    .ad-notif-dropdown { min-width: min(280px, calc(100vw - 24px)); }
+    .ad-content { padding: 14px 12px; }
+    .ad-card-head, .ad-card-body { padding-left: 14px; padding-right: 14px; }
+    .ad-card-head { align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+
+    .ad-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .ad-table { min-width: 720px; }
+    .ad-table thead th, .ad-table tbody td { padding: 10px 12px; }
+}
+
+@@media (max-width: 400px) {
+    .ad-stats-grid { grid-template-columns: 1fr; }
+    .ad-topbar-btn i + * { display: none; }
+}
+
+</style>
+
+<body>
+
+    <div class="ad-shell">
+
+        <!-- ===================== SIDEBAR ===================== -->
+        <aside class="ad-sidebar" id="adSidebar">
+
+            <!-- Logo -->
+            <div class="ad-logo">
+                <img src="~/images/logo2_Wed.png" alt="TeenNovel Logo" style="height: 70px;"/>
+                <span class="ad-logo-badge">Admin</span>
+            </div>
+
+            <!-- Nav -->
+            <nav class="ad-nav">
+
+                <div class="ad-nav-section">
+                    <span class="ad-nav-label">Tổng quan</span>
+                    <a asp-controller="Quanly" asp-action="Dashboard"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "Dashboard" ? "active" : "")">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+
+                <div class="ad-nav-section">
+                    <span class="ad-nav-label">Nội dung</span>
+                    <a asp-controller="Quanly" asp-action="QuanLyTruyen"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "Truyen" ? "active" : "")">
+                        <i class="bi bi-book"></i>
+                        <span>Quản lý truyện</span>
+                    </a>
+                    <a asp-controller="Quanly" asp-action="QuanLyChuong"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "Chuong" ? "active" : "")">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Quản lý chương</span>
+                    </a>
+                    <a asp-controller="Quanly" asp-action="QuanLyTheLoai"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "TheLoai" ? "active" : "")">
+                        <i class="bi bi-tags"></i>
+                        <span>Thể loại</span>
+                    </a>
+                    <a asp-controller="Quanly" asp-action="Index"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "BinhLuan" ? "active" : "")">
+                        <i class="bi bi-chat-dots"></i>
+                        <span>Bình luận</span>
+                        @if (ViewData["SoBinhLuanCho"] != null && (int)ViewData["SoBinhLuanCho"]! > 0)
+                        {
+                            <span class="ad-badge">@ViewData["SoBinhLuanCho"]</span>
+                        }
+                    </a>
+                </div>
+
+                <div class="ad-nav-section">
+                    <span class="ad-nav-label">Người dùng</span>
+                    <a asp-controller="Quanly" asp-action="QuanLyKhachHang"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "DocGia" ? "active" : "")">
+                        <i class="bi bi-people"></i>
+                        <span>Độc giả</span>
+                    </a>
+                    <a asp-controller="Quanly" asp-action="QuanLyNhanVien"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "NhanVien" ? "active" : "")">
+                        <i class="bi bi-person-gear"></i>
+                        <span>Nhân viên</span>
+                    </a>
+                </div>
+
+                <div class="ad-nav-section">
+                    <span class="ad-nav-label">Tài chính</span>
+                    <a asp-controller="Quanly" asp-action="QuanLyGoiNap"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "NapXu" ? "active" : "")">
+                        <i class="bi bi-coin"></i>
+                        <span>Nạp xu</span>
+                    </a>
+                    <a asp-controller="Quanly" asp-action="Index"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "DoanhThu" ? "active" : "")">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>Doanh thu</span>
+                    </a>
+                </div>
+
+                <div class="ad-nav-section">
+                    <span class="ad-nav-label">Hỗ trợ</span>
+                    <a asp-controller="Quanly" asp-action="Index"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "HoTro" ? "active" : "")">
+                        <i class="bi bi-headset"></i>
+                        <span>CSKH</span>
+                        @if (ViewData["SoHoTroCho"] != null && (int)ViewData["SoHoTroCho"]! > 0)
+                        {
+                            <span class="ad-badge ad-badge--red">@ViewData["SoHoTroCho"]</span>
+                        }
+                    </a>
+                </div>
+
+            </nav>
+
+            <!-- Bottom: settings + user -->
+            <div class="ad-sidebar-bottom">
+                <a asp-controller="Quanly" asp-action="CaiDat"
+                       class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "CaiDat" ? "active" : "")">
+                    <i class="bi bi-gear"></i>
+                    <span>Cài đặt</span>
+                </a>
+
+                <div class="ad-user dropdown">
+                    <button class="ad-user-btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <div class="ad-avatar">
+                            @(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "A")
+                        </div>
+                        <div class="ad-user-info">
+                            <span class="ad-user-name">@User.Identity?.Name</span>
+                            <span class="ad-user-role">
+                                @(User.IsInRole("quantrivien") ? "Quản trị viên" : "Nhân viên")
+                            </span>
+                        </div>
+                        <i class="bi bi-three-dots-vertical ad-user-dots"></i>
+                    </button>
+                    <ul class="dropdown-menu ad-user-dropdown">
+                        <li>
+                            <a class="dropdown-item" asp-controller="Quanly" asp-action="ThongTin">
+                                <i class="bi bi-person"></i> Thông tin cá nhân
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-controller="Quanly" asp-action="DoiMatKhau">
+                                <i class="bi bi-key"></i> Đổi mật khẩu
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                            <a class="dropdown-item ad-logout" asp-controller="Login_Register" asp-action="Logout">
+                                <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ===================== MAIN ===================== -->
+        <div class="ad-main">
+
+            <!-- TOPBAR -->
+            <header class="ad-topbar">
+                <div class="ad-topbar-left">
+                    <!-- Mobile toggle -->
+                    <button class="ad-sidebar-toggle d-xl-none" id="sidebarToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <!-- Breadcrumb / tiêu đề trang -->
+                    <div>
+                        <h1 class="ad-page-title">@(ViewData["Title"] ?? "Dashboard")</h1>
+                        @if (ViewData["Breadcrumb"] != null)
+                        {
+                            <nav class="ad-breadcrumb">
+                                <a asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
+                                <i class="bi bi-chevron-right"></i>
+                                <span>@ViewData["Breadcrumb"]</span>
+                            </nav>
+                        }
+                    </div>
+                </div>
+
+                <div class="ad-topbar-right">
+
+                    <!-- Nút action chính của trang (tuỳ từng trang) -->
+                    @await RenderSectionAsync("TopbarAction", required: false)
+
+                    <!-- Notification -->
+                    <div class="ad-notif dropdown">
+                        <button class="ad-icon-btn dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-bell"></i>
+                            @if (ViewData["TongThongBao"] != null && (int)ViewData["TongThongBao"]! > 0)
+                            {
+                                <span class="ad-notif-dot"></span>
+                            }
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end ad-notif-dropdown">
+                            <li class="ad-notif-header">Thông báo</li>
+                            @if (ViewData["TongThongBao"] == null || (int)ViewData["TongThongBao"]! == 0)
+                            {
+                                <li class="ad-notif-empty">
+                                    <i class="bi bi-bell-slash"></i>
+                                    Không có thông báo mới
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a class="dropdown-item ad-notif-item" asp-controller="AdminBinhLuan" asp-action="Index">
+                                        <i class="bi bi-chat-dots text-warning"></i>
+                                        <div>
+                                            <span>@ViewData["SoBinhLuanCho"] bình luận chờ duyệt</span>
+                                            <small>Vừa xong</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item ad-notif-item" asp-controller="AdminHoTro" asp-action="Index">
+                                        <i class="bi bi-headset text-danger"></i>
+                                        <div>
+                                            <span>@ViewData["SoHoTroCho"] yêu cầu CSKH chờ xử lý</span>
+                                            <small>Vừa xong</small>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <main class="ad-content">
+
+                <!-- Toast -->
+                @if (TempData["Success"] != null)
+                {
+                    <div class="ad-toast ad-toast--success">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>@TempData["Success"]</span>
+                        <button class="ad-toast-close">×</button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="ad-toast ad-toast--error">
+                        <i class="bi bi-x-circle-fill"></i>
+                        <span>@TempData["Error"]</span>
+                        <button class="ad-toast-close">×</button>
+                    </div>
+                }
+                @if (TempData["Warning"] != null)
+                {
+                    <div class="ad-toast ad-toast--warning">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        <span>@TempData["Warning"]</span>
+                        <button class="ad-toast-close">×</button>
+                    </div>
+                }
+
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <!-- Overlay mobile -->
+    <div class="ad-overlay" id="adOverlay"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Admin JS -->
+    <script src="~/js/layout-admin.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // InkHaven — layout-admin.js
+
+        // Sidebar toggle (mobile)
+        const sidebar      = document.getElementById('adSidebar');
+        const overlay      = document.getElementById('adOverlay');
+        const toggleBtn    = document.getElementById('sidebarToggle');
+
+        function openSidebar() {
+            sidebar?.classList.add('open');
+            overlay?.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            sidebar?.classList.remove('open');
+            overlay?.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        toggleBtn?.addEventListener('click', openSidebar);
+        overlay?.addEventListener('click', closeSidebar);
+
+        // Toast close button
+        document.querySelectorAll('.ad-toast-close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.ad-toast')?.remove();
+            });
+        });
+
+        // Tự ẩn toast sau 5 giây
+        document.querySelectorAll('.ad-toast').forEach(toast => {
+            setTimeout(() => {
+                toast.style.transition = 'opacity .3s, transform .3s';
+                toast.style.opacity    = '0';
+                toast.style.transform  = 'translateY(-6px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        });
+
+        // Active nav item theo URL
+        const path = window.location.pathname.toLowerCase();
+        document.querySelectorAll('.ad-nav-item').forEach(item => {
+            const href = item.getAttribute('href')?.toLowerCase();
+            if (href && path.startsWith(href) && href !== '/') {
+                item.classList.add('active');
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+@model TeenNovel_Wed.Models.DocGia
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Chi tiết khách hàng";
+    ViewData["ActivePage"] = "KhachHang";
+    var lichSuNap = ViewBag.LichSuNap as IEnumerable<TeenNovel_Wed.Models.NapXu> ?? Enumerable.Empty<TeenNovel_Wed.Models.NapXu>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-nguoidung.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="SuaKhachHang" asp-route-id="@Model.MaDocGia" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-pencil"></i> Sửa
+    </a>
+    <button style="@(Model.MatkNavigation?.Trangthai == true ? "background:#d97706;color:#fff;border:none" : "background:#16a34a;color:#fff;border:none")"
+            class="ad-topbar-btn"
+            onclick="confirmToggle(@Model.MaDocGia, '@Model.Ten.Replace("'","\\'")', '@Model.MatkNavigation?.Trangthai', 'dg')">
+        <i class="bi @(Model.MatkNavigation?.Trangthai == true ? "bi-lock" : "bi-unlock")"></i>
+        @(Model.MatkNavigation?.Trangthai == true ? "Khoá tài khoản" : "Mở khoá")
+    </button>
+}
+
+<div class="nd-detail-header ad-card" style="margin-bottom:20px">
+    <div class="nd-detail-inner">
+        <div class="nd-detail-avatar nd-detail-avatar--reader">@Model.Ten.Substring(0, 1).ToUpper()</div>
+        <div class="nd-detail-info">
+            <div class="nd-detail-name">@Model.Ten</div>
+            <div class="nd-detail-meta">
+                <span><i class="bi bi-envelope"></i> @Model.MatkNavigation?.Email</span>
+                <span><i class="bi bi-telephone"></i> @(Model.Sodienthoai ?? "Chưa cập nhật")</span>
+                <span><i class="bi bi-calendar3"></i> Tham gia: @Model.Ngaytao.ToString("dd/MM/yyyy")</span>
+            </div>
+            @if (Model.MatkNavigation?.Trangthai == true)
+            {
+                <span class="ad-chip ad-chip--green">Đang hoạt động</span>
+            }
+            else
+            {
+                <span class="ad-chip ad-chip--red">Đã khoá</span>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="ad-stats-grid" style="margin-bottom:20px">
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Số xu hiện tại <i class="bi bi-coin" style="color:#d97706"></i></div>
+        <div class="ad-stat-val">@Model.Soxu.ToString("N0")</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Tổng xu đã nạp <i class="bi bi-wallet2" style="color:#7c3aed"></i></div>
+        <div class="ad-stat-val">@((int)ViewBag.TongXuNap).ToString("N0")</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Truyện theo dõi <i class="bi bi-heart" style="color:#e11d48"></i></div>
+        <div class="ad-stat-val">@ViewBag.SoTruyenTheoDoi</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Đánh giá đã viết <i class="bi bi-star" style="color:#f59e0b"></i></div>
+        <div class="ad-stat-val">@ViewBag.SoDanhGia</div>
+    </div>
+</div>
+
+<div class="ad-card">
+    <div class="ad-card-head"><span class="ad-card-title"><i class="bi bi-receipt"></i> Lịch sử nạp gần đây</span></div>
+    <div class="ad-table-wrap" style="border:none;border-radius:0">
+        <table class="ad-table">
+            <thead>
+                <tr><th>Số xu</th><th>Số tiền</th><th>Phương thức</th><th>Trạng thái</th><th>Ngày nạp</th></tr>
+            </thead>
+            <tbody>
+                @if (!lichSuNap.Any())
+                {
+                    <tr><td colspan="5" class="nd-empty">Chưa có giao dịch nào</td></tr>
+                }
+                @foreach (var nap in lichSuNap)
+                {
+                    <tr>
+                        <td>@nap.Soxunhan xu</td>
+                        <td>@nap.Sotien.ToString("N0") đ</td>
+                        <td>@nap.Phuongthuc</td>
+                        <td>
+                            @if (nap.Trangthai == "thanhcong")
+                            {
+                                <span class="ad-chip ad-chip--green">Thành công</span>
+                            }
+                            else
+                            {
+                                <span class="ad-chip ad-chip--red">Thất bại</span>
+                            }
+                        </td>
+                        <td>@nap.Ngaynap.ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ModalXacNhan")
+
+@section Scripts {
+    <script src="~/js/quan-ly-nguoidung.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,168 @@
+/* =========================================================
+   TeenNovel_WED — the-loai.css  (dark theme)
+   ========================================================= */
+
+.tl-wrap {
+    padding: 24px 0;
+}
+
+/* ── HEADER ── */
+.tl-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+    margin-bottom: 12px;
+}
+.tl-breadcrumb a {
+    color: #a855f7;
+    text-decoration: none;
+    transition: color .12s;
+}
+.tl-breadcrumb a:hover { color: #d8b4fe; }
+.tl-breadcrumb i { font-size: 10px; }
+.tl-breadcrumb .tl-current { color: rgba(255,255,255,.7); }
+
+.tl-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f3e8ff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 6px;
+}
+.tl-title i { color: #a855f7; }
+
+.tl-count {
+    font-size: 13px;
+    color: rgba(255,255,255,.4);
+    margin: 0 0 24px;
+}
+
+/* ── EMPTY ── */
+.tl-empty {
+    text-align: center;
+    padding: 60px 24px;
+    color: rgba(255,255,255,.3);
+}
+.tl-empty i { font-size: 40px; display: block; margin-bottom: 12px; }
+.tl-empty p { font-size: 14px; margin: 0; }
+
+/* ── GRID TRUYỆN ── */
+.tl-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ── CARD — bìa trái, info phải ── */
+.tl-card {
+    display: flex;
+    gap: 16px;
+    padding: 14px 16px;
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: border-color .15s, background .15s, transform .1s, box-shadow .15s;
+    align-items: flex-start;
+}
+.tl-card:hover {
+    border-color: white;
+    background: #000;
+    transform: translateX(4px);
+    box-shadow: 0 0 16px rgba(168,85,247,.4);
+}
+
+/* ── BÌA ── */
+.tl-cover {
+    position: relative;
+    width: 72px;
+    height: 100px;          /* tỉ lệ 2:3 */
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1a1a2e;
+    border: 1px solid rgba(255,255,255,.15);
+    flex-shrink: 0;
+}
+.tl-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.tl-cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tl-cover-placeholder i { font-size: 24px; color: #a855f7; }
+
+/* Badge */
+.tl-badge {
+    position: absolute;
+    top: 5px; left: 5px;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 20px;
+}
+.tl-badge--green { background: rgba(21,128,61,.25);  color: #4ade80; border: 1px solid rgba(74,222,128,.3); }
+.tl-badge--blue  { background: rgba(29,78,216,.25);  color: #60a5fa; border: 1px solid rgba(96,165,250,.3); }
+.tl-badge--amber { background: rgba(180,83,9,.25);   color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }
+
+/* ── INFO ── */
+.tl-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.tl-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f3e8ff;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.tl-author {
+    font-size: 12px;
+    color: #a855f7;
+}
+.tl-meta {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+}
+.tl-meta i { font-size: 13px; vertical-align: -1px; margin-right: 3px; }
+.tl-mota {
+    font-size: 12px;
+    color: rgba(255,255,255,.45);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 2px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+    .tl-wrap { padding: 16px 0; }
+    .tl-title { font-size: 20px; }
+    .tl-count { margin-bottom: 16px; }
+    .tl-cover { width: 60px; height: 84px; }
+    .tl-name  { font-size: 13px; }
+    .tl-card  { padding: 10px 12px; gap: 12px; }
+    .tl-meta { gap: 8px; font-size: 11px; flex-wrap: wrap; }
+    .tl-mota { -webkit-line-clamp: 1; }
+    .tl-empty { padding: 40px 16px; }
+}

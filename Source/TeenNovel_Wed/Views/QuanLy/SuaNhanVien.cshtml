@@ -1,0 +1,83 @@
+@model TeenNovel_Wed.Models.NhanVien
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Sửa nhân viên";
+    ViewData["ActivePage"] = "NhanVien";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-nguoidung.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="ChiTietNhanVien" asp-route-id="@Model.Manv" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+}
+
+<div class="nd-form-wrap">
+    <form asp-action="SuaNhanVien" asp-route-id="@Model.Manv" method="post" id="nvForm" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="ad-card">
+            <div class="ad-card-head"><span class="ad-card-title">Thông tin nhân viên</span></div>
+            <div class="ad-card-body">
+
+                <div class="nd-field">
+                    <label>Email</label>
+                    <input type="text" value="@Model.MatkNavigation?.Email" class="nd-input--readonly" readonly />
+                </div>
+
+                <div class="nd-field">
+                    <label>Họ tên <span class="nd-required">*</span></label>
+                    <input type="text" name="ten" id="ten" value="@Model.Ten" maxlength="100" />
+                    <span class="nd-err" id="err-ten"></span>
+                </div>
+
+                <div class="nd-field-row">
+                    <div class="nd-field">
+                        <label>Số điện thoại</label>
+                        <input type="text" name="sodienthoai" value="@Model.Sodienthoai" />
+                    </div>
+                    <div class="nd-field">
+                        <label>Giới tính</label>
+                        <select name="gioitinh" class="nd-select">
+                            <option value="">-- Chọn --</option>
+                            <option value="Nam" selected="@(Model.Gioitinh == "Nam")">Nam</option>
+                            <option value="Nữ" selected="@(Model.Gioitinh == "Nữ")">Nữ</option>
+                            <option value="Khác" selected="@(Model.Gioitinh == "Khác")">Khác</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="nd-field-row">
+                    <div class="nd-field">
+                        <label>Ngày sinh</label>
+                        <input type="date" name="ngaysinh"
+                               value="@(Model.Ngaysinh?.ToString("yyyy-MM-dd"))" />
+                    </div>
+                    <div class="nd-field">
+                        <label>Trạng thái</label>
+                        <select name="trangthai" class="nd-select">
+                            <option value="hoatdong" selected="@(Model.MatkNavigation?.Trangthai == true)">Hoạt động</option>
+                            <option value="khoatai" selected="@(Model.MatkNavigation?.Trangthai == false)">Đã khoá</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="nd-form-actions">
+            <a asp-action="ChiTietNhanVien" asp-route-id="@Model.Manv" class="ad-topbar-btn ad-topbar-btn--outline">Huỷ</a>
+            <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="submitBtn">
+                <i class="bi bi-check-lg"></i> Lưu thay đổi
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/quan-ly-nguoidung.js" asp-append-version="true"></script>
+    <script>initNhanVienForm();</script>
+}

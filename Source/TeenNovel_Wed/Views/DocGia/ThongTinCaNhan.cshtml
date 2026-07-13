@@ -1,0 +1,179 @@
+﻿@model TeenNovel_Wed.Models.DocGia
+
+@{
+    ViewData["Title"] = "Thông tin cá nhân";
+    ViewData["ActivePage"] = "ThongTin";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/thongtincanhan.css" asp-append-version="true" />
+}
+
+<div class="pf-wrap container-fluid">
+
+    <!-- ── HEADER ── -->
+    <div class="pf-header">
+        <h1 class="pf-title">Thông tin cá nhân</h1>
+        <p class="pf-sub">Quản lý hồ sơ và cài đặt tài khoản của bạn</p>
+    </div>
+
+    <form asp-action="CapNhatThongTin" method="post"
+          enctype="multipart/form-data" id="profileForm" novalidate>
+
+        <div class="pf-grid">
+
+            <!-- ── CỘT TRÁI: AVATAR + THỐNG KÊ ── -->
+            <div class="pf-left">
+
+                <!-- Avatar -->
+                <div class="pf-card pf-avatar-card">
+                    <label class="pf-avatar-label" id="avatarLabel">
+
+                        @if (!string.IsNullOrEmpty(Model.Avatar))
+                        {
+                            <img id="avatarPreview" src="@Model.Avatar" alt="Avatar" />
+                        }
+                        else
+                        {
+                            <!-- Avatar mặc định vuông, hiển thị chữ cái đầu tên -->
+                            <div class="pf-avatar-default" id="avatarDefault">
+                                @(Model.Ten?.Substring(0, 1).ToUpper() ?? "?")
+                            </div>
+                            <img id="avatarPreview" src="" alt="Avatar" style="display:none" />
+                        }
+
+                        <div class="pf-avatar-overlay">
+                            <i class="bi bi-camera-fill"></i>
+                            <span>Đổi ảnh</span>
+                        </div>
+
+                        <input type="file" id="avatarInput" name="avatar"
+                               accept="image/*" hidden />
+                    </label>
+
+                    <div class="pf-username">@Model.Ten</div>
+                    <div class="pf-email-sub">@Model.MatkNavigation?.Email</div>
+
+                    <div class="pf-avatar-hint">
+                        <i class="bi bi-info-circle"></i>
+                        Nhấn vào ảnh để thay đổi
+                    </div>
+                </div>
+
+                <!-- Thống kê -->
+                <div class="pf-card pf-stats-card">
+                    <div class="pf-stat-item">
+                        <div class="pf-stat-icon pf-stat-icon--xu">
+                            <i class="bi bi-coin"></i>
+                        </div>
+                        <div class="pf-stat-info">
+                            <div class="pf-stat-val">@Model.Soxu.ToString("N0")</div>
+                            <div class="pf-stat-label">Xu hiện tại</div>
+                        </div>
+                    </div>
+                    <div class="pf-divider"></div>
+                    <div class="pf-stat-item">
+                        <div class="pf-stat-icon pf-stat-icon--nap">
+                            <i class="bi bi-wallet2"></i>
+                        </div>
+                        <div class="pf-stat-info">
+                            <div class="pf-stat-val">@ViewBag.TongXuNap?.ToString("N0")</div>
+                            <div class="pf-stat-label">Tổng xu đã nạp</div>
+                        </div>
+                    </div>
+                    <div class="pf-divider"></div>
+                    <div class="pf-stat-item">
+                        <div class="pf-stat-icon pf-stat-icon--date">
+                            <i class="bi bi-calendar3"></i>
+                        </div>
+                        <div class="pf-stat-info">
+                            <div class="pf-stat-val">@Model.Ngaytao.ToString("dd/MM/yyyy")</div>
+                            <div class="pf-stat-label">Ngày tham gia</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── CỘT PHẢI: FORM THÔNG TIN ── -->
+            <div class="pf-right">
+
+                <!-- Thông tin cá nhân -->
+                <div class="pf-card">
+                    <div class="pf-card-head">
+                        <i class="bi bi-person-circle"></i>
+                        Thông tin cá nhân
+                    </div>
+                    <div class="pf-card-body">
+
+                        <div class="pf-field">
+                            <label>Họ tên</label>
+                            <input type="text" name="ten" id="inputTen"
+                                   value="@Model.Ten"
+                                   placeholder="Nhập họ tên..." />
+                            <span class="pf-err" id="errTen"></span>
+                        </div>
+
+                        <div class="pf-field">
+                            <label>
+                                Email
+                                <span class="pf-readonly-tag">Không thể sửa</span>
+                            </label>
+                            <input type="text"
+                                   value="@Model.MatkNavigation?.Email"
+                                   readonly class="pf-input--readonly" />
+                        </div>
+
+                        <div class="pf-field">
+                            <label>Số điện thoại</label>
+                            <input type="text" name="sodienthoai" id="inputSdt"
+                                   value="@Model.Sodienthoai"
+                                   placeholder="Nhập số điện thoại..." />
+                            <span class="pf-err" id="errSdt"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Bảo mật -->
+                <div class="pf-card" style="margin-top:16px">
+                    <div class="pf-card-head">
+                        <i class="bi bi-shield-lock"></i>
+                        Bảo mật
+                    </div>
+                    <div class="pf-card-body">
+                        <div class="pf-field">
+                            <label>
+                                Mật khẩu
+                                <span class="pf-readonly-tag">Không thể sửa tại đây</span>
+                            </label>
+                            <div class="pf-pass-wrap">
+                                <input type="password" value="••••••••••"
+                                       readonly class="pf-input--readonly" />
+                                <a href="/DocGia/DoiMatKhau" class="pf-change-pass">
+                                    Đổi mật khẩu
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút lưu -->
+                <div class="pf-save-area">
+                    <button type="submit" class="pf-btn-save" id="btnSave">
+                        <i class="bi bi-check-lg"></i>
+                        Lưu thay đổi
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/thongtincanhan.js" asp-append-version="true"></script>
+}

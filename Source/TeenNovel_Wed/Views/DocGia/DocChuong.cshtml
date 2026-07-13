@@ -1,0 +1,417 @@
+﻿@model TeenNovel_Wed.Models.Chuong
+
+@{
+    ViewData["Title"] = Model.Tenchuong;
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+<link rel="stylesheet"
+      href="~/css/docchuong.css"
+      asp-append-version="true" />
+
+
+
+<div class="reader container-fluid">
+
+    <!-- Breadcrumb -->
+
+    <div class="reader-breadcrumb">
+
+        <a asp-controller="DocGia"
+               asp-action="TrangChu">
+
+            Trang chủ
+
+        </a>
+
+        >
+
+        <a asp-controller="DocGia"
+               asp-action="ChiTiet"
+               asp-route-id="@Model.Matruyen">
+
+            @Model.MatruyenNavigation.Tentruyen
+
+        </a>
+
+        >
+
+        <span>
+
+            Chương @Model.Thutu
+
+        </span>
+
+    </div>
+
+
+
+    <!-- Tiêu đề -->
+
+    <div class="reader-header">
+
+        <h1>
+
+            @Model.MatruyenNavigation.Tentruyen
+
+        </h1>
+
+        <h2>
+
+            @Model.Tenchuong
+
+        </h2>
+
+        <p>
+
+            @Model.Ngaydang.ToString("dd/MM/yyyy HH:mm")
+
+        </p>
+
+    </div>
+
+    <div class="reader-top-nav">
+
+        @if (ViewBag.ChuongTruoc != null)
+        {
+            <a class="reader-btn"
+                   asp-action="DocChuong"
+                   asp-route-id="@ViewBag.ChuongTruoc.Machuong">
+
+                <i class="bi bi-chevron-left"></i>
+
+                Chương trước
+
+            </a>
+        }
+        else
+        {
+            <button class="reader-btn disable">
+
+                <i class="bi bi-chevron-left"></i>
+
+                Chương đầu
+
+            </button>
+        }
+
+
+        <div class="chapter-dropdown">
+
+            <button class="reader-btn" id="btnChapterTop">
+
+                Chọn chương
+
+                <i class="bi bi-caret-down-fill"></i>
+
+            </button>
+
+            <div class="chapter-menu">
+
+                @foreach (var c in ViewBag.DanhSachChuong)
+                {
+                    <a asp-action="DocChuong"
+                           asp-route-id="@c.Machuong">
+
+                        Chương @c.Thutu
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+
+
+        @if (ViewBag.ChuongSau != null)
+        {
+            <a class="reader-btn"
+                   asp-action="DocChuong"
+                   asp-route-id="@ViewBag.ChuongSau.Machuong">
+
+                Chương sau
+
+                <i class="bi bi-chevron-right"></i>
+
+            </a>
+        }
+        else
+        {
+            <button class="reader-btn disable">
+
+                Chương cuối
+
+                <i class="bi bi-chevron-right"></i>
+
+            </button>
+        }
+
+    </div>
+
+    <!-- Nội dung -->
+
+    <div class="reader-content">
+
+        <input hidden id="bookmarkLine"
+               value="@Context.Request.Query["line"]" />
+
+        @{
+            var lines = Model.Noidung.Split('\n');
+            int soDong = 1;
+            var bookmarks = (List<Bookmark>)ViewBag.Bookmarks;
+        }
+
+        @foreach (var line in lines)
+        {
+            var bookmark = bookmarks.FirstOrDefault(x => x.SoDong == soDong);
+            var note = bookmark?.GhiChu?.Replace("\"", "&quot;");
+
+            <div class="reader-line">
+
+                <span class="line-number @(bookmark != null ? "bookmarked" : "")"
+                      data-line="@soDong"
+                      data-bookmarkid="@(bookmark?.MaBookmark ?? 0)"
+                      onclick="openBookmark(
+                    @soDong,
+                    @(bookmark?.MaBookmark ?? 0),
+                    '@Html.Raw(note)'
+                    )">
+
+                    @soDong
+
+                </span>
+
+                <span class="line-content">
+                    @line
+                </span>
+
+            </div>
+
+            soDong++;
+        }
+
+    </div>
+
+
+
+    <!-- Điều hướng -->
+
+    <div class="reader-nav">
+
+        @if (ViewBag.ChuongTruoc != null)
+        {
+            <a class="btn-nav"
+                   asp-action="DocChuong"
+                   asp-route-id="@ViewBag.ChuongTruoc.Machuong">
+
+                ← Chương trước
+
+            </a>
+        }
+        else
+        {
+            <span class="btn-disable">
+
+                ← Chương đầu
+
+            </span>
+        }
+
+
+
+        <div class="chapter-dropdown">
+
+            <button class="reader-btn" id="btnChapterBottom">
+
+                Chọn chương
+
+                <i class="bi bi-caret-down-fill"></i>
+
+            </button>
+
+            <div class="chapter-menu">
+
+                @foreach (var c in ViewBag.DanhSachChuong)
+                {
+                    <a asp-action="DocChuong"
+                           asp-route-id="@c.Machuong">
+
+                        Chương @c.Thutu
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+
+
+        @if (ViewBag.ChuongSau != null)
+        {
+            <a class="btn-nav"
+                   asp-action="DocChuong"
+                   asp-route-id="@ViewBag.ChuongSau.Machuong">
+
+                Chương sau →
+
+            </a>
+        }
+        else
+        {
+            <span class="btn-disable">
+
+                Chương cuối →
+
+            </span>
+        }
+
+    </div>
+
+</div>
+
+@* Thay thế toàn bộ phần comment trong View đọc chương *@
+
+<div class="comment-section">
+    <div class="comment-box">
+
+        <h3 class="comment-title">Bình luận</h3>
+
+        <!-- FORM GỬI -->
+        <div class="comment-form">
+            <div class="comment-avatar">
+                @User.Identity?.Name?.Substring(0, 1).ToUpper()
+            </div>
+            <form asp-action="ThemBinhLuan" method="post">
+                <input type="hidden" name="maTruyen"
+                       value="@Model.MatruyenNavigation.Matruyen" />
+                <textarea name="noiDung"
+                          placeholder="Viết bình luận..."
+                          required></textarea>
+                <button type="submit">Gửi bình luận</button>
+            </form>
+        </div>
+
+        <!-- DANH SÁCH BÌNH LUẬN -->
+        <div class="comment-list">
+            @foreach (var bl in (List<BinhLuan>)ViewBag.BinhLuans)
+            {
+                <div class="comment-item">
+                    <div class="comment-avatar">
+                        @(bl.MaDocGiaNavigation.Ten.Substring(0, 1).ToUpper())
+                    </div>
+                    <div class="comment-body">
+                        <div class="comment-top">
+                            <span class="comment-user">
+                                @bl.MaDocGiaNavigation.Ten
+                            </span>
+                            <span class="comment-time">
+                                @bl.Ngaybinhluan.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+                        </div>
+                        <div class="comment-content">@bl.Noidung</div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+<div id="bookmarkModal" class="bookmark-modal">
+
+    <div class="bookmark-box">
+
+        <h4>Tạo Bookmark</h4>
+
+        <form asp-action="ThemBookmark" method="post">
+
+            <input type="hidden"
+                   id="soDongInput"
+                   name="soDong" />
+
+            <input type="hidden"
+                   name="maTruyen"
+                   value="@Model.Matruyen" />
+
+            <input type="hidden"
+                   name="maChuong"
+                   value="@Model.Machuong" />
+
+            <textarea name="ghiChu"
+                      placeholder="Ghi chú của bạn...">
+            </textarea>
+
+            <button type="submit">
+                Lưu Bookmark
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div id="bookmarkInfoModal" class="bookmark-modal">
+
+    <div class="bookmark-box">
+
+        <h4>Bookmark</h4>
+
+        <p>
+            <b>Dòng:</b>
+            <span id="infoLine"></span>
+        </p>
+
+        <div style="margin:15px 0;">
+            <b>Ghi chú</b>
+
+            <div id="infoNote"
+                 style="margin-top:8px;
+                border:1px solid #ddd;
+                border-radius:8px;
+                padding:10px;
+                min-height:70px;
+                white-space:pre-wrap;">
+            </div>
+        </div>
+
+        <form asp-action="XoaBookmark" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   id="deleteBookmarkId"
+                   name="maBookmark" />
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    Xóa Bookmark
+
+                </button>
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        onclick="closeInfoBookmark()">
+
+                    Hủy
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    const deleteBookmarkUrl = '@Url.Action("XoaBookmark", "DocGia")';
+</script>
+
+<script src="~/js/docchuong.js" asp-append-version="true"></script>

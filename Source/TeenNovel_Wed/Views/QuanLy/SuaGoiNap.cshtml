@@ -1,0 +1,114 @@
+﻿@model TeenNovel_Wed.Models.GoiNapXu
+@{
+    ViewData["Title"] = "SuaGoiNap";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["ActivePage"] = "GoiNap";
+    ViewData["Breadcrumb"] = "Sửa gói nạp";
+}
+
+@section TopbarAction {
+    <a asp-action="QuanLyGoiNap" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+}
+
+<div class="ql-form-wrap">
+    <form asp-action="SuaGoiNap" method="post" enctype="multipart/form-data" id="goiNapForm" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="ql-form-grid">
+
+            <!-- CỘT TRÁI -->
+            <div class="ql-form-left">
+
+                <div class="ad-card" style="margin-bottom:16px">
+                    <div class="ad-card-head"><span class="ad-card-title">Thông tin cơ bản</span></div>
+                    <div class="ad-card-body">
+
+                        <div class="ql-field">
+                            <label>Tên gói nạp <span class="ql-required">*</span></label>
+                            <input type="text" name="tengoinap" id="tengoi"
+                                   value="@Model.TenGoi"
+                                   placeholder="Nhập tên gói nạp..." maxlength="200" />
+                            <span class="ql-field-error" id="err-tengoi"></span>
+                        </div>
+
+                        <div class="ql-field">
+                            <label>Giá tiền nạp</label>
+                            <input type="text" name="giatien" id="giatien"
+                                   value="@Model.SoTien"
+                                   placeholder="Nhập giá tiền nạp..." maxlength="100" />
+                            <span class="ql-field-error" id="err-giatien"></span>
+                        </div>
+
+                        <div class="ql-field">
+                            <label>Số xu nhận</label>
+                            <input type="text" name="soxu" id="soxu"
+                                   value="@Model.SoXuNhan"
+                                   placeholder="Nhập số xu nhận..." maxlength="100" />
+                            <span class="ql-field-error" id="err-soxu"></span>
+                        </div>
+
+                        <div class="ql-field-row">
+                            <div class="ql-field">
+                                <label>Trạng thái</label>
+                                <select name="trangthai" class="ql-select">
+                                    <option value=true>Hiển thị</option>
+                                    <option value=false>Ẩn</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ql-field">
+                            <label>Khuyến mãi</label>
+                            <textarea name="khuyenmai" rows="5"
+                                      placeholder="Nhập nội dung khuyến mãi..." maxlength="500">@Model.KhuyenMai</textarea>
+                            <span class="ql-field-hint">Tối đa 500 ký tự</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CỘT PHẢI -->
+            <div class="ql-form-right">
+
+                <div class="ad-card">
+                    <div class="ad-card-head"><span class="ad-card-title">Ảnh bìa</span></div>
+                    <div class="ad-card-body">
+                        <div class="ql-upload-area" id="uploadArea">
+                            <img id="previewImg" 
+                                 src="@(string.IsNullOrEmpty(Model.Anh) ? "" : Model.Anh)"
+                                 alt="" 
+                                 style="@(string.IsNullOrEmpty(Model.Anh) ? "display:none" : "")" />
+                            <div id="uploadPlaceholder" style="@(!string.IsNullOrEmpty(Model.Anh) ? "display:none" : "")">
+                                <i class="bi bi-image" style="font-size:36px;color:#c4b5fd"></i>
+                                <p>Kéo thả hoặc click để đổi ảnh</p>
+                                <span>JPG, PNG, WEBP · Tối đa 5MB</span>
+                            </div>
+                            <input type="file" name="anhbia" id="anhbia"
+                                   accept="image/jpeg,image/png,image/webp" />
+                        </div>
+                        <span class="ql-field-error" id="err-anhbia"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- NÚT -->
+        <div class="ql-form-actions">
+            <a asp-action="QuanLyGoiNap" class="ad-topbar-btn ad-topbar-btn--outline">Huỷ</a>
+            <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="submitBtn">
+                <i class="bi bi-plus-lg"></i> Lưu thay đổi
+            </button>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/quan-ly-goi-nap.js" asp-append-version="true"></script>
+    <script> initGoiNapForm(); </script>
+}

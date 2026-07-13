@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TeenNovel</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/layout-docgia.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/genre-dropdown.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+
+    <!-- ===================== NAVBAR ===================== -->
+    <nav class="ih-navbar">
+        <div class="ih-navbar-inner">
+
+            <!-- Logo -->
+            <a class="ih-logo" asp-controller="DocGia" asp-action="TrangChu">
+                <img src="~/images/logo2_Wed.png" alt="Logo" style="height: 50px;" />
+            </a>
+
+            <!-- Nav links (giữa) -->
+            <ul class="ih-nav-links d-none d-lg-flex">
+                <li>
+                    <a asp-controller="DocGia" asp-action="TrangChu"
+                           class="@(ViewData["ActivePage"]?.ToString() == "DocGia" ? "active" : "")">
+                        Trang chủ
+                    </a>
+                </li>
+                <!-- DROPDOWN THỂ LOẠI -->
+                <li class="ih-nav-genre" id="navGenreItem">
+                    <a class="ih-nav-genre-toggle @(ViewData["ActivePage"]?.ToString() == "TheLoai" ? "active" : "")"
+                           id="navGenreToggle">
+                        Thể loại <i class="bi bi-chevron-down ih-genre-arrow"></i>
+                    </a>
+                    <div class="ih-genre-dropdown" id="genreDropdown">
+                        <div class="ih-genre-grid">
+                            @if (ViewBag.NavTheLoai != null)
+                            {
+                                foreach (var tl in (IEnumerable<TeenNovel_Wed.Models.TheLoai>)ViewBag.NavTheLoai)
+                                {
+                                    <a href="/DocGia/TheLoai/@tl.Matheloai" class="ih-genre-item">
+                                        <i class="bi bi-bookmark"></i>
+                                        @tl.Tentheloai
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <a asp-controller="DocGia" asp-action="XepHang"
+                           class="@(ViewData["ActivePage"]?.ToString() == "XepHang" ? "active" : "")">
+                        Xếp hạng
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="DocGia" asp-action="MoiCapNhat"
+                           class="@(ViewData["ActivePage"]?.ToString() == "MoiCapNhat" ? "active" : "")">
+                        Mới cập nhật
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Phải: tài khoản -->
+            <div class="ih-nav-right">
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <!-- Đã đăng nhập -->
+                    <div class="ih-user-menu dropdown">
+                        <button class="ih-user-btn dropdown-toggle" data-bs-toggle="dropdown">
+                            <span class="ih-avatar">
+                                @User.Identity.Name?.Substring(0, 1).ToUpper()
+                            </span>
+                            <span class="ih-xu-badge">
+                                <i class="bi bi-coin"></i>
+                                @ViewData["SoXu"]
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end ih-dropdown">
+                            <li class="ih-dropdown-header">
+                                <span class="ih-dropdown-name">@User.Identity.Name</span>
+                                <span class="ih-dropdown-role">Độc giả</span>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="ThongTin">
+                                    <i class="bi bi-person"></i> Thông tin cá nhân
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="LichSuDoc">
+                                    <i class="bi bi-clock-history"></i> Lịch sử đọc
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="Bookmark">
+                                    <i class="bi bi-bookmark-star"></i> Bookmark
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="TheoDoi">
+                                    <i class="bi bi-heart"></i> Truyện đang theo dõi
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="NapXu">
+                                    <i class="bi bi-wallet2"></i> Nạp xu
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="HoTro">
+                                    <i class="bi bi-headset"></i> Liên hệ CSKH
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item ih-logout" asp-controller="Login_Register" asp-action="Logout">
+                                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <!-- Chưa đăng nhập -->
+                    <a class="ih-btn-outline" asp-controller="Login_Register" asp-action="Login">Đăng nhập</a>
+                    <a class="ih-btn-filled" asp-controller="Login_Register" asp-action="Register">Đăng ký</a>
+                }
+            </div>
+
+            <!-- Mobile toggle -->
+            <button class="ih-mobile-toggle d-lg-none" id="mobileMenuToggle">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="ih-mobile-menu" id="mobileMenu">
+            <a asp-controller="DocGia" asp-action="TrangChu">Trang chủ</a>
+            <a asp-controller="DocGia" asp-action="TheLoai">Thể loại</a>
+            <a asp-controller="DocGia" asp-action="XepHang">Xếp hạng</a>
+            <a asp-controller="DocGia" asp-action="MoiCapNhat">Mới cập nhật</a>
+        </div>
+    </nav>
+
+    <!-- ===================== BODY ===================== -->
+    <div class="ih-body">
+
+        <!-- Sidebar (chỉ hiện khi đã đăng nhập) -->
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <aside class="ih-sidebar" id="sidebar">
+                <div class="ih-sidebar-section">
+                    <span class="ih-sidebar-label">Cá nhân</span>
+                    <ul>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="TheoDoi"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "TheoDoi" ? "active" : "")">
+                                <i class="bi bi-heart"></i>
+                                <span>Theo dõi</span>
+                                @if (ViewData["SoTheoDoiMoi"] != null)
+                                {
+                                    <span class="ih-badge">@ViewData["SoTheoDoiMoi"]</span>
+                                }
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="LichSuDoc"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "LichSuDoc" ? "active" : "")">
+                                <i class="bi bi-clock-history"></i>
+                                <span>Lịch sử đọc</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="Bookmark"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "Bookmark" ? "active" : "")">
+                                <i class="bi bi-bookmark-star"></i>
+                                <span>Bookmark</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="ih-sidebar-section">
+                    <span class="ih-sidebar-label">Tài khoản</span>
+                    <ul>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="ThongTinCaNhan"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "ThongTinCaNhan" ? "active" : "")">
+                                <i class="bi bi-person-circle"></i>
+                                <span>Thông tin cá nhân</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="NapXu"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "NapXu" ? "active" : "")">
+                                <i class="bi bi-wallet2"></i>
+                                <span>Nạp xu</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="LichSuNap"
+                                   class="@(ViewData["ActivePage"]?.ToString() == "LichSuNap" ? "active" : "")">
+                                <i class="bi bi-receipt"></i>
+                                <span>Lịch sử nạp</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="DocGia" asp-action="HoTro" 
+                                   class="@(ViewData["ActivePage"]?.ToString() == "HoTro" ? "active" : "")">
+                                <i class="bi bi-headset"></i>
+                                <span>Liên hệ CSKH</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        }
+
+        <!-- Main content -->
+        <main class="ih-main @(User.Identity != null && User.Identity.IsAuthenticated ? "ih-main--with-sidebar" : "")">
+
+            <!-- Toast thông báo -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="ih-toast ih-toast--success">
+                    <i class="bi bi-check-circle-fill"></i>
+                    @TempData["Success"]
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="ih-toast ih-toast--error">
+                    <i class="bi bi-x-circle-fill"></i>
+                    @TempData["Error"]
+                </div>
+            }
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="ih-footer">
+        <div class="ih-footer-inner">
+            <div class="ih-footer-brand">
+                <a class="ih-logo" asp-controller="DocGia" asp-action="Index">
+                    <img src="~/images/logo1_Wed.png" alt="Logo" style="height: 100px; border-radius: 50%;" />
+                </a>
+                <p>Kho truyện không giới hạn. Đọc mọi lúc, mọi nơi.</p>
+            </div>
+
+            <div class="ih-footer-links">
+                <div>
+                    <h6>Khám phá</h6>
+                    <ul>
+                        <li><a asp-controller="DocGia" asp-action="Index">Thể loại</a></li>
+                        <li><a asp-controller="DocGia" asp-action="XepHang">Xếp hạng</a></li>
+                        <li><a asp-controller="DocGia" asp-action="MoiCapNhat">Mới cập nhật</a></li>
+                        <li><a asp-controller="DocGia" asp-action="HoanThanh">Truyện hoàn thành</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6>Hỗ trợ</h6>
+                    <ul>
+                        <li><a asp-controller="DocGia" asp-action="HoTro">Liên hệ CSKH</a></li>
+                        <li><a asp-controller="DocGia" asp-action="CauHoi">Câu hỏi thường gặp</a></li>
+                        <li><a asp-controller="DocGia" asp-action="DieuKhoan">Điều khoản sử dụng</a></li>
+                        <li><a asp-controller="DocGia" asp-action="BaoMat">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ih-footer-bottom">
+            <span>© @DateTime.Now.Year TeenNovel. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="~/js/layout-docgia.js" asp-append-version="true"></script>
+    <script src="~/js/genre-dropdown.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // InkHaven — layout-docgia.js
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu   = document.getElementById('mobileMenu');
+
+        if (mobileToggle && mobileMenu) {
+            mobileToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+                const icon = mobileToggle.querySelector('i');
+                if (icon) {
+                    icon.className = mobileMenu.classList.contains('open')
+                        ? 'bi bi-x-lg'
+                        : 'bi bi-list';
+                }
+            });
+        }
+
+        // Tự ẩn toast sau 4 giây
+        document.querySelectorAll('.ih-toast').forEach(toast => {
+            setTimeout(() => {
+                toast.style.transition = 'opacity .3s, transform .3s';
+                toast.style.opacity    = '0';
+                toast.style.transform  = 'translateY(-6px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        });
+
+        // Active link: tự highlight nav theo URL hiện tại
+        const currentPath = window.location.pathname.toLowerCase();
+        document.querySelectorAll('.ih-nav-links a, .ih-mobile-menu a').forEach(link => {
+            const href = link.getAttribute('href')?.toLowerCase();
+            if (href && currentPath.startsWith(href) && href !== '/') {
+                link.classList.add('active');
+            }
+            if (href === '/' && currentPath === '/') {
+                link.classList.add('active');
+            }
+        });
+
+    </script>
+</body>
+</html>
