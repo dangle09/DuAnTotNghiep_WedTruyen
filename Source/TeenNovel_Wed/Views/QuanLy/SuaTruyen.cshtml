@@ -35,8 +35,13 @@
 
                         <div class="ql-field">
                             <label>Tác giả</label>
-                            <input type="text" name="tacgia"
-                                   value="@(Model.MaTacGiaNavigation?.TenTacGia ?? "")" maxlength="100" />
+                            <select name="matacgia" class="ql-select">
+                                <option value="">-- Chọn tác giả --</option>
+                                @foreach (var tg in (SelectList)ViewBag.DsTacGia)
+                                {
+                                    <option value="@tg.Value" selected="@tg.Selected">@tg.Text</option>
+                                }
+                            </select>
                         </div>
 
                         <div class="ql-field-row">

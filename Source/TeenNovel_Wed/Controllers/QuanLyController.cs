@@ -46,6 +46,11 @@ namespace TeenNovel_Wed.Controllers
                 .Include(t => t.ManvNavigation)
                 .AsQueryable();
 
+            // Danh sách tác giả
+            var dsTacGia = await _context.TacGias
+                .OrderBy(t => t.TenTacGia)
+                .ToListAsync();
+
             // Lọc theo tìm kiếm
             if (!string.IsNullOrWhiteSpace(search))
                 query = query.Where(t => t.Tentruyen.Contains(search) ||
@@ -73,6 +78,7 @@ namespace TeenNovel_Wed.Controllers
             ViewBag.Search = search;
             ViewBag.TheLoai = theloai;
             ViewBag.TrangThai = trangthai;
+            ViewBag.DsTacGia = dsTacGia;
             ViewBag.Page = page;
             ViewBag.TotalPages = (int)Math.Ceiling(total / (double)PAGE_SIZE);
             ViewBag.Total = total;
@@ -324,6 +330,7 @@ namespace TeenNovel_Wed.Controllers
             truyen.Mota = mota?.Trim();
             truyen.MaTacGia = matacgia.Value;
             truyen.Trangthai = trangthai;
+
 
             await _context.SaveChangesAsync();
 
