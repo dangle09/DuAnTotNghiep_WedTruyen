@@ -24,12 +24,6 @@ namespace TeenNovel_Wed.Controllers
             ViewData["TongThongBao"] = (int)ViewData["SoBinhLuanCho"]! + (int)ViewData["SoHoTroCho"]!;
         }
 
-        //_________Dashboard_________
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
         // =====================================================
         //  DANH SÁCH TRUYỆN
         // =====================================================
@@ -1069,5 +1063,300 @@ namespace TeenNovel_Wed.Controllers
             return RedirectToAction("QuanLyKhachHang");
         }
 
+        // ================================================================
+        //  DASHBOARD
+        // ================================================================
+        [HttpGet]
+        public async Task<IActionResult> Dashboard()
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "Dashboard";
+            ViewData["Title"] = "Dashboard";
+
+            // Stat tổng quan
+            ViewBag.TongTruyen = await _context.Truyens.CountAsync();
+            ViewBag.TongDocGia = await _context.DocGias.CountAsync();
+            ViewBag.TongNhanVien = await _context.NhanViens.CountAsync();
+
+            var thangNay = DateTime.Now.Month;
+            var namNay = DateTime.Now.Year;
+
+            // Doanh thu tháng này — tính từ NapXu (chỉ tính giao dịch thành công)
+            ViewBag.DoanhThuThangNay = await _context.NapXus
+                .Where(n => n.Ngaynap.Month == thangNay && n.Ngaynap.Year == namNay
+                            && n.Trangthai == "thanhcong")
+                .SumAsync(n => (decimal?)n.Sotien) ?? 0;
+
+            // Doanh thu tháng trước
+            var thangTruoc = thangNay == 1 ? 12 : thangNay - 1;
+            var namThangTruoc = thangNay == 1 ? namNay - 1 : namNay;
+            ViewBag.DoanhThuThangTruoc = await _context.NapXus
+                .Where(n => n.Ngaynap.Month == thangTruoc && n.Ngaynap.Year == namThangTruoc
+                            && n.Trangthai == "thanhcong")
+                .SumAsync(n => (decimal?)n.Sotien) ?? 0;
+
+            // Truyện mới trong tháng
+            ViewBag.TruyenMoiThangNay = await _context.Truyens
+                .CountAsync(t => t.Ngaydang.Month == thangNay && t.Ngaydang.Year == namNay);
+
+            // Độc giả nhiều xu nhất
+            ViewBag.TopDocGiaXu = await _context.DocGias
+                .OrderByDescending(d => d.Soxu).Take(5).ToListAsync();
+
+            // Chờ xử lý
+            ViewBag.SoBinhLuanChoDb = await _context.BinhLuans.CountAsync(b => b.TrangThai == 0);
+            ViewBag.SoHoTroChoDb = await _context.HoTros.CountAsync(h => h.TrangThai == 0);
+
+            // ── Doanh thu 6 tháng gần nhất — group trực tiếp từ NapXu ──
+            var moc6Thang = DateTime.Now.AddMonths(-5);
+            var napXuTrongKy = await _context.NapXus
+                .Where(n => n.Trangthai == "thanhcong" &&
+                            (n.Ngaynap.Year > moc6Thang.Year ||
+                             (n.Ngaynap.Year == moc6Thang.Year && n.Ngaynap.Month >= moc6Thang.Month)))
+                .ToListAsync();
+
+            var doanhThu6Thang = new List<(int Thang, int Nam, decimal TongTien)>();
+            for (int i = 5; i >= 0; i--)
+            {
+                var moc = DateTime.Now.AddMonths(-i);
+                var tongTien = napXuTrongKy
+                    .Where(n => n.Ngaynap.Month == moc.Month && n.Ngaynap.Year == moc.Year)
+                    .Sum(n => n.Sotien);
+                doanhThu6Thang.Add((moc.Month, moc.Year, tongTien));
+            }
+            ViewBag.DoanhThu6Thang = doanhThu6Thang;
+
+            // Top 5 truyện lượt đọc cao nhất
+            ViewBag.TopTruyen = await _context.Truyens
+                .OrderByDescending(t => t.LuotDoc)
+                .Take(5)
+                .ToListAsync();
+
+            // Độc giả mới nhất
+            ViewBag.DocGiaMoiNhat = await _context.DocGias
+                .Include(d => d.MatkNavigation)
+                .OrderByDescending(d => d.Ngaytao)
+                .Take(5)
+                .ToListAsync();
+
+            // Truyện mới cập nhật
+            ViewBag.TruyenMoiCapNhat = await _context.Truyens
+                .OrderByDescending(t => t.Ngaydang)
+                .Take(5)
+                .ToListAsync();
+
+            return View();
+        }
+
+
+
+        // ================================================================
+        //  TÀI CHÍNH — NẠP XU + DOANH THU
+        // ================================================================
+        [HttpGet]
+        public async Task<IActionResult> QuanLyTaiChinh(int? thang, int? nam, string? trangthai, int page = 1)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "TaiChinh";
+            ViewData["Title"] = "Quản lý tài chính";
+            ViewData["Breadcrumb"] = "Tài chính";
+
+            int filterThang = thang ?? DateTime.Now.Month;
+            int filterNam = nam ?? DateTime.Now.Year;
+
+            // Danh sách giao dịch nạp xu trong tháng/năm đang lọc
+            var query = _context.NapXus
+                .Include(n => n.MaDocGiaNavigation)
+                .Where(n => n.Ngaynap.Month == filterThang && n.Ngaynap.Year == filterNam)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(trangthai))
+                query = query.Where(n => n.Trangthai == trangthai);
+
+            int total = await query.CountAsync();
+
+            var giaoDich = await query
+                .OrderByDescending(n => n.Ngaynap)
+                .Skip((page - 1) * PAGE_SIZE)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            // Thống kê nhanh tháng lọc — chỉ tính giao dịch thành công
+            var tongTienThang = await _context.NapXus
+                .Where(n => n.Ngaynap.Month == filterThang && n.Ngaynap.Year == filterNam
+                            && n.Trangthai == "thanhcong")
+                .SumAsync(n => (decimal?)n.Sotien) ?? 0;
+
+            var tongXuThang = await _context.NapXus
+                .Where(n => n.Ngaynap.Month == filterThang && n.Ngaynap.Year == filterNam
+                            && n.Trangthai == "thanhcong")
+                .SumAsync(n => (int?)n.Soxunhan) ?? 0;
+
+            var tongLuotNap = await _context.NapXus
+                .CountAsync(n => n.Ngaynap.Month == filterThang && n.Ngaynap.Year == filterNam);
+
+            var luotThatBai = await _context.NapXus
+                .CountAsync(n => n.Ngaynap.Month == filterThang && n.Ngaynap.Year == filterNam
+                            && n.Trangthai == "thatbai");
+
+            // ── Biểu đồ doanh thu cả năm — group trực tiếp từ NapXu ──
+            var napXuCaNam = await _context.NapXus
+                .Where(n => n.Ngaynap.Year == filterNam && n.Trangthai == "thanhcong")
+                .ToListAsync();
+
+            var doanhThuNam = new List<(int Thang, decimal TongTien)>();
+            for (int t = 1; t <= 12; t++)
+            {
+                var tongTien = napXuCaNam.Where(n => n.Ngaynap.Month == t).Sum(n => n.Sotien);
+                doanhThuNam.Add((t, tongTien));
+            }
+
+            ViewBag.FilterThang = filterThang;
+            ViewBag.FilterNam = filterNam;
+            ViewBag.TrangThai = trangthai;
+            ViewBag.TongTienThang = tongTienThang;
+            ViewBag.TongXuThang = tongXuThang;
+            ViewBag.TongLuotNap = tongLuotNap;
+            ViewBag.LuotThatBai = luotThatBai;
+            ViewBag.DoanhThuNam = doanhThuNam;
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(total / (double)PAGE_SIZE);
+            ViewBag.Total = total;
+
+            return View(giaoDich);
+        }
+
+
+        // ================================================================
+        //  CSKH — HỖ TRỢ KHÁCH HÀNG
+        // ================================================================
+        [HttpGet]
+        public async Task<IActionResult> QuanLyCSKH(string? trangthai, string? search, int page = 1)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "CSKH";
+            ViewData["Title"] = "Quản lý CSKH";
+            ViewData["Breadcrumb"] = "Hỗ trợ khách hàng";
+
+            var query = _context.HoTros
+                .Include(h => h.MaDocGiaNavigation)
+                .Include(h => h.ManvNavigation)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(h => h.TieuDe.Contains(search) ||
+                                          (h.MaDocGiaNavigation.Ten != null && h.MaDocGiaNavigation.Ten.Contains(search)));
+
+            if (!string.IsNullOrWhiteSpace(trangthai))
+            {
+                int tt = trangthai switch { "cho" => 0, "dangxuly" => 1, "xong" => 2, _ => -1 };
+                if (tt >= 0) query = query.Where(h => h.TrangThai == tt);
+            }
+
+            int total = await query.CountAsync();
+
+            var hotros = await query
+                .OrderBy(h => h.TrangThai)              // chờ xử lý lên đầu
+                .ThenByDescending(h => h.NgayGui)
+                .Skip((page - 1) * PAGE_SIZE)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            ViewBag.SoCho = await _context.HoTros.CountAsync(h => h.TrangThai == 0);
+            ViewBag.SoDangXuLy = await _context.HoTros.CountAsync(h => h.TrangThai == 1);
+            ViewBag.SoXong = await _context.HoTros.CountAsync(h => h.TrangThai == 2);
+
+            ViewBag.TrangThai = trangthai;
+            ViewBag.Search = search;
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(total / (double)PAGE_SIZE);
+            ViewBag.Total = total;
+
+            return View(hotros);
+        }
+
+        // ─── XEM CHI TIẾT + TRẢ LỜI ────────────────────────────
+        [HttpGet]
+        public async Task<IActionResult> ChiTietCSKH(int id)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "CSKH";
+            ViewData["Title"] = "Chi tiết yêu cầu hỗ trợ";
+            ViewData["Breadcrumb"] = "Chi tiết yêu cầu";
+
+            var hotro = await _context.HoTros
+                .Include(h => h.MaDocGiaNavigation)
+                .Include(h => h.ManvNavigation)
+                .FirstOrDefaultAsync(h => h.MaHoTro == id);
+
+            if (hotro == null)
+            {
+                TempData["Error"] = "Không tìm thấy yêu cầu hỗ trợ.";
+                return RedirectToAction("QuanLyCSKH");
+            }
+
+            // Nếu chưa ai xử lý thì tự động gán trạng thái "đang xử lý" khi admin mở xem
+            if (hotro.TrangThai == 0)
+            {
+                hotro.TrangThai = 1;
+                var manvClaim = User.FindFirst("Manv")?.Value;
+                if (int.TryParse(manvClaim, out int manv))
+                    hotro.Manv = manv;
+                await _context.SaveChangesAsync();
+            }
+
+            return View(hotro);
+        }
+
+        // ─── TRẢ LỜI ───────────────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TraLoiCSKH(int id, string phanhoi)
+        {
+            var hotro = await _context.HoTros.FindAsync(id);
+            if (hotro == null)
+            {
+                TempData["Error"] = "Không tìm thấy yêu cầu hỗ trợ.";
+                return RedirectToAction("QuanLyCSKH");
+            }
+
+            if (string.IsNullOrWhiteSpace(phanhoi))
+            {
+                TempData["Error"] = "Vui lòng nhập nội dung phản hồi.";
+                return RedirectToAction("ChiTietCSKH", new { id });
+            }
+
+            var manvClaim = User.FindFirst("Manv")?.Value;
+            int.TryParse(manvClaim, out int manv);
+
+            hotro.PhanHoi = phanhoi.Trim();
+            hotro.TrangThai = 2; // xong
+            hotro.Manv = manv;
+            hotro.NgayXuLy = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Đã gửi phản hồi cho khách hàng!";
+            return RedirectToAction("ChiTietCSKH", new { id });
+        }
+
+        // ─── ĐÁNH DẤU ĐANG XỬ LÝ ────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DanhDauDangXuLy(int id)
+        {
+            var hotro = await _context.HoTros.FindAsync(id);
+            if (hotro != null)
+            {
+                var manvClaim = User.FindFirst("Manv")?.Value;
+                int.TryParse(manvClaim, out int manv);
+
+                hotro.TrangThai = 1;
+                hotro.Manv = manv;
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Đã chuyển sang trạng thái đang xử lý.";
+            }
+            return RedirectToAction("QuanLyCSKH");
+        }
     }
 }

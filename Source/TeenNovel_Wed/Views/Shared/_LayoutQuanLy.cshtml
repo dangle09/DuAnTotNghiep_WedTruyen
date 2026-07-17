@@ -746,7 +746,7 @@ ul { list-style: none; margin: 0; padding: 0; }
                         <i class="bi bi-coin"></i>
                         <span>Nạp xu</span>
                     </a>
-                    <a asp-controller="Quanly" asp-action="Index"
+                    <a asp-controller="Quanly" asp-action="QuanLyTaiChinh"
                            class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "DoanhThu" ? "active" : "")">
                         <i class="bi bi-bar-chart-line"></i>
                         <span>Doanh thu</span>
@@ -755,8 +755,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 
                 <div class="ad-nav-section">
                     <span class="ad-nav-label">Hỗ trợ</span>
-                    <a asp-controller="Quanly" asp-action="Index"
-                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "HoTro" ? "active" : "")">
+                    <a asp-controller="Quanly" asp-action="QuanLyCSKH"
+                           class="ad-nav-item @(ViewData["ActivePage"]?.ToString() == "CSKH" ? "active" : "")">
                         <i class="bi bi-headset"></i>
                         <span>CSKH</span>
                         @if (ViewData["SoHoTroCho"] != null && (int)ViewData["SoHoTroCho"]! > 0)

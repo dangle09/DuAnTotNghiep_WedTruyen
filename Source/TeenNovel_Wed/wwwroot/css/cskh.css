@@ -1,0 +1,122 @@
+/* =========================================================
+   TeenNovel_WED — cskh.css
+   ========================================================= */
+
+/* ── STAT ROW ── */
+.ck-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.ck-stat-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff; border: 1px solid #e4e7ec; border-radius: 12px;
+    padding: 16px 18px; text-decoration: none; transition: border-color .15s, transform .1s;
+}
+.ck-stat-card:hover { transform: translateY(-1px); }
+.ck-stat-card i { font-size: 24px; flex-shrink: 0; }
+.ck-stat--cho i      { color: #dc2626; }
+.ck-stat--dangxuly i { color: #d97706; }
+.ck-stat--xong i     { color: #16a34a; }
+.ck-stat-card.active { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,.15); }
+.ck-stat-val { font-size: 22px; font-weight: 700; color: #18181b; line-height: 1; }
+.ck-stat-label { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+/* ── FILTER ── */
+.ck-filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.ck-filter-form { display: flex; align-items: center; gap: 8px; flex: 1; }
+.ck-search {
+    display: flex; align-items: center; gap: 7px;
+    padding: 7px 12px; border: 1px solid #e4e7ec; border-radius: 8px;
+    background: #fff; min-width: 260px; flex: 1;
+}
+.ck-search:focus-within { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+.ck-search i { color: #9ca3af; font-size: 14px; }
+.ck-search input { border: none; outline: none; font-size: 13px; width: 100%; background: transparent; }
+.ck-clear-btn { font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 4px; text-decoration: none; }
+.ck-clear-btn:hover { color: #dc2626; }
+.ck-total { font-size: 13px; color: #6b7280; margin-left: auto; }
+.ck-total strong { color: #18181b; }
+
+/* ── LIST ── */
+.ck-list { display: flex; flex-direction: column; gap: 10px; }
+
+.ck-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: #fff; border: 1px solid #e4e7ec; border-radius: 12px;
+    padding: 16px 18px; text-decoration: none; color: inherit;
+    transition: border-color .15s, box-shadow .15s;
+}
+.ck-item:hover { border-color: #c4b5fd; box-shadow: 0 2px 10px rgba(124,58,237,.08); }
+.ck-item--new { border-left: 3px solid #dc2626; }
+
+.ck-item-avatar {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff; font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.ck-item-body { flex: 1; min-width: 0; }
+.ck-item-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+.ck-item-title { font-size: 14px; font-weight: 600; color: #18181b; }
+.ck-item-content {
+    font-size: 13px; color: #6b7280; line-height: 1.6; margin-bottom: 8px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ck-item-meta { display: flex; gap: 16px; font-size: 12px; color: #9ca3af; flex-wrap: wrap; }
+.ck-item-meta i { margin-right: 3px; }
+
+.ck-item-arrow { color: #d1d5db; font-size: 16px; align-self: center; flex-shrink: 0; }
+
+.ck-empty {
+    text-align: center; padding: 60px; color: #9ca3af;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.ck-empty i { font-size: 36px; }
+
+/* ── PAGINATION ── */
+.ck-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 20px; }
+.ck-page-btn {
+    width: 32px; height: 32px; border: 1px solid #e4e7ec; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; color: #52525b; text-decoration: none;
+}
+.ck-page-btn:hover  { background: #f4f4f5; color: #18181b; }
+.ck-page-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+
+/* ── CHI TIẾT ── */
+.ck-detail-wrap { max-width: 720px; }
+.ck-detail-user { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.ck-detail-avatar {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff; font-size: 17px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ck-detail-name { font-size: 14px; font-weight: 600; color: #18181b; }
+.ck-detail-time { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+.ck-detail-title { font-size: 16px; font-weight: 700; color: #18181b; margin-bottom: 10px; }
+.ck-detail-content {
+    font-size: 14px; color: #374151; line-height: 1.8;
+    background: #f9fafb; border-radius: 10px; padding: 14px 16px;
+    white-space: pre-wrap;
+}
+
+/* Phản hồi đã có */
+.ck-reply-box {
+    font-size: 14px; color: #374151; line-height: 1.8;
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px;
+    padding: 14px 16px; white-space: pre-wrap;
+}
+
+/* Form trả lời */
+.ck-reply-textarea {
+    width: 100%; border: 1px solid #e4e7ec; border-radius: 9px;
+    padding: 12px 14px; font-size: 13px; color: #18181b;
+    resize: vertical; outline: none; font-family: inherit;
+    transition: border-color .15s;
+}
+.ck-reply-textarea:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+.ck-reply-actions { display: flex; justify-content: flex-end; margin-top: 12px; }
