@@ -1,0 +1,98 @@
+@model IEnumerable<TeenNovel_Wed.Models.HoTro>
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Quản lý CSKH";
+    ViewData["ActivePage"] = "CSKH";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cskh.css" asp-append-version="true" />
+}
+
+<!-- ── 3 STAT TRẠNG THÁI ── -->
+<div class="ck-stats-row">
+    <a asp-action="QuanLyCSKH" asp-route-trangthai="cho" class="ck-stat-card ck-stat--cho @(ViewBag.TrangThai?.ToString() == "cho" ? "active" : "")">
+        <i class="bi bi-hourglass-split"></i>
+        <div><div class="ck-stat-val">@ViewBag.SoCho</div><div class="ck-stat-label">Chờ xử lý</div></div>
+    </a>
+    <a asp-action="QuanLyCSKH" asp-route-trangthai="dangxuly" class="ck-stat-card ck-stat--dangxuly @(ViewBag.TrangThai?.ToString() == "dangxuly" ? "active" : "")">
+        <i class="bi bi-arrow-repeat"></i>
+        <div><div class="ck-stat-val">@ViewBag.SoDangXuLy</div><div class="ck-stat-label">Đang xử lý</div></div>
+    </a>
+    <a asp-action="QuanLyCSKH" asp-route-trangthai="xong" class="ck-stat-card ck-stat--xong @(ViewBag.TrangThai?.ToString() == "xong" ? "active" : "")">
+        <i class="bi bi-check-circle"></i>
+        <div><div class="ck-stat-val">@ViewBag.SoXong</div><div class="ck-stat-label">Đã xử lý</div></div>
+    </a>
+</div>
+
+<!-- ── BỘ LỌC ── -->
+<div class="ck-filter-bar">
+    <form method="get" asp-action="QuanLyCSKH" class="ck-filter-form">
+        <input type="hidden" name="trangthai" value="@ViewBag.TrangThai" />
+        <div class="ck-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm tiêu đề, tên độc giả..." />
+        </div>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-search"></i> Tìm
+        </button>
+        @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()) || !string.IsNullOrEmpty(ViewBag.TrangThai?.ToString()))
+        {
+            <a asp-action="QuanLyCSKH" class="ck-clear-btn"><i class="bi bi-x-circle"></i> Xoá lọc</a>
+        }
+    </form>
+    <span class="ck-total">Tổng: <strong>@ViewBag.Total</strong> yêu cầu</span>
+</div>
+
+<!-- ── DANH SÁCH YÊU CẦU ── -->
+<div class="ck-list">
+    @if (!Model.Any())
+    {
+        <div class="ck-empty"><i class="bi bi-inbox"></i><span>Không có yêu cầu hỗ trợ nào</span></div>
+    }
+    @foreach (var h in Model)
+    {
+        <a asp-action="ChiTietCSKH" asp-route-id="@h.MaHoTro" class="ck-item @(h.TrangThai == 0 ? "ck-item--new" : "")">
+            <div class="ck-item-avatar">@(h.MaDocGiaNavigation?.Ten?.Substring(0, 1).ToUpper() ?? "?")</div>
+            <div class="ck-item-body">
+                <div class="ck-item-top">
+                    <span class="ck-item-title">@h.TieuDe</span>
+                    @if (h.TrangThai == 0)
+                    {
+                        <span class="ad-chip ad-chip--red">Chờ xử lý</span>
+                    }
+                    else if (h.TrangThai == 1)
+                    {
+                        <span class="ad-chip ad-chip--amber">Đang xử lý</span>
+                    }
+                    else
+                    {
+                        <span class="ad-chip ad-chip--green">Đã xử lý</span>
+                    }
+                </div>
+                <div class="ck-item-content">@h.NoiDung</div>
+                <div class="ck-item-meta">
+                    <span><i class="bi bi-person"></i> @(h.MaDocGiaNavigation?.Ten ?? "Ẩn danh")</span>
+                    <span><i class="bi bi-clock"></i> @h.NgayGui.ToString("dd/MM/yyyy HH:mm")</span>
+                    @if (h.ManvNavigation != null)
+                    {
+                        <span><i class="bi bi-person-check"></i> @h.ManvNavigation.Ten</span>
+                    }
+                </div>
+            </div>
+            <i class="bi bi-chevron-right ck-item-arrow"></i>
+        </a>
+    }
+</div>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="ck-pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyCSKH" asp-route-page="@i"
+               asp-route-trangthai="@ViewBag.TrangThai" asp-route-search="@ViewBag.Search"
+               class="ck-page-btn @(i == (int)ViewBag.Page ? "active" : "")">@i</a>
+        }
+    </div>
+}

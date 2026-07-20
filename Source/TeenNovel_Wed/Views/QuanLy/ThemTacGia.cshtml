@@ -1,0 +1,217 @@
+﻿@{
+    ViewData["Title"] = "ThemTacGia";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["ActivePage"] = "TacGia";
+    ViewData["Breadcrumb"] = "Thêm tác giả";
+}
+
+@section TopbarAction {
+    <a asp-action="QuanLyTacGia" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i>
+        Quay lại
+    </a>
+}
+
+<div class="ql-form-wrap">
+
+    <form asp-action="ThemTacGia"
+          method="post"
+          enctype="multipart/form-data"
+          id="tacGiaForm"
+          novalidate>
+
+        @Html.AntiForgeryToken()
+
+        <div class="ql-form-grid">
+
+            <!-- ================= LEFT ================= -->
+
+            <div class="ql-form-left">
+
+                <div class="ad-card">
+
+                    <div class="ad-card-head">
+
+                        <span class="ad-card-title">
+
+                            Thông tin tác giả
+
+                        </span>
+
+                    </div>
+
+                    <div class="ad-card-body">
+
+                        <div class="ql-field">
+
+                            <label>
+
+                                Tên tác giả
+
+                                <span class="ql-required">*</span>
+
+                            </label>
+
+                            <input type="text"
+                                   name="tentacgia"
+                                   id="tentacgia"
+                                   maxlength="100"
+                                   placeholder="Nhập tên tác giả..." />
+
+                            <span id="err-ten" class="ql-field-error"></span>
+
+                        </div>
+
+                        <div class="ql-field">
+
+                            <label>
+
+                                Bút danh
+
+                            </label>
+
+                            <input type="text"
+                                   name="butdanh"
+                                   maxlength="100"
+                                   placeholder="Nhập bút danh..." />
+
+                        </div>
+
+                        <div class="ql-field">
+
+                            <label>
+
+                                Quốc gia
+
+                            </label>
+
+                            <input type="text"
+                                   name="quocgia"
+                                   maxlength="100"
+                                   placeholder="Ví dụ: Việt Nam..." />
+
+                        </div>
+
+                        <div class="ql-field">
+
+                            <label>
+
+                                Tiểu sử
+
+                            </label>
+
+                            <textarea name="tieusu"
+                                      rows="8"
+                                      maxlength="1000"
+                                      placeholder="Nhập tiểu sử tác giả..."></textarea>
+
+                            <span class="ql-field-hint">
+
+                                Tối đa 1000 ký tự
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================= RIGHT ================= -->
+
+            <div class="ql-form-right">
+
+                <div class="ad-card">
+
+                    <div class="ad-card-head">
+
+                        <span class="ad-card-title">
+
+                            Ảnh đại diện
+
+                        </span>
+
+                    </div>
+
+                    <div class="ad-card-body">
+
+                        <div class="ql-upload-area" id="uploadArea">
+
+                            <img id="previewImg"
+                                 style="display:none;" />
+
+                            <div id="uploadPlaceholder">
+
+                                <i class="bi bi-person-circle"
+                                   style="font-size:42px;color:#c4b5fd"></i>
+
+                                <p>
+
+                                    Click hoặc kéo ảnh vào đây
+
+                                </p>
+
+                                <span>
+
+                                    JPG • PNG • WEBP
+
+                                </span>
+
+                            </div>
+
+                            <input type="file"
+                                   id="anhdaidien"
+                                   name="anhdaidien"
+                                   accept="image/png,image/jpeg,image/webp" />
+
+                        </div>
+
+                        <span id="err-anh"
+                              class="ql-field-error"></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="ql-form-actions">
+
+            <a asp-action="QuanLyTacGia"
+                   class="ad-topbar-btn ad-topbar-btn--outline">
+
+                Huỷ
+
+            </a>
+
+            <button type="submit"
+                    id="submitBtn"
+                    class="ad-topbar-btn ad-topbar-btn--primary">
+
+                <i class="bi bi-plus-lg"></i>
+
+                Thêm tác giả
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/js/quan-ly-tac-gia.js" asp-append-version="true"></script>
+
+    <script>
+
+        initTacGiaForm();
+
+    </script>
+
+}

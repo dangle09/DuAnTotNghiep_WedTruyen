@@ -1,0 +1,287 @@
+﻿@model IEnumerable<TeenNovel_Wed.Models.TacGia>
+
+@{
+    ViewData["Title"] = "QuanLyTacGia";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+}
+
+@section TopbarAction {
+    <a asp-action="ThemTacGia" class="ad-topbar-btn ad-topbar-btn--primary">
+        <i class="bi bi-plus-lg"></i> Thêm tác giả
+    </a>
+}
+
+<link rel="stylesheet" href="~/css/quan-ly-tac-gia.css" asp-append-version="true" />
+
+<div class="ql-filter-bar">
+
+    <form asp-action="QuanLyTacGia" method="get" class="ql-filter-form">
+
+        <div class="ql-filter-search">
+            <i class="bi bi-search"></i>
+            <input type="text"
+                   name="search"
+                   value="@ViewBag.Search"
+                   placeholder="Tìm tên hoặc bút danh..." />
+        </div>
+
+        <button class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-funnel"></i>
+            Lọc
+        </button>
+
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Search))
+        {
+            <a asp-action="QuanLyTacGia"
+                   class="ql-clear-btn">
+                <i class="bi bi-x-circle"></i>
+                Xóa lọc
+            </a>
+        }
+
+    </form>
+
+    <span class="ql-total">
+        Tổng:
+        <strong>@ViewBag.Total</strong>
+        tác giả
+    </span>
+
+</div>
+
+<div class="ad-table-wrap">
+
+    <table class="ad-table">
+
+        <thead>
+
+            <tr>
+
+                <th style="width:40%">Tác giả</th>
+
+                <th>Bút danh</th>
+
+                <th>Quốc gia</th>
+
+                <th>Số truyện</th>
+
+                <th style="width:110px"></th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @if (!Model.Any())
+            {
+                <tr>
+
+                    <td colspan="5" class="ql-empty">
+
+                        <i class="bi bi-person-x"></i>
+
+                        <span>Chưa có tác giả nào.</span>
+
+                    </td>
+
+                </tr>
+            }
+
+            @foreach (var tg in Model)
+            {
+
+                <tr>
+
+                    <td>
+
+                        <a asp-action="ChiTietTacGia"
+                               asp-route-id="@tg.MaTacGia"
+                               class="tg-author-link">
+
+                            @if (!string.IsNullOrEmpty(tg.AnhDaiDien))
+                            {
+                                <img src="@tg.AnhDaiDien"
+                                     class="tg-avatar"
+                                     alt="@tg.TenTacGia" />
+                            }
+                            else
+                            {
+                                <div class="tg-avatar-placeholder">
+                                    @tg.TenTacGia.Substring(0, 1).ToUpper()
+                                </div>
+                            }
+
+                            <div>
+
+                                <div class="tg-name">
+                                    @tg.TenTacGia
+                                </div>
+
+                                <div class="tg-view">
+                                    Xem chi tiết
+                                </div>
+
+                            </div>
+
+                        </a>
+
+                    </td>
+
+                    <td>
+
+                        @(string.IsNullOrWhiteSpace(tg.ButDanh)
+                            ? "-"
+                            : tg.ButDanh)
+
+                    </td>
+
+                    <td>
+
+                        @(string.IsNullOrWhiteSpace(tg.QuocGia)
+                            ? "-"
+                            : tg.QuocGia)
+
+                    </td>
+
+                    <td>
+
+                        @tg.Truyens.Count
+
+                    </td>
+
+                    <td>
+
+                        <div class="ql-actions">
+
+                            <a asp-action="SuaTacGia"
+                                   asp-route-id="@tg.MaTacGia"
+                                   class="ql-action-btn ql-action-edit">
+
+                                <i class="bi bi-pencil"></i>
+
+                            </a>
+
+                            <button class="ql-action-btn ql-action-delete"
+                                    onclick="confirmDelete(@tg.MaTacGia,'@tg.TenTacGia.Replace("'", "\\'")')">
+
+                                <i class="bi bi-trash"></i>
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="ql-pagination">
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyTacGia"
+                   asp-route-page="@i"
+                   asp-route-search="@ViewBag.Search"
+                   class="ql-page-btn @(i==ViewBag.Page?"active":"")">
+
+                @i
+
+            </a>
+        }
+
+    </div>
+}
+
+<div class="ql-modal-overlay" id="deleteModal">
+
+    <div class="ql-modal">
+
+        <div class="ql-modal-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+        </div>
+
+        <h3 class="ql-modal-title">
+            Xóa tác giả
+        </h3>
+
+        <p class="ql-modal-msg">
+
+            Bạn có chắc muốn xóa tác giả
+
+            <strong id="deleteName"></strong>
+
+            ?
+
+        </p>
+
+        <form method="post" id="deleteForm">
+
+            @Html.AntiForgeryToken()
+
+            <div class="ql-modal-actions">
+
+                <button type="button"
+                        class="ad-topbar-btn ad-topbar-btn--outline"
+                        onclick="closeDelete()">
+
+                    Hủy
+
+                </button>
+
+                <button type="submit"
+                        class="ad-topbar-btn"
+                        style="background:#dc2626;color:#fff;border:none">
+
+                    Xóa
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        function confirmDelete(id,name){
+
+            document.getElementById("deleteName").innerText=name;
+
+            document.getElementById("deleteForm").action="/QuanLy/XoaTacGia/"+id;
+
+            document.getElementById("deleteModal").classList.add("show");
+
+        }
+
+        function closeDelete(){
+
+            document.getElementById("deleteModal").classList.remove("show");
+
+        }
+
+        document.getElementById("deleteModal")
+        .addEventListener("click",function(e){
+
+            if(e.target===this)
+                closeDelete();
+
+        });
+
+    </script>
+
+}

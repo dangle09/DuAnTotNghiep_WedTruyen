@@ -1,0 +1,165 @@
+@model IEnumerable<TeenNovel_Wed.Models.TheLoai>
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Quản lý thể loại";
+    ViewData["ActivePage"] = "TheLoai";
+    var soTruyenDict = ViewBag.SoTruyenDict as Dictionary<int, int> ?? new Dictionary<int, int>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-theloai.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <button class="ad-topbar-btn ad-topbar-btn--primary" onclick="openThemTL()">
+        <i class="bi bi-plus-lg"></i> Thêm thể loại
+    </button>
+}
+
+<!-- ── TÌM KIẾM ── -->
+<div class="tl-filter-bar">
+    <form method="get" asp-action="QuanLyTheLoai" class="tl-filter-form">
+        <div class="tl-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm thể loại..." />
+        </div>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-search"></i> Tìm
+        </button>
+    </form>
+    <span class="tl-total">Tổng: <strong>@Model.Count()</strong> thể loại</span>
+</div>
+
+<!-- ── GRID THỂ LOẠI ── -->
+<div class="tl-grid">
+    @if (!Model.Any())
+    {
+        <div class="tl-empty"><i class="bi bi-inbox"></i><span>Chưa có thể loại nào</span></div>
+    }
+    @foreach (var tl in Model)
+    {
+        int soTruyen = soTruyenDict.GetValueOrDefault(tl.Matheloai, 0);
+        <div class="tl-card">
+            <div class="tl-card-head">
+                <i class="bi bi-tag-fill"></i>
+                <span class="tl-card-name">@tl.Tentheloai</span>
+            </div>
+            @if (!string.IsNullOrEmpty(tl.Mota))
+            {
+                <p class="tl-card-desc">@tl.Mota</p>
+            }
+            <div class="tl-card-footer">
+                <span class="tl-card-count">@soTruyen truyện</span>
+                <div class="tl-card-actions">
+                    <button class="tl-action-btn tl-action-edit" title="Sửa"
+                            onclick='openSuaTL(@tl.Matheloai, @Html.Raw(Json.Serialize(tl.Tentheloai)), @Html.Raw(Json.Serialize(tl.Mota ?? "")))'>
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="tl-action-btn tl-action-delete" title="Xoá"
+                            onclick="confirmDeleteTL(@tl.Matheloai, '@tl.Tentheloai.Replace("'", "\\'")', @soTruyen)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- ── MODAL THÊM ── -->
+<div class="tl-modal-overlay" id="modalThemTL">
+    <div class="tl-modal">
+        <h3 class="tl-modal-title"><i class="bi bi-plus-circle"></i> Thêm thể loại</h3>
+        <form asp-action="ThemTheLoai" method="post">
+            @Html.AntiForgeryToken()
+            <div class="tl-field">
+                <label>Tên thể loại <span class="tl-required">*</span></label>
+                <input type="text" name="tentheloai" id="themTen" placeholder="VD: Ngôn Tình" maxlength="100" required />
+            </div>
+            <div class="tl-field">
+                <label>Mô tả</label>
+                <textarea name="mota" rows="3" placeholder="Mô tả ngắn về thể loại..." maxlength="500"></textarea>
+            </div>
+            <div class="tl-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeTLModal('modalThemTL')">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary">Thêm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ── MODAL SỬA ── -->
+<div class="tl-modal-overlay" id="modalSuaTL">
+    <div class="tl-modal">
+        <h3 class="tl-modal-title"><i class="bi bi-pencil-square"></i> Sửa thể loại</h3>
+        <form asp-action="SuaTheLoai" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="matheloai" id="suaId" />
+            <div class="tl-field">
+                <label>Tên thể loại <span class="tl-required">*</span></label>
+                <input type="text" name="tentheloai" id="suaTen" maxlength="100" required />
+            </div>
+            <div class="tl-field">
+                <label>Mô tả</label>
+                <textarea name="mota" id="suaMota" rows="3" maxlength="500"></textarea>
+            </div>
+            <div class="tl-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeTLModal('modalSuaTL')">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ── MODAL XOÁ ── -->
+<div class="tl-modal-overlay" id="modalXoaTL">
+    <div class="tl-modal">
+        <div class="tl-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+        <h3 class="tl-modal-title" style="justify-content:center">Xác nhận xoá</h3>
+        <p class="tl-modal-msg" id="xoaMsg"></p>
+        <form id="xoaForm" asp-action="XoaTheLoai" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="matheloai" id="xoaId" />
+            <div class="tl-modal-actions" style="justify-content:center">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeTLModal('modalXoaTL')">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none" id="xoaBtn">Xoá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function openThemTL() { document.getElementById('modalThemTL').classList.add('show'); }
+
+function openSuaTL(id, ten, mota) {
+    document.getElementById('suaId').value   = id;
+    document.getElementById('suaTen').value  = ten;
+    document.getElementById('suaMota').value = mota;
+    document.getElementById('modalSuaTL').classList.add('show');
+}
+
+function confirmDeleteTL(id, ten, soTruyen) {
+    document.getElementById('xoaId').value = id;
+    const msgEl = document.getElementById('xoaMsg');
+    const btn   = document.getElementById('xoaBtn');
+    if (soTruyen > 0) {
+        msgEl.innerHTML = `Thể loại <strong>${ten}</strong> đang có <strong>${soTruyen} truyện</strong>. Không thể xoá khi còn truyện thuộc thể loại này.`;
+        btn.style.display = 'none';
+    } else {
+        msgEl.innerHTML = `Bạn có chắc muốn xoá thể loại <strong>${ten}</strong>?`;
+        btn.style.display = 'inline-flex';
+    }
+    document.getElementById('modalXoaTL').classList.add('show');
+}
+
+function closeTLModal(id) {
+    document.getElementById(id).classList.remove('show');
+}
+
+document.querySelectorAll('.tl-modal-overlay').forEach(function(overlay) {
+    overlay.addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+    });
+});
+</script>
+}
