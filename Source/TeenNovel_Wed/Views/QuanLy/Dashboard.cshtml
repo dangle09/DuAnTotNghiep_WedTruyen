@@ -1,8 +1,172 @@
-﻿
-@{
-    ViewData["Title"] = "Dashboard";
+﻿@{
     Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"] = "Dashboard";
+    ViewData["ActivePage"] = "Dashboard";
+
+    decimal doanhThuThangNay = ViewBag.DoanhThuThangNay;
+    decimal doanhThuThangTruoc = ViewBag.DoanhThuThangTruoc;
+    decimal chenhLech = doanhThuThangTruoc > 0
+        ? Math.Round((doanhThuThangNay - doanhThuThangTruoc) / doanhThuThangTruoc * 100, 1)
+        : 0;
+
+    var doanhThu6Thang = ViewBag.DoanhThu6Thang as List<(int Thang, int Nam, decimal TongTien)>
+                         ?? new List<(int, int, decimal)>();
+    decimal maxDoanhThu = doanhThu6Thang.Any() ? doanhThu6Thang.Max(d => d.TongTien) : 1;
+    if (maxDoanhThu == 0) maxDoanhThu = 1;
 }
 
-<h1>Dashboard</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+}
 
+<!-- ── 4 STAT CARDS ── -->
+<div class="ad-stats-grid">
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Tổng truyện <i class="bi bi-book" style="color:#4f46e5"></i></div>
+        <div class="ad-stat-val">@ViewBag.TongTruyen</div>
+        <div class="ad-stat-sub up"><i class="bi bi-arrow-up"></i> +@ViewBag.TruyenMoiThangNay tháng này</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Độc giả <i class="bi bi-people" style="color:#059669"></i></div>
+        <div class="ad-stat-val">@ViewBag.TongDocGia.ToString("N0")</div>
+        <div class="ad-stat-sub up"><i class="bi bi-arrow-up"></i> +@ViewBag.DocGiaMoiThangNay tháng này</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Doanh thu tháng <i class="bi bi-coin" style="color:#d97706"></i></div>
+        <div class="ad-stat-val">@doanhThuThangNay.ToString("N0")đ</div>
+        @if (chenhLech >= 0)
+        {
+            <div class="ad-stat-sub up"><i class="bi bi-arrow-up"></i> +@chenhLech% so với tháng trước</div>
+        }
+        else
+        {
+            <div class="ad-stat-sub down"><i class="bi bi-arrow-down"></i> @chenhLech% so với tháng trước</div>
+        }
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Chờ xử lý <i class="bi bi-clock" style="color:#dc2626"></i></div>
+        <div class="ad-stat-val">@(ViewBag.SoBinhLuanChoDb + ViewBag.SoHoTroChoDb)</div>
+        <div class="ad-stat-sub" style="color:#9ca3af">Bình luận + CSKH</div>
+    </div>
+</div>
+
+<div class="db-two-col">
+
+    <!-- ── BIỂU ĐỒ DOANH THU (từ NapXu) ── -->
+    <div class="ad-card">
+        <div class="ad-card-head">
+            <span class="ad-card-title"><i class="bi bi-bar-chart-line"></i> Doanh thu 6 tháng gần nhất</span>
+            <a asp-action="QuanLyTaiChinh" class="db-link-more">Xem chi tiết <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="ad-card-body">
+            <div class="db-chart">
+                @foreach (var dt in doanhThu6Thang)
+                {
+                    double pct = maxDoanhThu > 0 ? (double)(dt.TongTien / maxDoanhThu * 100) : 0;
+                    <div class="db-chart-col">
+                        <div class="db-chart-bar-wrap">
+                            <span class="db-chart-val">@((dt.TongTien / 1000).ToString("N0"))k</span>
+                            <div class="db-chart-bar" style="height:@(pct)%"></div>
+                        </div>
+                        <span class="db-chart-label">Th.@dt.Thang</span>
+                    </div>
+                }
+                @if (!doanhThu6Thang.Any())
+                {
+                    <div class="db-empty">Chưa có dữ liệu doanh thu</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TOP TRUYỆN ── -->
+    <div class="ad-card">
+        <div class="ad-card-head">
+            <span class="ad-card-title"><i class="bi bi-trophy"></i> Top truyện</span>
+            <a asp-action="QuanLyTruyen" class="db-link-more">Xem thêm <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="db-list">
+            @{
+                int rank = 1;
+            }
+            @foreach (var t in (IEnumerable<TeenNovel_Wed.Models.Truyen>)ViewBag.TopTruyen)
+            {
+                <div class="db-list-item">
+                    <div class="db-rank-num @(rank <= 3 ? "top" : "")">@rank</div>
+                    <div class="db-item-cover">
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-book"></i>
+                        }
+                    </div>
+                    <div class="db-item-info">
+                        <div class="db-item-title">@t.Tentruyen</div>
+                        <div class="db-item-sub">@t.LuotDoc.ToString("N0") lượt đọc</div>
+                    </div>
+                </div>
+                rank++;
+            }
+        </div>
+    </div>
+</div>
+
+<div class="db-two-col" style="margin-top:16px">
+
+    <!-- ── TRUYỆN MỚI CẬP NHẬT ── -->
+    <div class="ad-card">
+        <div class="ad-card-head">
+            <span class="ad-card-title"><i class="bi bi-clock-history"></i> Truyện mới cập nhật</span>
+        </div>
+        <div class="db-list">
+            @foreach (var t in (IEnumerable<TeenNovel_Wed.Models.Truyen>)ViewBag.TruyenMoiCapNhat)
+            {
+                <a asp-action="ChiTietTruyen" asp-route-id="@t.Matruyen" class="db-list-item db-list-item--link">
+                    <div class="db-item-cover">
+                        @if (!string.IsNullOrEmpty(t.AnhBia))
+                        {
+                            <img src="@t.AnhBia" alt="" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-book"></i>
+                        }
+                    </div>
+                    <div class="db-item-info">
+                        <div class="db-item-title">@t.Tentruyen</div>
+                        <div class="db-item-sub">@t.Ngaydang.ToString("dd/MM/yyyy")</div>
+                    </div>
+                    <span class="ad-chip @(t.Trangthai == "hoanthanh" ? "ad-chip--blue" : "ad-chip--green")">
+                        @(t.Trangthai == "hoanthanh" ? "Hoàn thành" : "Đang ra")
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- ── ĐỘC GIẢ NHIỀU XU NHẤT ── -->
+    <div class="ad-card">
+        <div class="ad-card-head">
+            <span class="ad-card-title"><i class="bi bi-person-plus"></i> Độc giả nhiều xu nhất</span>
+            <a asp-action="QuanLyKhachHang" class="db-link-more">Xem thêm <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="db-list">
+            @foreach (var dg in (IEnumerable<TeenNovel_Wed.Models.DocGia>)ViewBag.TopDocGiaXu)
+            {
+                <a asp-action="ChiTietKhachHang" asp-route-id="@dg.MaDocGia" class="db-list-item db-list-item--link">
+                    <div class="db-avatar">@dg.Ten.Substring(0, 1).ToUpper()</div>
+                    <div class="db-item-info">
+                        <div class="db-item-title">@dg.Ten</div>
+                        <div class="db-item-sub">@dg.MatkNavigation?.Email · @dg.Soxu xu</div>
+                    </div>
+                    <span class="ad-chip @(dg.MatkNavigation?.Trangthai == true ? "ad-chip--green" : "ad-chip--red")">
+                        @(dg.MatkNavigation?.Trangthai == true ? "Hoạt động" : "Bị khoá")
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+</div>
