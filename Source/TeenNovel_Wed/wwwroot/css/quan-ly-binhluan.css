@@ -1,0 +1,100 @@
+/* =========================================================
+   TeenNovel_WED — quan-ly-binhluan.css
+   ========================================================= */
+
+/* ── STAT ── */
+.bl-stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; max-width: 500px; }
+.bl-stat-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff; border: 1px solid #e4e7ec; border-radius: 12px;
+    padding: 16px 18px; text-decoration: none; transition: all .15s;
+}
+.bl-stat-card i { font-size: 22px; }
+.bl-stat--hien i { color: #16a34a; }
+.bl-stat--an i    { color: #6b7280; }
+.bl-stat-card.active { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,.15); }
+.bl-stat-val { font-size: 20px; font-weight: 700; color: #18181b; }
+.bl-stat-label { font-size: 12px; color: #6b7280; margin-top: 3px; }
+
+/* ── FILTER ── */
+.bl-filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.bl-filter-form { display: flex; align-items: center; gap: 8px; flex: 1; }
+.bl-search {
+    display: flex; align-items: center; gap: 7px;
+    padding: 7px 12px; border: 1px solid #e4e7ec; border-radius: 8px;
+    background: #fff; min-width: 280px; flex: 1;
+}
+.bl-search:focus-within { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+.bl-search i { color: #9ca3af; font-size: 14px; }
+.bl-search input { border: none; outline: none; font-size: 13px; width: 100%; background: transparent; }
+.bl-clear-btn { font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 4px; text-decoration: none; }
+.bl-clear-btn:hover { color: #dc2626; }
+.bl-total { font-size: 13px; color: #6b7280; margin-left: auto; }
+.bl-total strong { color: #18181b; }
+
+/* ── LIST ── */
+.bl-list { display: flex; flex-direction: column; gap: 10px; }
+.bl-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: #fff; border: 1px solid #e4e7ec; border-radius: 12px;
+    padding: 14px 16px;
+}
+.bl-item--hidden { opacity: .6; background: #fafafa; }
+
+.bl-item-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.bl-item-body { flex: 1; min-width: 0; }
+.bl-item-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.bl-item-name { font-size: 13px; font-weight: 600; color: #18181b; }
+.bl-item-arrow { color: #d1d5db; font-size: 12px; }
+.bl-item-truyen { font-size: 13px; color: #7c3aed; font-weight: 500; text-decoration: none; }
+.bl-item-truyen:hover { text-decoration: underline; }
+.bl-item-time { font-size: 11px; color: #9ca3af; margin-left: auto; }
+.bl-item-content { font-size: 13px; color: #374151; line-height: 1.6; }
+
+.bl-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.bl-toggle-form { margin: 0; }
+.bl-action-btn {
+    width: 30px; height: 30px; border-radius: 7px; border: 1px solid #e4e7ec;
+    background: transparent; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; cursor: pointer; transition: all .12s; color: #52525b;
+}
+.bl-action-hide:hover   { background: #fff7ed; color: #ea580c; border-color: #fed7aa; }
+.bl-action-show:hover   { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+.bl-action-delete:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+.bl-empty {
+    text-align: center; padding: 60px; color: #9ca3af;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.bl-empty i { font-size: 36px; }
+
+/* ── PAGINATION ── */
+.bl-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 20px; }
+.bl-page-btn {
+    width: 32px; height: 32px; border: 1px solid #e4e7ec; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; color: #52525b; text-decoration: none;
+}
+.bl-page-btn:hover  { background: #f4f4f5; color: #18181b; }
+.bl-page-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+
+/* ── MODAL ── */
+.bl-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,.45); align-items: center; justify-content: center;
+}
+.bl-modal-overlay.show { display: flex; }
+.bl-modal { background: #fff; border-radius: 16px; padding: 32px 28px; max-width: 380px; width: 90%; text-align: center; }
+.bl-modal-icon {
+    width: 52px; height: 52px; border-radius: 50%; background: #fef2f2; color: #dc2626;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 16px;
+}
+.bl-modal-title { font-size: 16px; font-weight: 600; color: #18181b; margin-bottom: 8px; }
+.bl-modal-msg { font-size: 13px; color: #52525b; line-height: 1.7; margin-bottom: 20px; }
+.bl-modal-actions { display: flex; gap: 10px; justify-content: center; }
