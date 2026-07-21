@@ -1,0 +1,302 @@
+﻿@model TeenNovel_Wed.Models.TacGia
+
+@{
+    ViewData["Title"] = "ChiTietTacGia";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+
+    var truyens = (List<TeenNovel_Wed.Models.Truyen>)ViewBag.Truyens;
+}
+
+<link rel="stylesheet" href="~/css/chi-tiet-tac-gia.css" asp-append-version="true" />
+
+@section TopbarAction {
+    <a asp-action="QuanLyTacGia" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i>
+        Quay lại
+    </a>
+
+    <a asp-action="SuaTacGia"
+           asp-route-id="@Model.MaTacGia"
+           class="ad-topbar-btn ad-topbar-btn--primary">
+        <i class="bi bi-pencil"></i>
+        Chỉnh sửa
+    </a>
+}
+
+<div class="tg-detail">
+
+    <!-- ================= THÔNG TIN ================= -->
+
+    <div class="tg-header">
+
+        <div class="tg-avatar">
+
+            @if (!string.IsNullOrEmpty(Model.AnhDaiDien))
+            {
+                <img src="@Model.AnhDaiDien" alt="@Model.TenTacGia" />
+            }
+            else
+            {
+                <div class="tg-avatar-placeholder">
+                    @Model.TenTacGia.Substring(0, 1).ToUpper()
+                </div>
+            }
+
+        </div>
+
+        <div class="tg-info">
+
+            <h2>@Model.TenTacGia</h2>
+
+            @if (!string.IsNullOrEmpty(Model.ButDanh))
+            {
+                <div class="tg-penname">
+                    <i class="bi bi-pen"></i>
+                    @Model.ButDanh
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.QuocGia))
+            {
+                <div class="tg-country">
+                    <i class="bi bi-globe"></i>
+                    @Model.QuocGia
+                </div>
+            }
+
+            <div class="tg-stat-grid">
+
+                <div class="tg-stat">
+
+                    <span>Tổng truyện</span>
+
+                    <strong>@truyens.Count</strong>
+
+                </div>
+
+                <div class="tg-stat">
+
+                    <span>Tổng lượt đọc</span>
+
+                    <strong>@truyens.Sum(x => x.LuotDoc).ToString("N0")</strong>
+
+                </div>
+
+                <div class="tg-stat">
+
+                    <span>Tổng lượt thích</span>
+
+                    <strong>@truyens.Sum(x => x.LuotThich).ToString("N0")</strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= TIỂU SỬ ================= -->
+
+    <div class="ad-card">
+
+        <div class="ad-card-head">
+
+            <span class="ad-card-title">
+
+                <i class="bi bi-person-vcard"></i>
+
+                Tiểu sử
+
+            </span>
+
+        </div>
+
+        <div class="ad-card-body">
+
+            @if (string.IsNullOrWhiteSpace(Model.TieuSu))
+            {
+                <div class="tg-empty">
+
+                    Chưa cập nhật tiểu sử.
+
+                </div>
+            }
+            else
+            {
+                <div class="tg-bio">
+
+                    @Html.Raw(Model.TieuSu.Replace("\n", "<br/>"))
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <!-- ================= DANH SÁCH TRUYỆN ================= -->
+
+    <div class="ad-card">
+
+        <div class="ad-card-head">
+
+            <span class="ad-card-title">
+
+                <i class="bi bi-book-half"></i>
+
+                Danh sách truyện
+
+            </span>
+
+        </div>
+
+        <div class="ad-table-wrap">
+
+            <table class="ad-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th style="width:45%">Tên truyện</th>
+
+                        <th>Lượt đọc</th>
+
+                        <th>Lượt thích</th>
+
+                        <th>Chương</th>
+
+                        <th>Trạng thái</th>
+
+                        <th></th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (!truyens.Any())
+                    {
+                        <tr>
+
+                            <td colspan="6">
+
+                                <div class="tg-empty">
+
+                                    Tác giả chưa có truyện nào.
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                    @foreach (var item in truyens)
+                    {
+
+                        <tr>
+
+                            <td>
+
+                                <div class="tg-story">
+
+                                    @if (!string.IsNullOrEmpty(item.AnhBia))
+                                    {
+                                        <img src="@item.AnhBia" />
+                                    }
+                                    else
+                                    {
+                                        <div class="tg-cover-placeholder">
+
+                                            <i class="bi bi-book"></i>
+
+                                        </div>
+                                    }
+
+                                    <div>
+
+                                        <div class="tg-story-name">
+
+                                            @item.Tentruyen
+
+                                        </div>
+
+                                        <div class="tg-date">
+
+                                            @item.Ngaydang.ToString("dd/MM/yyyy")
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                @item.LuotDoc.ToString("N0")
+
+                            </td>
+
+                            <td>
+
+                                @item.LuotThich.ToString("N0")
+
+                            </td>
+
+                            <td>
+
+                                @item.Chuongs.Count
+
+                            </td>
+
+                            <td>
+
+                                @if (item.Trangthai == "Đang ra")
+                                {
+                                    <span class="ad-chip ad-chip--green">
+
+                                        Đang ra
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="ad-chip ad-chip--blue">
+
+                                        Hoàn thành
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td>
+
+                                <a asp-action="ChiTietTruyen"
+                                       asp-route-id="@item.Matruyen"
+                                       class="ql-action-btn ql-action-view">
+
+                                    <i class="bi bi-eye"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

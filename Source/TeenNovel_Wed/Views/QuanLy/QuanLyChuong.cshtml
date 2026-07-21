@@ -1,0 +1,75 @@
+@model IEnumerable<TeenNovel_Wed.Models.Truyen>
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Quản lý chương";
+    ViewData["ActivePage"] = "Chuong";
+    var soChuongDict = ViewBag.SoChuongDict as Dictionary<int, int> ?? new Dictionary<int, int>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-chuong.css" asp-append-version="true" />
+}
+
+<!-- ── TÌM KIẾM ── -->
+<div class="qc-filter-bar">
+    <form method="get" asp-action="QuanLyChuong" class="qc-filter-form">
+        <div class="qc-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm tên truyện..." />
+        </div>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-search"></i> Tìm
+        </button>
+        @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()))
+        {
+            <a asp-action="QuanLyChuong" class="qc-clear-btn"><i class="bi bi-x-circle"></i> Xoá lọc</a>
+        }
+    </form>
+    <span class="qc-total">Tổng: <strong>@ViewBag.Total</strong> truyện</span>
+</div>
+
+<!-- ── DANH SÁCH TRUYỆN — CLICK VÀO ĐỂ XEM CHƯƠNG ── -->
+<div class="qc-grid">
+    @if (!Model.Any())
+    {
+        <div class="qc-empty"><i class="bi bi-inbox"></i><span>Không có truyện nào</span></div>
+    }
+    @foreach (var t in Model)
+    {
+        int soChuong = soChuongDict.GetValueOrDefault(t.Matruyen, 0);
+        <a asp-action="ChiTietChuong" asp-route-id="@t.Matruyen" class="qc-card">
+            <div class="qc-cover">
+                @if (!string.IsNullOrEmpty(t.AnhBia))
+                {
+                    <img src="@t.AnhBia" alt="@t.Tentruyen" />
+                }
+                else
+                {
+                    <div class="qc-cover-placeholder"><i class="bi bi-book"></i></div>
+                }
+                <span class="qc-chuong-badge">@soChuong chương</span>
+            </div>
+            <div class="qc-card-info">
+                <div class="qc-card-title">@t.Tentruyen</div>
+                <div class="qc-card-author">@(t.MaTacGiaNavigation?.TenTacGia ?? "Đang cập nhật")</div>
+                <div class="qc-card-genre">
+                    @foreach (var tl in t.MaTheLoais)
+                    {
+                        <span>@tl.Tentheloai</span>
+                    }
+                </div>
+            </div>
+        </a>
+    }
+</div>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="qc-pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyChuong" asp-route-page="@i" asp-route-search="@ViewBag.Search"
+               class="qc-page-btn @(i == (int)ViewBag.Page ? "active" : "")">@i</a>
+        }
+    </div>
+}

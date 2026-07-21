@@ -103,7 +103,7 @@ namespace TeenNovel_Wed.Controllers
             }
 
             // Danh sách chương
-            var chuongs = await _context.Chuongs
+            var Chuongs = await _context.Chuongs
                 .Where(c => c.Matruyen == id)
                 .OrderBy(c => c.Thutu)
                 .ToListAsync();
@@ -120,10 +120,10 @@ namespace TeenNovel_Wed.Controllers
                 ? Math.Round(danhgias.Average(d => (double)d.Sosao), 1)
                 : 0;
 
-            ViewBag.Chuongs = chuongs;
+            ViewBag.Chuongs = Chuongs;
             ViewBag.DanhGias = danhgias;
             ViewBag.DiemTb = diemTb;
-            ViewBag.SoChuong = chuongs.Count;
+            ViewBag.SoChuong = Chuongs.Count;
 
             return View(truyen);
         }
@@ -171,8 +171,8 @@ namespace TeenNovel_Wed.Controllers
             string? anhBiaPath = null;
             if (anhbia != null && anhbia.Length > 0)
             {
-                var allowedTypes = new[] { "image/jpeg", "image/png", "image/webp" };
-                if (!allowedTypes.Contains(anhbia.ContentType))
+                var alloWedTypes = new[] { "image/jpeg", "image/png", "image/webp" };
+                if (!alloWedTypes.Contains(anhbia.ContentType))
                 {
                     TempData["Error"] = "Chỉ chấp nhận ảnh JPG, PNG hoặc WEBP.";
                     ViewBag.DsTheLoai = new SelectList(_context.TheLoais, "Matheloai", "Tentheloai", matheloai);
@@ -1358,5 +1358,746 @@ namespace TeenNovel_Wed.Controllers
             }
             return RedirectToAction("QuanLyCSKH");
         }
+
+        // =====================================================
+        // DANH SÁCH TÁC GIẢ
+        // =====================================================
+        [HttpGet]
+        public async Task<IActionResult> QuanLyTacGia(string? search, int page = 1)
+        {
+            SetSidebarData();
+
+            ViewData["ActivePage"] = "TacGia";
+            ViewData["Title"] = "Quản lý tác giả";
+            ViewData["Breadcrumb"] = "Quản lý tác giả";
+
+            var query = _context.TacGias
+                                .Include(x => x.Truyens)
+                                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(x =>
+                    x.TenTacGia.Contains(search) ||
+                    (x.ButDanh != null && x.ButDanh.Contains(search)));
+            }
+
+            int total = await query.CountAsync();
+
+            var tacGias = await query
+                .OrderBy(x => x.TenTacGia)
+                .Skip((page - 1) * PAGE_SIZE)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            ViewBag.Search = search;
+            ViewBag.Page = page;
+            ViewBag.Total = total;
+            ViewBag.TotalPages = (int)Math.Ceiling(total / (double)PAGE_SIZE);
+
+            return View(tacGias);
+        }
+
+        // =====================================================
+        // CHI TIẾT TÁC GIẢ
+        // =====================================================
+        [HttpGet]
+        public async Task<IActionResult> ChiTietTacGia(int id)
+        {
+            SetSidebarData();
+
+            ViewData["ActivePage"] = "TacGia";
+            ViewData["Title"] = "Chi tiết tác giả";
+            ViewData["Breadcrumb"] = "Chi tiết tác giả";
+
+            var tacGia = await _context.TacGias
+                .FirstOrDefaultAsync(x => x.MaTacGia == id);
+
+            if (tacGia == null)
+            {
+                TempData["Error"] = "Không tìm thấy tác giả.";
+                return RedirectToAction(nameof(QuanLyTacGia));
+            }
+
+            var dsTruyen = await _context.Truyens
+                .Include(x => x.MaTheLoais)
+                .Where(x => x.MaTacGia == id)
+                .OrderByDescending(x => x.Ngaydang)
+                .ToListAsync();
+
+            ViewBag.DanhSachTruyen = dsTruyen;
+
+            ViewBag.SoTruyen = dsTruyen.Count;
+            ViewBag.TongLuotDoc = dsTruyen.Sum(x => x.LuotDoc);
+            ViewBag.TongLuotThich = dsTruyen.Sum(x => x.LuotThich);
+            ViewBag.TongChuong = dsTruyen.Sum(x => x.Chuongs.Count);
+
+            return View(tacGia);
+        }
+
+        // =====================================================
+        // THÊM TÁC GIẢ
+        // =====================================================
+        [HttpGet]
+        public IActionResult ThemTacGia()
+        {
+            SetSidebarData();
+
+            ViewData["ActivePage"] = "TacGia";
+            ViewData["Title"] = "Thêm tác giả";
+            ViewData["Breadcrumb"] = "Thêm tác giả";
+
+            return View();
+        }
+
+        // =====================================================
+        // THÊM TÁC GIẢ
+        // =====================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThemTacGia(
+            string tentacgia,
+            string? butdanh,
+            string? quocgia,
+            string? tieusu,
+            IFormFile? anhdaidien)
+        {
+            if (string.IsNullOrWhiteSpace(tentacgia))
+            {
+                TempData["Error"] = "Tên tác giả không được để trống.";
+                SetSidebarData();
+                return View();
+            }
+
+            string? avatarPath = null;
+
+            if (anhdaidien != null && anhdaidien.Length > 0)
+            {
+                var allowedTypes = new[]
+                {
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        };
+
+                if (!allowedTypes.Contains(anhdaidien.ContentType))
+                {
+                    TempData["Error"] = "Chỉ chấp nhận JPG, PNG hoặc WEBP.";
+                    SetSidebarData();
+                    return View();
+                }
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(anhdaidien.FileName)}";
+
+                var uploadDir = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads",
+                    "tacgia");
+
+                Directory.CreateDirectory(uploadDir);
+
+                var filePath = Path.Combine(uploadDir, fileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
+
+                await anhdaidien.CopyToAsync(stream);
+
+                avatarPath = $"/uploads/tacgia/{fileName}";
+            }
+
+            var tacGia = new TacGia
+            {
+                TenTacGia = tentacgia.Trim(),
+                ButDanh = butdanh?.Trim(),
+                QuocGia = quocgia?.Trim(),
+                TieuSu = tieusu?.Trim(),
+                AnhDaiDien = avatarPath
+            };
+
+            _context.TacGias.Add(tacGia);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã thêm tác giả \"{tentacgia}\".";
+
+            return RedirectToAction(nameof(QuanLyTacGia));
+        }
+
+        // =====================================================
+        // SỬA TÁC GIẢ
+        // =====================================================
+        [HttpGet]
+        public async Task<IActionResult> SuaTacGia(int id)
+        {
+            SetSidebarData();
+
+            ViewData["ActivePage"] = "TacGia";
+            ViewData["Title"] = "Sửa tác giả";
+            ViewData["Breadcrumb"] = "Sửa tác giả";
+
+            var tacGia = await _context.TacGias.FindAsync(id);
+
+            if (tacGia == null)
+            {
+                TempData["Error"] = "Không tìm thấy tác giả.";
+                return RedirectToAction(nameof(QuanLyTacGia));
+            }
+
+            return View(tacGia);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuaTacGia(
+    int id,
+    string tentacgia,
+    string? butdanh,
+    string? quocgia,
+    string? tieusu,
+    IFormFile? anhdaidien)
+        {
+            var tacGia = await _context.TacGias.FindAsync(id);
+
+            if (tacGia == null)
+            {
+                TempData["Error"] = "Không tìm thấy tác giả.";
+                return RedirectToAction(nameof(QuanLyTacGia));
+            }
+
+            if (string.IsNullOrWhiteSpace(tentacgia))
+            {
+                TempData["Error"] = "Tên tác giả không được để trống.";
+                return View(tacGia);
+            }
+
+            if (anhdaidien != null && anhdaidien.Length > 0)
+            {
+                var allowedTypes = new[]
+                {
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        };
+
+                if (!allowedTypes.Contains(anhdaidien.ContentType))
+                {
+                    TempData["Error"] = "Chỉ chấp nhận JPG, PNG hoặc WEBP.";
+                    return View(tacGia);
+                }
+
+                if (!string.IsNullOrEmpty(tacGia.AnhDaiDien))
+                {
+                    var oldImg = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        tacGia.AnhDaiDien.TrimStart('/')
+                            .Replace('/', Path.DirectorySeparatorChar));
+
+                    if (System.IO.File.Exists(oldImg))
+                        System.IO.File.Delete(oldImg);
+                }
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(anhdaidien.FileName)}";
+
+                var uploadDir = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads",
+                    "tacgia");
+
+                Directory.CreateDirectory(uploadDir);
+
+                var filePath = Path.Combine(uploadDir, fileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
+
+                await anhdaidien.CopyToAsync(stream);
+
+                tacGia.AnhDaiDien = $"/uploads/tacgia/{fileName}";
+            }
+
+            tacGia.TenTacGia = tentacgia.Trim();
+            tacGia.ButDanh = butdanh?.Trim();
+            tacGia.QuocGia = quocgia?.Trim();
+            tacGia.TieuSu = tieusu?.Trim();
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã cập nhật tác giả \"{tentacgia}\".";
+
+            return RedirectToAction(nameof(ChiTietTacGia), new { id });
+        }
+
+        // =====================================================
+        // XOÁ TÁC GIẢ
+        // =====================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> XoaTacGia(int id)
+        {
+            var tacGia = await _context.TacGias.FindAsync(id);
+
+            if (tacGia == null)
+            {
+                TempData["Error"] = "Không tìm thấy tác giả.";
+                return RedirectToAction(nameof(QuanLyTacGia));
+            }
+
+            bool hasTruyen = await _context.Truyens
+                .AnyAsync(x => x.MaTacGia == id);
+
+            if (hasTruyen)
+            {
+                TempData["Error"] = "Không thể xoá tác giả vì vẫn còn truyện.";
+                return RedirectToAction(nameof(QuanLyTacGia));
+            }
+
+            if (!string.IsNullOrEmpty(tacGia.AnhDaiDien))
+            {
+                var imgPath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    tacGia.AnhDaiDien.TrimStart('/')
+                        .Replace('/', Path.DirectorySeparatorChar));
+
+                if (System.IO.File.Exists(imgPath))
+                    System.IO.File.Delete(imgPath);
+            }
+
+            string ten = tacGia.TenTacGia;
+
+            _context.TacGias.Remove(tacGia);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã xoá tác giả \"{ten}\".";
+
+            return RedirectToAction(nameof(QuanLyTacGia));
+        }
+
+        // ─── DANH SÁCH TRUYỆN (để chọn vào xem chương) ───────────
+        [HttpGet]
+        public async Task<IActionResult> QuanLyChuong(string? search, int page = 1)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "Chuong";
+            ViewData["Title"] = "Quản lý chương";
+            ViewData["Breadcrumb"] = "Quản lý chương";
+
+            var query = _context.Truyens.Include(t => t.MaTheLoais).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(t => t.Tentruyen.Contains(search));
+
+            int total = await query.CountAsync();
+
+            var truyens = await query
+                .OrderByDescending(t => t.Ngaydang)
+                .Skip((page - 1) * PAGE_SIZE)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            // Đếm số chương của từng truyện
+            var matruyenIds = truyens.Select(t => t.Matruyen).ToList();
+            var soChuongDict = await _context.Chuongs
+                .Where(c => matruyenIds.Contains(c.Matruyen))
+                .GroupBy(c => c.Matruyen)
+                .Select(g => new { Matruyen = g.Key, SoChuong = g.Count() })
+                .ToDictionaryAsync(x => x.Matruyen, x => x.SoChuong);
+
+            ViewBag.SoChuongDict = soChuongDict;
+            ViewBag.Search = search;
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(total / (double)PAGE_SIZE);
+            ViewBag.Total = total;
+
+            return View(truyens);
+        }
+
+        // ─── CHI TIẾT TRUYỆN + DANH SÁCH CHƯƠNG ─────────────────
+        [HttpGet]
+        public async Task<IActionResult> ChiTietChuong(int id)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "Chuong";
+            ViewData["Title"] = "Danh sách chương";
+            ViewData["Breadcrumb"] = "Danh sách chương";
+
+            var truyen = await _context.Truyens
+                .Include(t => t.MaTheLoais)
+                .FirstOrDefaultAsync(t => t.Matruyen == id);
+
+            if (truyen == null)
+            {
+                TempData["Error"] = "Không tìm thấy truyện.";
+                return RedirectToAction("QuanLyChuong");
+            }
+
+            var chuongs = await _context.Chuongs
+                .Where(c => c.Matruyen == id)
+                .OrderBy(c => c.Thutu)
+                .ToListAsync();
+
+            ViewBag.Chuongs = chuongs;
+            return View(truyen);
+        }
+
+        // ─── THÊM CHƯƠNG (chỉ vào được từ trang chi tiết) ───────
+        [HttpGet]
+        public async Task<IActionResult> ThemChuong(int matruyen)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "Chuong";
+            ViewData["Title"] = "Thêm chương";
+            ViewData["Breadcrumb"] = "Thêm chương";
+
+            var truyen = await _context.Truyens.FindAsync(matruyen);
+            if (truyen == null)
+            {
+                TempData["Error"] = "Không tìm thấy truyện.";
+                return RedirectToAction("QuanLyChuong");
+            }
+
+            // Thứ tự đề xuất = số chương hiện tại + 1
+            var soChuongHienTai = await _context.Chuongs.CountAsync(c => c.Matruyen == matruyen);
+            ViewBag.Truyen = truyen;
+            ViewBag.ThuTuDeXuat = soChuongHienTai + 1;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThemChuong(int matruyen, string tenchuong, string noidung, int thutu, int giaxu)
+        {
+            var truyen = await _context.Truyens.FindAsync(matruyen);
+            if (truyen == null)
+            {
+                TempData["Error"] = "Không tìm thấy truyện.";
+                return RedirectToAction("QuanLyChuong");
+            }
+
+            if (string.IsNullOrWhiteSpace(tenchuong) || string.IsNullOrWhiteSpace(noidung))
+            {
+                TempData["Error"] = "Vui lòng nhập đầy đủ tên chương và nội dung.";
+                return RedirectToAction("ThemChuong", new { matruyen });
+            }
+
+            // Kiểm tra trùng thứ tự
+            bool trungThuTu = await _context.Chuongs.AnyAsync(c => c.Matruyen == matruyen && c.Thutu == thutu);
+            if (trungThuTu)
+            {
+                TempData["Error"] = $"Thứ tự chương {thutu} đã tồn tại. Vui lòng chọn số khác.";
+                return RedirectToAction("ThemChuong", new { matruyen });
+            }
+
+            var chuong = new TeenNovel_Wed.Models.Chuong
+            {
+                Matruyen = matruyen,
+                Tenchuong = tenchuong.Trim(),
+                Noidung = noidung,
+                Thutu = thutu,
+                Giaxu = giaxu,
+                LuotDoc = 0,
+                Ngaydang = DateTime.Now
+            };
+            _context.Chuongs.Add(chuong);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã thêm chương \"{tenchuong}\" thành công!";
+            return RedirectToAction("ChiTietChuong", new { id = matruyen });
+        }
+
+        // ─── SỬA CHƯƠNG ───────────────────────────────────────────
+        [HttpGet]
+        public async Task<IActionResult> SuaChuong(int id)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "Chuong";
+            ViewData["Title"] = "Sửa chương";
+            ViewData["Breadcrumb"] = "Sửa chương";
+
+            var chuong = await _context.Chuongs
+                .Include(c => c.MatruyenNavigation)
+                .FirstOrDefaultAsync(c => c.Machuong == id);
+
+            if (chuong == null)
+            {
+                TempData["Error"] = "Không tìm thấy chương.";
+                return RedirectToAction("QuanLyChuong");
+            }
+
+            return View(chuong);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuaChuong(int id, string tenchuong, string noidung, int thutu, int giaxu)
+        {
+            var chuong = await _context.Chuongs.FindAsync(id);
+            if (chuong == null)
+            {
+                TempData["Error"] = "Không tìm thấy chương.";
+                return RedirectToAction("QuanLyChuong");
+            }
+
+            if (string.IsNullOrWhiteSpace(tenchuong) || string.IsNullOrWhiteSpace(noidung))
+            {
+                TempData["Error"] = "Vui lòng nhập đầy đủ tên chương và nội dung.";
+                return RedirectToAction("SuaChuong", new { id });
+            }
+
+            // Kiểm tra trùng thứ tự với chương khác (trừ chính nó)
+            bool trungThuTu = await _context.Chuongs
+                .AnyAsync(c => c.Matruyen == chuong.Matruyen && c.Thutu == thutu && c.Machuong != id);
+            if (trungThuTu)
+            {
+                TempData["Error"] = $"Thứ tự chương {thutu} đã tồn tại. Vui lòng chọn số khác.";
+                return RedirectToAction("SuaChuong", new { id });
+            }
+
+            chuong.Tenchuong = tenchuong.Trim();
+            chuong.Noidung = noidung;
+            chuong.Thutu = thutu;
+            chuong.Giaxu = giaxu;
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã cập nhật chương \"{tenchuong}\".";
+            return RedirectToAction("ChiTietChuong", new { id = chuong.Matruyen });
+        }
+
+        // ─── XOÁ CHƯƠNG ───────────────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> XoaChuong(int id)
+        {
+            var chuong = await _context.Chuongs.FindAsync(id);
+            if (chuong == null)
+            {
+                TempData["Error"] = "Không tìm thấy chương.";
+                return RedirectToAction("QuanLyChuong");
+            }
+
+            int matruyen = chuong.Matruyen;
+            string ten = chuong.Tenchuong;
+
+            _context.Chuongs.Remove(chuong);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã xoá chương \"{ten}\".";
+            return RedirectToAction("ChiTietChuong", new { id = matruyen });
+        }
+
+
+        // ================================================================
+        //  QUẢN LÝ THỂ LOẠI
+        // ================================================================
+        [HttpGet]
+        public async Task<IActionResult> QuanLyTheLoai(string? search)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "TheLoai";
+            ViewData["Title"] = "Quản lý thể loại";
+            ViewData["Breadcrumb"] = "Quản lý thể loại";
+
+            var query = _context.TheLoais.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(t => t.Tentheloai.Contains(search));
+
+            var theloais = await query.OrderBy(t => t.Tentheloai).ToListAsync();
+
+            // Đếm số truyện mỗi thể loại
+            var idList = theloais.Select(t => t.Matheloai).ToList();
+            var soTruyenDict = await _context.TheLoais
+                .Where(tl => idList.Contains(tl.Matheloai))
+                .Select(tl => new
+                {
+                    Matheloai = tl.Matheloai,
+                    SoTruyen = tl.MaTruyens.Count
+                })
+                .ToDictionaryAsync(x => x.Matheloai, x => x.SoTruyen);
+
+            ViewBag.SoTruyenDict = soTruyenDict;
+            ViewBag.Search = search;
+
+            return View(theloais);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThemTheLoai(string tentheloai, string? mota)
+        {
+            if (string.IsNullOrWhiteSpace(tentheloai))
+            {
+                TempData["Error"] = "Tên thể loại không được để trống.";
+                return RedirectToAction("QuanLyTheLoai");
+            }
+
+            if (await _context.TheLoais.AnyAsync(t => t.Tentheloai == tentheloai.Trim()))
+            {
+                TempData["Error"] = "Thể loại này đã tồn tại.";
+                return RedirectToAction("QuanLyTheLoai");
+            }
+
+            _context.TheLoais.Add(new TeenNovel_Wed.Models.TheLoai
+            {
+                Tentheloai = tentheloai.Trim(),
+                Mota = mota?.Trim()
+            });
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã thêm thể loại \"{tentheloai}\".";
+            return RedirectToAction("QuanLyTheLoai");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuaTheLoai(int matheloai, string tentheloai, string? mota)
+        {
+            var tl = await _context.TheLoais.FindAsync(matheloai);
+            if (tl == null)
+            {
+                TempData["Error"] = "Không tìm thấy thể loại.";
+                return RedirectToAction("QuanLyTheLoai");
+            }
+
+            if (string.IsNullOrWhiteSpace(tentheloai))
+            {
+                TempData["Error"] = "Tên thể loại không được để trống.";
+                return RedirectToAction("QuanLyTheLoai");
+            }
+
+            bool trungTen = await _context.TheLoais
+                .AnyAsync(t => t.Tentheloai == tentheloai.Trim() && t.Matheloai != matheloai);
+            if (trungTen)
+            {
+                TempData["Error"] = "Tên thể loại này đã tồn tại.";
+                return RedirectToAction("QuanLyTheLoai");
+            }
+
+            tl.Tentheloai = tentheloai.Trim();
+            tl.Mota = mota?.Trim();
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Đã cập nhật thể loại.";
+            return RedirectToAction("QuanLyTheLoai");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> XoaTheLoai(int matheloai)
+        {
+            var tl = await _context.TheLoais.FindAsync(matheloai);
+            if (tl == null)
+            {
+                TempData["Error"] = "Không tìm thấy thể loại.";
+                return RedirectToAction("QuanLyTheLoai");
+            }
+
+            bool coTruyen = await _context.TheLoais
+                .Where(t => t.Matheloai == matheloai)
+                .AnyAsync(t => t.MaTruyens.Any());
+            if (coTruyen)
+            {
+                TempData["Error"] = "Không thể xoá vì đang có truyện thuộc thể loại này.";
+                return RedirectToAction("QuanLyTheLoai");
+            }
+
+            string ten = tl.Tentheloai;
+            _context.TheLoais.Remove(tl);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã xoá thể loại \"{ten}\".";
+            return RedirectToAction("QuanLyTheLoai");
+        }
+
+
+        // ================================================================
+        //  QUẢN LÝ BÌNH LUẬN
+        // ================================================================
+        [HttpGet]
+        public async Task<IActionResult> QuanLyBinhLuan(string? trangthai, string? search, int page = 1)
+        {
+            SetSidebarData();
+            ViewData["ActivePage"] = "BinhLuan";
+            ViewData["Title"] = "Quản lý bình luận";
+            ViewData["Breadcrumb"] = "Quản lý bình luận";
+
+            var query = _context.BinhLuans
+                .Include(b => b.MaDocGiaNavigation)
+                .Include(b => b.MatruyenNavigation)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(b => b.Noidung.Contains(search) ||
+                                          (b.MaDocGiaNavigation.Ten != null && b.MaDocGiaNavigation.Ten.Contains(search)) ||
+                                          (b.MatruyenNavigation.Tentruyen != null && b.MatruyenNavigation.Tentruyen.Contains(search)));
+
+            if (!string.IsNullOrWhiteSpace(trangthai))
+            {
+                int tt = trangthai == "an" ? 0 : trangthai == "hienthi" ? 1 : -1;
+                if (tt >= 0) query = query.Where(b => b.TrangThai == tt);
+            }
+
+            int total = await query.CountAsync();
+
+            var binhluans = await query
+                .OrderByDescending(b => b.Ngaybinhluan)
+                .Skip((page - 1) * PAGE_SIZE)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            ViewBag.SoHienThi = await _context.BinhLuans.CountAsync(b => b.TrangThai == 1);
+            ViewBag.SoDaAn = await _context.BinhLuans.CountAsync(b => b.TrangThai == 0);
+
+            ViewBag.TrangThai = trangthai;
+            ViewBag.Search = search;
+            ViewBag.Page = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(total / (double)PAGE_SIZE);
+            ViewBag.Total = total;
+
+            return View(binhluans);
+        }
+
+        // ─── ẨN / HIỆN BÌNH LUẬN ─────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleAnBinhLuan(int id)
+        {
+            var bl = await _context.BinhLuans.FindAsync(id);
+            if (bl == null)
+            {
+                TempData["Error"] = "Không tìm thấy bình luận.";
+                return RedirectToAction("QuanLyBinhLuan");
+            }
+
+            bl.TrangThai = bl.TrangThai == 1 ? (byte)0 : (byte)1;
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = bl.TrangThai == 1 ? "Đã hiện bình luận." : "Đã ẩn bình luận.";
+            return RedirectToAction("QuanLyBinhLuan");
+        }
+
+        // ─── XOÁ BÌNH LUẬN ────────────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> XoaBinhLuan(int id)
+        {
+            var bl = await _context.BinhLuans.FindAsync(id);
+            if (bl == null)
+            {
+                TempData["Error"] = "Không tìm thấy bình luận.";
+                return RedirectToAction("QuanLyBinhLuan");
+            }
+
+            _context.BinhLuans.Remove(bl);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Đã xoá bình luận.";
+            return RedirectToAction("QuanLyBinhLuan");
+        }
+
     }
 }

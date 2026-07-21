@@ -37,9 +37,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 304.72998046875,
+									"left": 303.27001953125,
 									"top": 197,
-									"width": 160.4052734375,
+									"width": 145.48828125,
 									"height": 13,
 									"text": "UC - Xem danh sách truyện"
 								},
@@ -53,7 +53,7 @@
 									"parentStyle": true,
 									"left": 285,
 									"top": 197,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -3307,7 +3307,7 @@
 									"parentStyle": true,
 									"left": 779.5,
 									"top": 845,
-									"width": 171.763671875,
+									"width": 171,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7SkCTj1k3eE="
@@ -3814,7 +3814,7 @@
 									"parentStyle": true,
 									"left": 1113.5,
 									"top": 779.5,
-									"width": 160.236328125,
+									"width": 159,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7SmJGEVEjvo="
@@ -5024,7 +5024,7 @@
 									"parentStyle": true,
 									"left": 900,
 									"top": 613,
-									"width": 96.6962890625,
+									"width": 96,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7X7RsBd1aF4="
@@ -5323,7 +5323,7 @@
 									"parentStyle": true,
 									"left": 1052,
 									"top": 637,
-									"width": 95.2236328125,
+									"width": 94,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7X9bXxmSnEQ="
@@ -5626,7 +5626,7 @@
 									"parentStyle": true,
 									"left": 720.5,
 									"top": 941,
-									"width": 77.90087890625,
+									"width": 77,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7sTsn3/JH+M="
@@ -5820,7 +5820,7 @@
 									"parentStyle": true,
 									"left": 961.5,
 									"top": 933,
-									"width": 84.2802734375,
+									"width": 84,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7sUQp4AP/Q4="
@@ -7307,9 +7307,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 344.72998046875,
+									"left": 343.27001953125,
 									"top": 277,
-									"width": 137.30615234375,
+									"width": 126.546875,
 									"height": 13,
 									"text": "UC - Lịch sử đọc truyện"
 								},
@@ -7323,7 +7323,7 @@
 									"parentStyle": true,
 									"left": 325,
 									"top": 277,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -9130,9 +9130,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 384.72998046875,
+									"left": 383.27001953125,
 									"top": 269,
-									"width": 71.51904296875,
+									"width": 66.79638671875,
 									"height": 13,
 									"text": "UC - Nạp xu"
 								},
@@ -9146,7 +9146,7 @@
 									"parentStyle": true,
 									"left": 365,
 									"top": 269,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -9924,7 +9924,7 @@
 									"parentStyle": true,
 									"left": 961,
 									"top": 411.5,
-									"width": 158.103515625,
+									"width": 157,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7T+QaXaRPUo="
@@ -10725,7 +10725,7 @@
 									"parentStyle": true,
 									"left": 571,
 									"top": 663.5,
-									"width": 168.91357421875,
+									"width": 168,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7UF2F3ofE/c="
@@ -10935,7 +10935,7 @@
 									"parentStyle": true,
 									"left": 1071.5,
 									"top": 727.5,
-									"width": 152.28271484375,
+									"width": 152,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7UNMA4a8vUM="
@@ -11854,7 +11854,7 @@
 									"parentStyle": true,
 									"left": 884,
 									"top": 599.5,
-									"width": 135.505859375,
+									"width": 135,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7Z5yeEY1Mh0="
@@ -12669,9 +12669,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 264.72998046875,
+									"left": 263.27001953125,
 									"top": 293,
-									"width": 112.708984375,
+									"width": 106.158203125,
 									"height": 13,
 									"text": "UC - Liên hệ CSKH"
 								},
@@ -12685,7 +12685,7 @@
 									"parentStyle": true,
 									"left": 245,
 									"top": 293,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -12964,7 +12964,7 @@
 									"parentStyle": true,
 									"left": 346,
 									"top": 463.5,
-									"width": 202.1435546875,
+									"width": 201,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7UUk+43heRM="
@@ -14927,9 +14927,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 384.72998046875,
+									"left": 383.27001953125,
 									"top": 165,
-									"width": 112.46142578125,
+									"width": 104.2158203125,
 									"height": 13,
 									"text": "UC - QLTT cá nhân"
 								},
@@ -14943,7 +14943,7 @@
 									"parentStyle": true,
 									"left": 365,
 									"top": 165,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -15215,7 +15215,7 @@
 									"parentStyle": true,
 									"left": 436.5,
 									"top": 439.5,
-									"width": 176.6005859375,
+									"width": 176,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7UqEA6UZ1Ps="
@@ -16621,7 +16621,7 @@
 									"parentStyle": true,
 									"left": 807,
 									"top": 543.5,
-									"width": 110.39453125,
+									"width": 110,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7UxJkba6Flc="
@@ -17124,9 +17124,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 400.72998046875,
+									"left": 399.27001953125,
 									"top": 253,
-									"width": 97.55078125,
+									"width": 88.81640625,
 									"height": 13,
 									"text": "UC - Đăng nhập "
 								},
@@ -17140,7 +17140,7 @@
 									"parentStyle": true,
 									"left": 381,
 									"top": 253,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -18131,7 +18131,7 @@
 									"parentStyle": true,
 									"left": 826,
 									"top": 287.5,
-									"width": 164.5654296875,
+									"width": 164,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7VN3PdrOxAQ="
@@ -20782,7 +20782,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Model1",
+			"name": "UC - Bookmark truyện",
 			"ownedElements": [
 				{
 					"_type": "UMLModel",
@@ -21057,7 +21057,7 @@
 											"parentStyle": true,
 											"left": 290,
 											"top": 405,
-											"width": 124.130859375,
+											"width": 123,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGFbvTJc="
@@ -21267,7 +21267,7 @@
 											"parentStyle": true,
 											"left": 624,
 											"top": 149,
-											"width": 77.16455078125,
+											"width": 77,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGVb6Bc0="
@@ -21477,7 +21477,7 @@
 											"parentStyle": true,
 											"left": 617.5,
 											"top": 237,
-											"width": 122.68994140625,
+											"width": 122,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGVcFV90="
@@ -21687,7 +21687,7 @@
 											"parentStyle": true,
 											"left": 628,
 											"top": 317,
-											"width": 96.53125,
+											"width": 96,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGVcQU4w="
@@ -21897,7 +21897,7 @@
 											"parentStyle": true,
 											"left": 591,
 											"top": 389,
-											"width": 148.70263671875,
+											"width": 148,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGVcbCzk="
@@ -22107,7 +22107,7 @@
 											"parentStyle": true,
 											"left": 593.5,
 											"top": 501,
-											"width": 160.95361328125,
+											"width": 160,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGVcmwlk="
@@ -22317,7 +22317,7 @@
 											"parentStyle": true,
 											"left": 301,
 											"top": 549,
-											"width": 100.3017578125,
+											"width": 99,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGVcxlNc="
@@ -22527,7 +22527,7 @@
 											"parentStyle": true,
 											"left": 566.5,
 											"top": 597,
-											"width": 224.48095703125,
+											"width": 224,
 											"height": 25,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGffsvDGVc8gtk="
@@ -23649,9 +23649,9 @@
 											},
 											"font": "Arial;13;0",
 											"parentStyle": true,
-											"left": 240.72998046875,
+											"left": 239.27001953125,
 											"top": 93,
-											"width": 102.1083984375,
+											"width": 96.662109375,
 											"height": 13,
 											"text": "BookMark Truyện"
 										},
@@ -23665,7 +23665,7 @@
 											"parentStyle": true,
 											"left": 221,
 											"top": 93,
-											"width": 13.72998046875,
+											"width": 12.27001953125,
 											"height": 13,
 											"text": "uc"
 										}
@@ -24117,7 +24117,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Model2",
+			"name": "UC - Xen lịch sử nạp",
 			"ownedElements": [
 				{
 					"_type": "UMLUseCaseDiagram",
@@ -24145,9 +24145,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 144.72998046875,
+									"left": 143.27001953125,
 									"top": 37,
-									"width": 93.96435546875,
+									"width": 85.388671875,
 									"height": 13,
 									"text": "Xem lịch sử nạp"
 								},
@@ -24161,7 +24161,7 @@
 									"parentStyle": true,
 									"left": 125,
 									"top": 37,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -24450,7 +24450,7 @@
 									"parentStyle": true,
 									"left": 295,
 									"top": 357,
-									"width": 109.00439453125,
+									"width": 108,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGffszREl+U0KI="
@@ -24660,7 +24660,7 @@
 									"parentStyle": true,
 									"left": 245.5,
 									"top": 501,
-									"width": 141.4853515625,
+									"width": 141,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGffszSHF/B72o="
@@ -24870,7 +24870,7 @@
 									"parentStyle": true,
 									"left": 224,
 									"top": 149,
-									"width": 75.71728515625,
+									"width": 75,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGffszVnl/uDEs="
@@ -25080,7 +25080,7 @@
 									"parentStyle": true,
 									"left": 428,
 									"top": 133,
-									"width": 135.72802734375,
+									"width": 135,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGffszWUmAbKiM="
@@ -25290,7 +25290,7 @@
 									"parentStyle": true,
 									"left": 523,
 									"top": 245,
-									"width": 205.79345703125,
+									"width": 205,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGffszXFWBIHg4="
@@ -25500,7 +25500,7 @@
 									"parentStyle": true,
 									"left": 545,
 									"top": 397,
-									"width": 197.10986328125,
+									"width": 196,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGffszX3WB1aow="

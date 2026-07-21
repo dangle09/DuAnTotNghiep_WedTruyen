@@ -1,0 +1,97 @@
+@model TeenNovel_Wed.Models.HoTro
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Chi tiết yêu cầu hỗ trợ";
+    ViewData["ActivePage"] = "CSKH";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cskh.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="QuanLyCSKH" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+}
+
+<div class="ck-detail-wrap">
+
+    <!-- ── THÔNG TIN YÊU CẦU ── -->
+    <div class="ad-card">
+        <div class="ad-card-head">
+            <span class="ad-card-title"><i class="bi bi-chat-square-text"></i> Yêu cầu hỗ trợ</span>
+            @if (Model.TrangThai == 0)
+            {
+                <span class="ad-chip ad-chip--red">Chờ xử lý</span>
+            }
+            else if (Model.TrangThai == 1)
+            {
+                <span class="ad-chip ad-chip--amber">Đang xử lý</span>
+            }
+            else
+            {
+                <span class="ad-chip ad-chip--green">Đã xử lý</span>
+            }
+        </div>
+        <div class="ad-card-body">
+            <div class="ck-detail-user">
+                <div class="ck-detail-avatar">@(Model.MaDocGiaNavigation?.Ten?.Substring(0, 1).ToUpper() ?? "?")</div>
+                <div>
+                    <div class="ck-detail-name">@(Model.MaDocGiaNavigation?.Ten ?? "Ẩn danh")</div>
+                    <div class="ck-detail-time"><i class="bi bi-clock"></i> Gửi lúc @Model.NgayGui.ToString("dd/MM/yyyy HH:mm")</div>
+                </div>
+            </div>
+
+            <div class="ck-detail-title">@Model.TieuDe</div>
+            <div class="ck-detail-content">@Model.NoiDung</div>
+        </div>
+    </div>
+
+    <!-- ── PHẢN HỒI ĐÃ CÓ (nếu đã xử lý) ── -->
+    @if (Model.TrangThai == 2 && !string.IsNullOrEmpty(Model.PhanHoi))
+    {
+        <div class="ad-card" style="margin-top:16px">
+            <div class="ad-card-head">
+                <span class="ad-card-title"><i class="bi bi-reply-fill"></i> Phản hồi từ @(Model.ManvNavigation?.Ten ?? "nhân viên")</span>
+                <span class="ck-detail-time">@Model.NgayXuLy?.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+            <div class="ad-card-body">
+                <div class="ck-reply-box">@Model.PhanHoi</div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- ── FORM TRẢ LỜI (chưa xử lý xong) ── -->
+        <div class="ad-card" style="margin-top:16px">
+            <div class="ad-card-head">
+                <span class="ad-card-title"><i class="bi bi-reply"></i> Trả lời khách hàng</span>
+            </div>
+            <div class="ad-card-body">
+                <form asp-action="TraLoiCSKH" method="post" id="replyForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.MaHoTro" />
+                    <textarea name="phanhoi" class="ck-reply-textarea"
+                              placeholder="Nhập nội dung phản hồi cho khách hàng..."
+                              rows="5" required></textarea>
+                    <div class="ck-reply-actions">
+                        <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="btnReply">
+                            <i class="bi bi-send"></i> Gửi phản hồi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+document.getElementById('replyForm')?.addEventListener('submit', function() {
+    const btn = document.getElementById('btnReply');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang gửi...';
+});
+</script>
+}
