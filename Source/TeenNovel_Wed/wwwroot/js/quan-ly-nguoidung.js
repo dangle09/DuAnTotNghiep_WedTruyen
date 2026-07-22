@@ -10,7 +10,7 @@ function confirmDelete(id, name, type) {
 
 // ── MODAL KHOÁ / MỞ KHOÁ ─────────────────────────────────
 function confirmToggle(id, name, trangthaiHienTai, type) {
-    const dangKhoa = trangthaiHienTai === 'hoatdong'; // sắp khoá
+    const dangKhoa = (trangthaiHienTai === true || trangthaiHienTai === "true");
     const icon     = document.getElementById('toggleIcon');
     const title    = document.getElementById('toggleTitle');
     const msg      = document.getElementById('toggleMsg');

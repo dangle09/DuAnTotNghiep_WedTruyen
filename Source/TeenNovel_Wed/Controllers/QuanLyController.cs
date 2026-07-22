@@ -1101,6 +1101,7 @@ namespace TeenNovel_Wed.Controllers
 
             // Độc giả nhiều xu nhất
             ViewBag.TopDocGiaXu = await _context.DocGias
+                .Include(d => d.MatkNavigation)
                 .OrderByDescending(d => d.Soxu).Take(5).ToListAsync();
 
             // Chờ xử lý
@@ -1132,10 +1133,10 @@ namespace TeenNovel_Wed.Controllers
                 .Take(5)
                 .ToListAsync();
 
-            // Độc giả mới nhất
-            ViewBag.DocGiaMoiNhat = await _context.DocGias
+            // Độc giả nhiều xu nhất
+            ViewBag.TopDocGiaXu = await _context.DocGias
                 .Include(d => d.MatkNavigation)
-                .OrderByDescending(d => d.Ngaytao)
+                .OrderByDescending(d => d.Soxu)
                 .Take(5)
                 .ToListAsync();
 

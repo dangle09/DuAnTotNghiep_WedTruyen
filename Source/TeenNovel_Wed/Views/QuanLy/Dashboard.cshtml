@@ -160,7 +160,18 @@
                     <div class="db-avatar">@dg.Ten.Substring(0, 1).ToUpper()</div>
                     <div class="db-item-info">
                         <div class="db-item-title">@dg.Ten</div>
-                        <div class="db-item-sub">@dg.MatkNavigation?.Email · @dg.Soxu xu</div>
+                        @if (dg.MatkNavigation != null)
+                        {
+                            <div class="db-item-sub">
+                                @dg.MatkNavigation.Email · @dg.Soxu xu
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="db-item-sub">
+                                @dg.Soxu xu
+                            </div>
+                        }
                     </div>
                     <span class="ad-chip @(dg.MatkNavigation?.Trangthai == true ? "ad-chip--green" : "ad-chip--red")">
                         @(dg.MatkNavigation?.Trangthai == true ? "Hoạt động" : "Bị khoá")
