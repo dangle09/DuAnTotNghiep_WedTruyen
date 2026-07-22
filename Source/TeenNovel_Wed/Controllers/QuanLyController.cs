@@ -1550,14 +1550,15 @@ namespace TeenNovel_Wed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SuaTacGia(
-    int id,
-    string tentacgia,
-    string? butdanh,
-    string? quocgia,
-    string? tieusu,
-    IFormFile? anhdaidien)
+    int MaTacGia,
+    string TenTacGia,
+    string? ButDanh,
+    string? QuocGia,
+    string? TieuSu,
+    string? AnhDaiDien,
+    IFormFile? anh)
         {
-            var tacGia = await _context.TacGias.FindAsync(id);
+            var tacGia = await _context.TacGias.FindAsync(MaTacGia);
 
             if (tacGia == null)
             {
@@ -1565,68 +1566,59 @@ namespace TeenNovel_Wed.Controllers
                 return RedirectToAction(nameof(QuanLyTacGia));
             }
 
-            if (string.IsNullOrWhiteSpace(tentacgia))
+            if (string.IsNullOrWhiteSpace(TenTacGia))
             {
                 TempData["Error"] = "Tên tác giả không được để trống.";
                 return View(tacGia);
             }
 
-            if (anhdaidien != null && anhdaidien.Length > 0)
+            // Upload ảnh mới
+            if (anh != null && anh.Length > 0)
             {
-                var allowedTypes = new[]
-                {
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        };
-
-                if (!allowedTypes.Contains(anhdaidien.ContentType))
-                {
-                    TempData["Error"] = "Chỉ chấp nhận JPG, PNG hoặc WEBP.";
-                    return View(tacGia);
-                }
-
                 if (!string.IsNullOrEmpty(tacGia.AnhDaiDien))
                 {
-                    var oldImg = Path.Combine(
+                    var old = Path.Combine(
                         Directory.GetCurrentDirectory(),
                         "wwwroot",
                         tacGia.AnhDaiDien.TrimStart('/')
                             .Replace('/', Path.DirectorySeparatorChar));
 
-                    if (System.IO.File.Exists(oldImg))
-                        System.IO.File.Delete(oldImg);
+                    if (System.IO.File.Exists(old))
+                        System.IO.File.Delete(old);
                 }
 
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(anhdaidien.FileName)}";
+                var ext = Path.GetExtension(anh.FileName);
 
-                var uploadDir = Path.Combine(
+                var file = Guid.NewGuid() + ext;
+
+                var folder = Path.Combine(
                     Directory.GetCurrentDirectory(),
                     "wwwroot",
                     "uploads",
                     "tacgia");
 
-                Directory.CreateDirectory(uploadDir);
+                Directory.CreateDirectory(folder);
 
-                var filePath = Path.Combine(uploadDir, fileName);
+                using var stream = new FileStream(
+                    Path.Combine(folder, file),
+                    FileMode.Create);
 
-                using var stream = new FileStream(filePath, FileMode.Create);
+                await anh.CopyToAsync(stream);
 
-                await anhdaidien.CopyToAsync(stream);
-
-                tacGia.AnhDaiDien = $"/uploads/tacgia/{fileName}";
+                tacGia.AnhDaiDien = "/uploads/tacgia/" + file;
             }
 
-            tacGia.TenTacGia = tentacgia.Trim();
-            tacGia.ButDanh = butdanh?.Trim();
-            tacGia.QuocGia = quocgia?.Trim();
-            tacGia.TieuSu = tieusu?.Trim();
+            tacGia.TenTacGia = TenTacGia.Trim();
+            tacGia.ButDanh = ButDanh?.Trim();
+            tacGia.QuocGia = QuocGia?.Trim();
+            tacGia.TieuSu = TieuSu?.Trim();
 
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = $"Đã cập nhật tác giả \"{tentacgia}\".";
+            TempData["Success"] = "Đã cập nhật tác giả.";
 
-            return RedirectToAction(nameof(ChiTietTacGia), new { id });
+            return RedirectToAction(nameof(ChiTietTacGia),
+                new { id = MaTacGia });
         }
 
         // =====================================================
