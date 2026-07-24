@@ -1,0 +1,181 @@
+﻿@model IEnumerable<TeenNovel_Wed.Models.NapXu>
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"] = "Quản lý tài chính";
+    ViewData["ActivePage"] = "TaiChinh";
+
+    var doanhThuNam = ViewBag.DoanhThuNam as List<(int Thang, decimal TongTien)> ?? new List<(int, decimal)>();
+    decimal maxDoanhThu = doanhThuNam.Any() ? doanhThuNam.Max(d => d.TongTien) : 1;
+    if (maxDoanhThu == 0) maxDoanhThu = 1;
+
+    string[] tenThang = { "", "Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12" };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/tai-chinh.css" asp-append-version="true" />
+}
+
+<!-- ── BỘ LỌC THÁNG/NĂM ── -->
+<div class="tc-filter-bar">
+    <form method="get" asp-action="QuanLyTaiChinh" class="tc-filter-form">
+        <select name="thang" class="ad-select-inline">
+            @for (int i = 1; i <= 12; i++)
+            {
+                <option value="@i" selected="@(i == (int)ViewBag.FilterThang)">Tháng @i</option>
+            }
+        </select>
+        <select name="nam" class="ad-select-inline">
+            @for (int y = DateTime.Now.Year; y >= DateTime.Now.Year - 3; y--)
+            {
+                <option value="@y" selected="@(y == (int)ViewBag.FilterNam)">Năm @y</option>
+            }
+        </select>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-funnel"></i> Xem
+        </button>
+    </form>
+</div>
+
+<!-- ── 4 STAT CARDS ── -->
+<div class="ad-stats-grid">
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Doanh thu tháng <i class="bi bi-coin" style="color:#d97706"></i></div>
+        <div class="ad-stat-val">@(((decimal)ViewBag.TongTienThang).ToString("N0"))đ</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Tổng xu đã bán <i class="bi bi-gem" style="color:#7c3aed"></i></div>
+        <div class="ad-stat-val">@(((int)ViewBag.TongXuThang).ToString("N0"))</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Lượt nạp <i class="bi bi-arrow-repeat" style="color:#059669"></i></div>
+        <div class="ad-stat-val">@ViewBag.TongLuotNap</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Giao dịch thất bại <i class="bi bi-x-circle" style="color:#dc2626"></i></div>
+        <div class="ad-stat-val">@ViewBag.LuotThatBai</div>
+    </div>
+</div>
+
+<!-- ── BIỂU ĐỒ DOANH THU CẢ NĂM ── -->
+<div class="ad-card" style="margin-bottom:20px">
+    <div class="ad-card-head">
+        <span class="ad-card-title"><i class="bi bi-bar-chart-line"></i> Doanh thu năm @ViewBag.FilterNam</span>
+    </div>
+    <div class="ad-card-body">
+        <div class="tc-chart">
+            @foreach (var dt in doanhThuNam)
+            {
+                double pct = maxDoanhThu > 0 ? (double)(dt.TongTien / maxDoanhThu * 100) : 0;
+                <div class="tc-chart-col">
+                    <div class="tc-chart-bar-wrap">
+                        <span class="tc-chart-val">@((dt.TongTien / 1000).ToString("N0"))k</span>
+                        <div class="tc-chart-bar @(dt.Thang == (int)ViewBag.FilterThang ? "active" : "")"
+                             style="height:@(pct)%"></div>
+                    </div>
+                    <span class="tc-chart-label">@tenThang[dt.Thang]</span>
+                </div>
+            }
+            @if (!doanhThuNam.Any())
+            {
+                <div class="tc-empty">Chưa có dữ liệu doanh thu năm này</div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ── BẢNG GIAO DỊCH NẠP XU ── -->
+<div class="tc-table-head">
+    <span class="tc-table-title">Lịch sử giao dịch tháng @ViewBag.FilterThang/@ViewBag.FilterNam</span>
+    <div class="tc-table-filters">
+        <a asp-action="QuanLyTaiChinh" asp-route-thang="@ViewBag.FilterThang" asp-route-nam="@ViewBag.FilterNam"
+           class="tc-status-tab @(ViewBag.TrangThai == null ? "active" : "")">Tất cả</a>
+        <a asp-action="QuanLyTaiChinh" asp-route-thang="@ViewBag.FilterThang" asp-route-nam="@ViewBag.FilterNam" asp-route-trangthai="thanhcong"
+           class="tc-status-tab @(ViewBag.TrangThai?.ToString() == "thanhcong" ? "active" : "")">Thành công</a>
+        <a asp-action="QuanLyTaiChinh" asp-route-thang="@ViewBag.FilterThang" asp-route-nam="@ViewBag.FilterNam" asp-route-trangthai="thatbai"
+           class="tc-status-tab @(ViewBag.TrangThai?.ToString() == "thatbai" ? "active" : "")">Thất bại</a>
+    </div>
+</div>
+
+<div class="ad-table-wrap">
+    <table class="ad-table">
+        <thead>
+            <tr>
+                <th>Độc giả</th>
+                <th>Số xu</th>
+                <th>Số tiền</th>
+                <th>Phương thức</th>
+                <th>Trạng thái</th>
+                <th>Thời gian</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="6" class="tc-empty-row"><i class="bi bi-inbox"></i><span>Không có giao dịch nào</span></td></tr>
+            }
+            @foreach (var n in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="tc-user-row">
+                            <div class="tc-avatar">@(n.MaDocGiaNavigation?.Ten?.Substring(0, 1).ToUpper() ?? "?")</div>
+                            @n.MaDocGiaNavigation?.Ten
+                        </div>
+                    </td>
+                    <td><span class="tc-xu"><i class="bi bi-coin"></i> @n.Soxunhan</span></td>
+                    <td>@n.Sotien.ToString("N0")đ</td>
+                    <td>
+                        <span class="tc-method">
+                            @switch (n.Phuongthuc)
+                            {
+                                case "momo":
+                                    <text><i class="bi bi-wallet2"></i> Momo</text>
+                                    break;
+                                case "vnpay":
+
+                                    <text><i class="bi bi-credit-card"></i> VNPay</text>
+                                    break;
+                                case "banking":
+
+                                    <text><i class="bi bi-bank"></i> Banking</text>
+                                    break;
+                                default:
+
+                                    @n.Phuongthuc
+                                    break;
+                            }
+                        </span>
+                    </td>
+                    <td>
+                        @if (n.Trangthai == "thanhcong")
+                        {
+                            <span class="ad-chip ad-chip--green">Thành công</span>
+                        }
+                        else if (n.Trangthai == "choxuly")
+                        {
+                            <span class="ad-chip ad-chip--amber">Chờ xử lý</span>
+                        }
+                        else
+                        {
+                            <span class="ad-chip ad-chip--red">Thất bại</span>
+                        }
+                    </td>
+                    <td>@n.Ngaynap.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="tc-pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyTaiChinh" asp-route-page="@i"
+               asp-route-thang="@ViewBag.FilterThang" asp-route-nam="@ViewBag.FilterNam"
+               asp-route-trangthai="@ViewBag.TrangThai"
+               class="tc-page-btn @(i == (int)ViewBag.Page ? "active" : "")">@i</a>
+        }
+    </div>
+}

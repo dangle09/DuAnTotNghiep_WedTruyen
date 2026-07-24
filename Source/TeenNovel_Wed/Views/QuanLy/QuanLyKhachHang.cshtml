@@ -89,7 +89,7 @@
                             </a>
                             <button class="nd-action-btn @(dg.MatkNavigation?.Trangthai == true ? "nd-action-lock" : "nd-action-unlock")"
                                     title="@(dg.MatkNavigation?.Trangthai == true ? "Khoá" : "Mở khoá")"
-                                    onclick="confirmToggle(@dg.MaDocGia, '@dg.Ten.Replace("'", "\\'")', '@dg.MatkNavigation?.Trangthai', 'dg')">
+                                onclick="confirmToggle(@dg.MaDocGia,'@dg.Ten.Replace("'", "\\'")',@(dg.MatkNavigation?.Trangthai == true ? "true" : "false"),'dg')">
                                 <i class="bi @(dg.MatkNavigation?.Trangthai == true ? "bi-lock" : "bi-unlock")"></i>
                             </button>
                             <button class="nd-action-btn nd-action-delete" title="Xoá"

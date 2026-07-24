@@ -10,6 +10,7 @@ namespace TeenNovel_Wed.Controllers
     public class DocGiaController : Controller
     {
         protected readonly TeenNovelDbContext _context;
+        private const int PAGE_SIZE_NAPXU = 3;
 
         public DocGiaController(TeenNovelDbContext context)
         {
@@ -849,6 +850,75 @@ namespace TeenNovel_Wed.Controllers
             return RedirectToAction(nameof(ThongTinCaNhan));
         
 
+        }
+
+        // ─── LỊCH SỬ NẠP XU ────────────────────────────────
+        [HttpGet]
+        public async Task<IActionResult> LichSuNap(DateTime? tu, DateTime? den, int soLuong = PAGE_SIZE_NAPXU)
+        {
+            var maDocGiaClaim = User.FindFirst("MaDocGia")?.Value;
+            if (!int.TryParse(maDocGiaClaim, out int maDocGia))
+                return RedirectToAction("Login", "Login_Register");
+
+            ViewData["ActivePage"] = "LichSuNap";
+            ViewData["Title"] = "Lịch sử nạp xu";
+
+            var docGia = await _context.DocGias
+                .Include(d => d.MatkNavigation)
+                .FirstOrDefaultAsync(d => d.MaDocGia == maDocGia);
+
+            var query = _context.NapXus
+                .Where(n => n.MaDocGia == maDocGia)
+                .AsQueryable();
+
+            if (tu.HasValue)
+                query = query.Where(n => n.Ngaynap >= tu.Value.Date);
+            if (den.HasValue)
+                query = query.Where(n => n.Ngaynap < den.Value.Date.AddDays(1));
+
+            int total = await query.CountAsync();
+
+            var giaoDich = await query
+                .OrderByDescending(n => n.Ngaynap)
+                .Take(soLuong)
+                .ToListAsync();
+
+            ViewBag.DocGia = docGia;
+            ViewBag.Tu = tu?.ToString("yyyy-MM-dd");
+            ViewBag.Den = den?.ToString("yyyy-MM-dd");
+            ViewBag.SoLuong = soLuong;
+            ViewBag.Total = total;
+            ViewBag.ConThem = total > soLuong;
+
+            return View(giaoDich);
+        }
+
+        // ─── CHI TIẾT NẠP XU ────────────────────────────────
+        [HttpGet]
+        public async Task<IActionResult> ChiTietNap(int id)
+        {
+            var maDocGiaClaim = User.FindFirst("MaDocGia")?.Value;
+            if (!int.TryParse(maDocGiaClaim, out int maDocGia))
+                return RedirectToAction("Login", "Login_Register");
+
+            ViewData["ActivePage"] = "LichSuNap";
+            ViewData["Title"] = "Chi tiết nạp xu";
+
+            var giaoDich = await _context.NapXus
+                .FirstOrDefaultAsync(n => n.Manap == id && n.MaDocGia == maDocGia);
+
+            if (giaoDich == null)
+            {
+                TempData["Error"] = "Không tìm thấy giao dịch.";
+                return RedirectToAction("LichSuNap");
+            }
+
+            var docGia = await _context.DocGias
+                .FirstOrDefaultAsync(d => d.MaDocGia == maDocGia);
+
+            ViewBag.DocGia = docGia;
+
+            return View(giaoDich);
         }
     }
 }

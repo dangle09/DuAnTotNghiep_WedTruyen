@@ -1,0 +1,84 @@
+@model TeenNovel_Wed.Models.Chuong
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Sửa chương";
+    ViewData["ActivePage"] = "Chuong";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-chuong.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="ChiTietChuong" asp-route-id="@Model.Matruyen" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+}
+
+<div class="qc-form-wrap">
+
+    <div class="qc-form-truyen-info">
+        @if (!string.IsNullOrEmpty(Model.MatruyenNavigation?.AnhBia))
+        {
+            <img src="@Model.MatruyenNavigation.AnhBia" alt="" />
+        }
+        else
+        {
+            <div class="qc-form-cover-placeholder"><i class="bi bi-book"></i></div>
+        }
+        <div>
+            <div class="qc-form-truyen-label">Đang sửa chương của truyện</div>
+            <div class="qc-form-truyen-name">@Model.MatruyenNavigation?.Tentruyen</div>
+        </div>
+    </div>
+
+    <form asp-action="SuaChuong" asp-route-id="@Model.Machuong" method="post" id="chuongForm" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="ad-card">
+            <div class="ad-card-head"><span class="ad-card-title">Thông tin chương</span></div>
+            <div class="ad-card-body">
+
+                <div class="qc-field-row">
+                    <div class="qc-field">
+                        <label>Tên chương <span class="qc-required">*</span></label>
+                        <input type="text" name="tenchuong" id="tenchuong"
+                               value="@Model.Tenchuong" maxlength="200" />
+                        <span class="qc-err" id="err-tenchuong"></span>
+                    </div>
+                    <div class="qc-field" style="max-width:140px">
+                        <label>Thứ tự <span class="qc-required">*</span></label>
+                        <input type="number" name="thutu" id="thutu" min="1" value="@Model.Thutu" />
+                        <span class="qc-err" id="err-thutu"></span>
+                    </div>
+                </div>
+
+                <div class="qc-field" style="max-width:200px">
+                    <label>Giá xu</label>
+                    <input type="number" name="giaxu" id="giaxu" min="0" value="@Model.Giaxu" />
+                    <span class="qc-field-hint">0 = miễn phí</span>
+                </div>
+
+                <div class="qc-field">
+                    <label>Nội dung chương <span class="qc-required">*</span></label>
+                    <textarea name="noidung" id="noidung" rows="16">@Model.Noidung</textarea>
+                    <span class="qc-err" id="err-noidung"></span>
+                    <span class="qc-field-hint" id="wordCount">0 từ</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="qc-form-actions">
+            <a asp-action="ChiTietChuong" asp-route-id="@Model.Matruyen" class="ad-topbar-btn ad-topbar-btn--outline">Huỷ</a>
+            <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="submitBtn">
+                <i class="bi bi-check-lg"></i> Lưu thay đổi
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/quan-ly-chuong.js" asp-append-version="true"></script>
+    <script>initChuongForm();</script>
+}

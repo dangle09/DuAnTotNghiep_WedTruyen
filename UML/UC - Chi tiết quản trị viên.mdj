@@ -38,7 +38,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 272.72998046875,
-									"top": 141,
+									"top": 165,
 									"width": 160.4052734375,
 									"height": 13,
 									"text": "UC - Quản lý thể loại truyện"
@@ -52,7 +52,7 @@
 									"font": "Arial;13;1",
 									"parentStyle": true,
 									"left": 253,
-									"top": 141,
+									"top": 165,
 									"width": 13.72998046875,
 									"height": 13,
 									"text": "uc"
@@ -61,7 +61,7 @@
 							"font": "Arial;13;0",
 							"parentStyle": false,
 							"left": 248,
-							"top": 136,
+							"top": 160,
 							"width": 720,
 							"height": 600,
 							"nameLabel": {
@@ -1973,6 +1973,58 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGe7dghKSLc+fY="
 							}
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGfgtPubepBN0A=",
+							"_parent": {
+								"$ref": "AAAAAAGe7ceoZRQM9vc="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 74,
+							"top": 290,
+							"width": 100,
+							"height": 25
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGfgtQWfepgQ3o=",
+							"_parent": {
+								"$ref": "AAAAAAGe7ceoZRQM9vc="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 70,
+							"top": 344,
+							"width": 100,
+							"height": 25
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGfgtQb/up70og=",
+							"_parent": {
+								"$ref": "AAAAAAGe7ceoZRQM9vc="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 76,
+							"top": 476,
+							"width": 100,
+							"height": 25
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGfgtRFROrzdhs=",
+							"_parent": {
+								"$ref": "AAAAAAGe7ceoZRQM9vc="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 105,
+							"top": 697,
+							"width": 100,
+							"height": 25
 						}
 					]
 				},
@@ -2149,9 +2201,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 296.72998046875,
+									"left": 295.27001953125,
 									"top": 205,
-									"width": 114.87353515625,
+									"width": 106.869140625,
 									"height": 13,
 									"text": "UC - Quản lý truyện"
 								},
@@ -2165,7 +2217,7 @@
 									"parentStyle": true,
 									"left": 277,
 									"top": 205,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -5876,9 +5928,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 304.72998046875,
+									"left": 303.27001953125,
 									"top": 205,
-									"width": 132.234375,
+									"width": 122.40185546875,
 									"height": 13,
 									"text": "UC - Quản lý bình luận"
 								},
@@ -5892,7 +5944,7 @@
 									"parentStyle": true,
 									"left": 285,
 									"top": 205,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -7170,7 +7222,7 @@
 									"parentStyle": true,
 									"left": 637,
 									"top": 339.5,
-									"width": 254.8544921875,
+									"width": 254,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7fi63D57MWI="
@@ -7479,7 +7531,7 @@
 									"parentStyle": true,
 									"left": 668,
 									"top": 455.5,
-									"width": 212.2490234375,
+									"width": 212,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7jhi8Y596sQ="
@@ -8038,9 +8090,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 264.72998046875,
+									"left": 263.27001953125,
 									"top": 197,
-									"width": 202.2236328125,
+									"width": 184.7041015625,
 									"height": 13,
 									"text": "UC - Quản lý tài khoản người dùng"
 								},
@@ -8054,7 +8106,7 @@
 									"parentStyle": true,
 									"left": 245,
 									"top": 197,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -8538,7 +8590,7 @@
 									"parentStyle": true,
 									"left": 706,
 									"top": 327.5,
-									"width": 202.841796875,
+									"width": 202,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7gz77kUbZa8="
@@ -10490,9 +10542,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 264.72998046875,
+									"left": 263.27001953125,
 									"top": 197,
-									"width": 209.56787109375,
+									"width": 192.07373046875,
 									"height": 13,
 									"text": "UC - Quản lý giao dịch và doanh thu"
 								},
@@ -10506,7 +10558,7 @@
 									"parentStyle": true,
 									"left": 245,
 									"top": 197,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -11276,7 +11328,7 @@
 									"parentStyle": true,
 									"left": 707,
 									"top": 375.5,
-									"width": 206.3330078125,
+									"width": 205,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7hbaG0zsNnI="
@@ -11878,7 +11930,7 @@
 									"parentStyle": true,
 									"left": 585,
 									"top": 591.5,
-									"width": 313.3798828125,
+									"width": 313,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7hhfLE3MMNU="
@@ -12908,9 +12960,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 296.72998046875,
+									"left": 295.27001953125,
 									"top": 253,
-									"width": 102.31787109375,
+									"width": 98.8330078125,
 									"height": 13,
 									"text": "UC - QLTT CSKH"
 								},
@@ -12924,7 +12976,7 @@
 									"parentStyle": true,
 									"left": 277,
 									"top": 253,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -13196,7 +13248,7 @@
 									"parentStyle": true,
 									"left": 345,
 									"top": 487.5,
-									"width": 274.83056640625,
+									"width": 274,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7hqil07E1Ls="
@@ -13694,7 +13746,7 @@
 									"parentStyle": true,
 									"left": 731.5,
 									"top": 327.5,
-									"width": 248.06884765625,
+									"width": 247,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7hvq2k82wQE="
@@ -14103,7 +14155,7 @@
 									"parentStyle": true,
 									"left": 786.5,
 									"top": 447.5,
-									"width": 205.46337890625,
+									"width": 205,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7iPfi1RyUio="
@@ -14503,7 +14555,7 @@
 									"parentStyle": true,
 									"left": 917,
 									"top": 557,
-									"width": 99.42578125,
+									"width": 98,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7iSHDlTGQVs="
@@ -15331,9 +15383,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 208.72998046875,
+									"left": 207.27001953125,
 									"top": 189,
-									"width": 163.90283203125,
+									"width": 149.3095703125,
 									"height": 13,
 									"text": "UC - Quản lý chương truyện"
 								},
@@ -15347,7 +15399,7 @@
 									"parentStyle": true,
 									"left": 189,
 									"top": 189,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -16147,7 +16199,7 @@
 									"parentStyle": true,
 									"left": 267,
 									"top": 667.5,
-									"width": 168.91357421875,
+									"width": 168,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7iiz9VZs/U4="
@@ -18103,9 +18155,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 255.9599609375,
+									"left": 254.5,
 									"top": 189,
-									"width": 135.12255859375,
+									"width": 124.56005859375,
 									"height": 13,
 									"text": "UC - Quản lý nhân viên"
 								},
@@ -18119,7 +18171,7 @@
 									"parentStyle": true,
 									"left": 229,
 									"top": 189,
-									"width": 20.9599609375,
+									"width": 19.5,
 									"height": 13,
 									"text": "pkg"
 								}
@@ -18398,7 +18450,7 @@
 									"parentStyle": true,
 									"left": 328.5,
 									"top": 405,
-									"width": 118.34814453125,
+									"width": 118,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7v9RlSW6v/Q="
@@ -18597,7 +18649,7 @@
 									"parentStyle": true,
 									"left": 291,
 									"top": 269,
-									"width": 130.6435546875,
+									"width": 130,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7v9ygSXpXYc="
@@ -18791,7 +18843,7 @@
 									"parentStyle": true,
 									"left": 575,
 									"top": 293,
-									"width": 108.9599609375,
+									"width": 108,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7v+TaCYXLk8="
@@ -18985,7 +19037,7 @@
 									"parentStyle": true,
 									"left": 589,
 									"top": 445,
-									"width": 99.603515625,
+									"width": 98,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7v+moCZFyXw="
@@ -19185,7 +19237,7 @@
 									"parentStyle": true,
 									"left": 388.5,
 									"top": 597,
-									"width": 98.130859375,
+									"width": 97,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGe7v+7wSZzlwU="
@@ -21678,7 +21730,7 @@
 									"parentStyle": true,
 									"left": 322.5,
 									"top": 823.5,
-									"width": 127.76171875,
+									"width": 127,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGfb1/odkDCvLQ="
@@ -22122,9 +22174,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 232.72998046875,
+									"left": 231.27001953125,
 									"top": 77,
-									"width": 86.71533203125,
+									"width": 79.0537109375,
 									"height": 13,
 									"text": "Quản lý tác giả"
 								},
@@ -22138,7 +22190,7 @@
 									"parentStyle": true,
 									"left": 213,
 									"top": 77,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -23082,9 +23134,9 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 424.72998046875,
+									"left": 423.27001953125,
 									"top": 77,
-									"width": 63.60986328125,
+									"width": 56.67822265625,
 									"height": 13,
 									"text": "Đăng nhập"
 								},
@@ -23098,7 +23150,7 @@
 									"parentStyle": true,
 									"left": 405,
 									"top": 77,
-									"width": 13.72998046875,
+									"width": 12.27001953125,
 									"height": 13,
 									"text": "uc"
 								}
@@ -24017,7 +24069,7 @@
 									"parentStyle": true,
 									"left": 1250,
 									"top": 195.5,
-									"width": 124.8544921875,
+									"width": 124,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGfb2r8c0U8fPk="
@@ -24227,7 +24279,7 @@
 									"parentStyle": true,
 									"left": 493.5,
 									"top": 731.5,
-									"width": 219.41552734375,
+									"width": 219,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGfb2r+ckVpOqo="
@@ -24437,7 +24489,7 @@
 									"parentStyle": true,
 									"left": 1256.5,
 									"top": 723.5,
-									"width": 195.5927734375,
+									"width": 195,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGfb2sArUWWImg="
