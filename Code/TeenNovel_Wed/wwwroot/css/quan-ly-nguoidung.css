@@ -1,0 +1,179 @@
+/* =========================================================
+   TeenNovel_WED — quan-ly-nguoidung.css
+   Dùng chung cho Quản lý Nhân viên + Quản lý Khách hàng
+   ========================================================= */
+
+/* ── BỘ LỌC ── */
+.nd-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.nd-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    flex-wrap: wrap;
+}
+.nd-filter-search {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border: 1px solid #e4e7ec;
+    border-radius: 8px;
+    background: #fff;
+    min-width: 220px;
+    flex: 1;
+    transition: border-color .15s;
+}
+.nd-filter-search:focus-within { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+.nd-filter-search i { color: #9ca3af; font-size: 14px; }
+.nd-filter-search input {
+    border: none; outline: none; font-size: 13px; color: #18181b;
+    width: 100%; background: transparent;
+}
+.nd-filter-search input::placeholder { color: #9ca3af; }
+
+.nd-select {
+    padding: 7px 12px;
+    border: 1px solid #e4e7ec;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #18181b;
+    background: #fff;
+    outline: none;
+    cursor: pointer;
+}
+.nd-select:focus { border-color: #7c3aed; }
+
+.nd-clear-btn {
+    font-size: 12px; color: #6b7280;
+    display: flex; align-items: center; gap: 4px;
+    text-decoration: none; white-space: nowrap;
+}
+.nd-clear-btn:hover { color: #dc2626; }
+
+.nd-total { font-size: 13px; color: #6b7280; white-space: nowrap; margin-left: auto; }
+.nd-total strong { color: #18181b; }
+
+/* ── HÀNG NGƯỜI DÙNG TRONG BẢNG ── */
+.nd-user-row { display: flex; align-items: center; gap: 10px; }
+.nd-avatar {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.nd-avatar--reader { background: linear-gradient(135deg, #7c3aed, #c084fc); }
+.nd-name { font-size: 13px; font-weight: 500; color: #18181b; }
+
+.nd-xu {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 13px; font-weight: 600; color: #b45309;
+}
+
+/* ── ACTIONS ── */
+.nd-actions { display: flex; align-items: center; gap: 4px; }
+.nd-action-btn {
+    width: 28px; height: 28px; border-radius: 6px;
+    border: 1px solid #e4e7ec; background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; cursor: pointer;
+    transition: background .12s, color .12s, border-color .12s;
+    text-decoration: none; color: #52525b;
+}
+.nd-action-view:hover   { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.nd-action-edit:hover   { background: #fefce8; color: #b45309; border-color: #fde68a; }
+.nd-action-lock:hover   { background: #fff7ed; color: #ea580c; border-color: #fed7aa; }
+.nd-action-unlock:hover { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+.nd-action-delete:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+.nd-empty {
+    text-align: center; padding: 40px; color: #9ca3af;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.nd-empty i { font-size: 32px; }
+
+/* ── PHÂN TRANG ── */
+.nd-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 20px; }
+.nd-page-btn {
+    width: 34px; height: 34px; border: 1px solid #e4e7ec; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; color: #52525b; text-decoration: none;
+    transition: background .12s, color .12s, border-color .12s;
+}
+.nd-page-btn:hover  { background: #f4f4f5; color: #18181b; }
+.nd-page-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+
+/* ── MODAL ── */
+.nd-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,.45); align-items: center; justify-content: center;
+}
+.nd-modal-overlay.show { display: flex; }
+.nd-modal {
+    background: #fff; border-radius: 16px; padding: 32px 28px;
+    max-width: 380px; width: 90%; text-align: center;
+    animation: ndModalIn .2s ease;
+}
+@keyframes ndModalIn {
+    from { opacity: 0; transform: scale(.95) translateY(-10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.nd-modal-icon {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin: 0 auto 16px;
+}
+.nd-modal-icon--danger { background: #fef2f2; color: #dc2626; }
+.nd-modal-icon--warn   { background: #fff7ed; color: #ea580c; }
+.nd-modal-title { font-size: 16px; font-weight: 600; color: #18181b; margin-bottom: 8px; }
+.nd-modal-msg   { font-size: 13px; color: #52525b; line-height: 1.7; margin-bottom: 20px; }
+.nd-modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ── CHI TIẾT ── */
+.nd-detail-inner { display: flex; gap: 20px; padding: 20px; align-items: center; }
+.nd-detail-avatar {
+    width: 80px; height: 80px; border-radius: 16px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; font-size: 32px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.nd-detail-avatar--reader { background: linear-gradient(135deg, #7c3aed, #c084fc); }
+.nd-detail-name { font-size: 20px; font-weight: 600; color: #18181b; margin-bottom: 8px; }
+.nd-detail-meta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-size: 13px; color: #6b7280; margin-bottom: 8px;
+}
+.nd-detail-meta i { margin-right: 4px; }
+
+/* ── FORM THÊM/SỬA ── */
+.nd-form-wrap { max-width: 640px; }
+.nd-field { margin-bottom: 14px; }
+.nd-field:last-child { margin-bottom: 0; }
+.nd-field label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+.nd-required { color: #dc2626; }
+.nd-field input, .nd-field select {
+    width: 100%; padding: 8px 12px; border: 1px solid #e4e7ec; border-radius: 8px;
+    font-size: 13px; color: #18181b; background: #fff; outline: none;
+    transition: border-color .15s, box-shadow .15s; font-family: inherit;
+}
+.nd-field input:focus, .nd-field select:focus {
+    border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1);
+}
+.nd-input--readonly { color: #9ca3af !important; background: #f9fafb !important; cursor: not-allowed; }
+.nd-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.nd-field-row .nd-field { margin-bottom: 0; }
+.nd-err { font-size: 11px; color: #dc2626; margin-top: 4px; display: block; font-weight: 500; }
+.nd-form-actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 4px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+    .nd-field-row  { grid-template-columns: 1fr; }
+    .nd-filter-bar { flex-direction: column; align-items: stretch; }
+}

@@ -1,0 +1,126 @@
+@model IEnumerable<TeenNovel_Wed.Models.BinhLuan>
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Quản lý bình luận";
+    ViewData["ActivePage"] = "BinhLuan";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-binhluan.css" asp-append-version="true" />
+}
+
+<!-- ── STAT ── -->
+<div class="bl-stats-row">
+    <a asp-action="QuanLyBinhLuan" asp-route-trangthai="hienthi"
+       class="bl-stat-card bl-stat--hien @(ViewBag.TrangThai?.ToString() == "hienthi" ? "active" : "")">
+        <i class="bi bi-eye"></i>
+        <div><div class="bl-stat-val">@ViewBag.SoHienThi</div><div class="bl-stat-label">Đang hiển thị</div></div>
+    </a>
+    <a asp-action="QuanLyBinhLuan" asp-route-trangthai="an"
+       class="bl-stat-card bl-stat--an @(ViewBag.TrangThai?.ToString() == "an" ? "active" : "")">
+        <i class="bi bi-eye-slash"></i>
+        <div><div class="bl-stat-val">@ViewBag.SoDaAn</div><div class="bl-stat-label">Đã ẩn</div></div>
+    </a>
+</div>
+
+<!-- ── FILTER ── -->
+<div class="bl-filter-bar">
+    <form method="get" asp-action="QuanLyBinhLuan" class="bl-filter-form">
+        <input type="hidden" name="trangthai" value="@ViewBag.TrangThai" />
+        <div class="bl-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm nội dung, tên độc giả, tên truyện..." />
+        </div>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-search"></i> Tìm
+        </button>
+        @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()) || !string.IsNullOrEmpty(ViewBag.TrangThai?.ToString()))
+        {
+            <a asp-action="QuanLyBinhLuan" class="bl-clear-btn"><i class="bi bi-x-circle"></i> Xoá lọc</a>
+        }
+    </form>
+    <span class="bl-total">Tổng: <strong>@ViewBag.Total</strong> bình luận</span>
+</div>
+
+<!-- ── DANH SÁCH ── -->
+<div class="bl-list">
+    @if (!Model.Any())
+    {
+        <div class="bl-empty"><i class="bi bi-inbox"></i><span>Không có bình luận nào</span></div>
+    }
+    @foreach (var bl in Model)
+    {
+        <div class="bl-item @(bl.TrangThai == 0 ? "bl-item--hidden" : "")">
+            <div class="bl-item-avatar">@(bl.MaDocGiaNavigation?.Ten?.Substring(0, 1).ToUpper() ?? "?")</div>
+            <div class="bl-item-body">
+                <div class="bl-item-top">
+                    <span class="bl-item-name">@(bl.MaDocGiaNavigation?.Ten ?? "Ẩn danh")</span>
+                    <span class="bl-item-arrow">→</span>
+                    <a asp-action="ChiTietTruyen" asp-route-id="@bl.Matruyen" class="bl-item-truyen">
+                        @(bl.MatruyenNavigation?.Tentruyen ?? "—")
+                    </a>
+                    @if (bl.TrangThai == 0)
+                    {
+                        <span class="ad-chip ad-chip--gray">Đã ẩn</span>
+                    }
+                    <span class="bl-item-time">@bl.Ngaybinhluan.ToString("dd/MM/yyyy HH:mm")</span>
+                </div>
+                <div class="bl-item-content">@bl.Noidung</div>
+            </div>
+            <div class="bl-item-actions">
+                <form method="post" asp-action="ToggleAnBinhLuan" asp-route-id="@bl.Mabinhluan" class="bl-toggle-form">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="bl-action-btn @(bl.TrangThai == 1 ? "bl-action-hide" : "bl-action-show")"
+                            title="@(bl.TrangThai == 1 ? "Ẩn bình luận" : "Hiện bình luận")">
+                        <i class="bi @(bl.TrangThai == 1 ? "bi-eye-slash" : "bi-eye")"></i>
+                    </button>
+                </form>
+                <button class="bl-action-btn bl-action-delete" title="Xoá"
+                        onclick="confirmDeleteBL(@bl.Mabinhluan)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="bl-pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyBinhLuan" asp-route-page="@i"
+               asp-route-trangthai="@ViewBag.TrangThai" asp-route-search="@ViewBag.Search"
+               class="bl-page-btn @(i == (int)ViewBag.Page ? "active" : "")">@i</a>
+        }
+    </div>
+}
+
+<!-- MODAL XOÁ -->
+<div class="bl-modal-overlay" id="deleteBLModal">
+    <div class="bl-modal">
+        <div class="bl-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+        <h3 class="bl-modal-title">Xác nhận xoá bình luận</h3>
+        <p class="bl-modal-msg">Bạn có chắc muốn xoá bình luận này?<br/>Thao tác này không thể hoàn tác.</p>
+        <form id="deleteBLForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="bl-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeDeleteBL()">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none">Xoá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function confirmDeleteBL(id) {
+    document.getElementById('deleteBLForm').action = '/QuanLy/XoaBinhLuan/' + id;
+    document.getElementById('deleteBLModal').classList.add('show');
+}
+function closeDeleteBL() { document.getElementById('deleteBLModal').classList.remove('show'); }
+document.getElementById('deleteBLModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteBL();
+});
+</script>
+}

@@ -1,0 +1,300 @@
+/* =========================================================
+   TeenNovel_WED — lich-su-nap.css
+   ========================================================= */
+
+/* ── BREADCRUMB ── */
+.lsn-breadcrumb {
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+    margin-bottom: 10px;
+}
+.lsn-breadcrumb a { color: #a855f7; text-decoration: none; }
+.lsn-breadcrumb a:hover { color: #d8b4fe; }
+.lsn-breadcrumb span { margin: 0 4px; }
+
+/* ── TITLE ── */
+.lsn-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f3e8ff;
+    margin: 0 0 4px;
+}
+.lsn-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,.35);
+    margin: 0 0 20px;
+}
+
+/* ── TOP GRID ── */
+.lsn-top-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* ── PROFILE CARD ── */
+.lsn-profile-card {
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.lsn-avatar-box {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+.lsn-avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+.lsn-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #6d28d9, #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.lsn-profile-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f3e8ff;
+    text-align: center;
+}
+
+/* ── SEARCH CARD ── */
+.lsn-search-card {
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    padding: 16px 20px;
+}
+.lsn-search-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d8b4fe;
+    margin-bottom: 14px;
+}
+.lsn-search-head i { color: #a855f7; font-size: 15px; }
+
+.lsn-search-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.lsn-field { flex: 1; min-width: 140px; }
+.lsn-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,.4);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 6px;
+}
+.lsn-field input {
+    width: 100%;
+    background: #080812;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 8px;
+    color: #f3e8ff;
+    font-size: 14px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color .15s;
+    font-family: inherit;
+    color-scheme: dark;
+}
+.lsn-field input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168,85,247,.15);
+}
+
+.lsn-search-btn {
+    padding: 10px 28px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s, box-shadow .15s;
+    white-space: nowrap;
+}
+.lsn-search-btn:hover {
+    opacity: .9;
+    box-shadow: 0 0 14px rgba(168,85,247,.4);
+}
+
+/* ── LIST ── */
+.lsn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.lsn-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    padding: 16px 20px;
+    transition: border-color .15s;
+}
+.lsn-item:hover { border-color: rgba(168,85,247,.4); }
+
+.lsn-item-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.lsn-code {
+    font-size: 12px;
+    color: #a855f7;
+    font-weight: 600;
+    min-width: 60px;
+}
+
+.lsn-coin-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.lsn-item-info { display: flex; flex-direction: column; gap: 2px; }
+.lsn-item-money {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f3e8ff;
+}
+.lsn-item-xu {
+    font-size: 13px;
+    color: rgba(255,255,255,.4);
+}
+
+.lsn-item-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+.lsn-item-time {
+    font-size: 13px;
+    color: rgba(255,255,255,.5);
+}
+.lsn-detail-link {
+    font-size: 13px;
+    color: #a855f7;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color .12s;
+}
+.lsn-detail-link:hover { color: #d8b4fe; }
+.lsn-detail-link i { font-size: 13px; }
+
+/* ── EMPTY ── */
+.lsn-empty {
+    text-align: center;
+    padding: 60px;
+    color: rgba(255,255,255,.3);
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.lsn-empty i { font-size: 36px; }
+
+/* ── XEM THÊM ── */
+.lsn-more-form { display: flex; justify-content: center; margin-bottom: 24px; }
+.lsn-more-btn {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    color: rgba(255,255,255,.6);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .15s;
+    font-family: inherit;
+}
+.lsn-more-btn:hover {
+    border-color: rgba(168,85,247,.4);
+    color: #f3e8ff;
+    background: #000;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    .lsn-top-grid { grid-template-columns: 1fr; }
+    .lsn-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .lsn-item-right { align-items: flex-start; width: 100%; }
+    .lsn-search-form { flex-direction: column; align-items: stretch; }
+}
+
+/* =========================================================
+   TRANG CHI TIẾT NẠP XU
+   ========================================================= */
+.lsn-detail-card {
+    max-width: 640px;
+}
+
+.lsn-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.lsn-detail-row label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,.4);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 6px;
+}
+
+.lsn-detail-val {
+    background: #080812;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 8px;
+    color: #f3e8ff;
+    font-size: 16px;
+    padding: 10px 14px;
+}

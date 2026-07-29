@@ -1,0 +1,84 @@
+/* =========================================================
+   TeenNovel_WED — quan-ly-theloai.css
+   ========================================================= */
+
+.tl-filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.tl-filter-form { display: flex; align-items: center; gap: 8px; flex: 1; }
+.tl-search {
+    display: flex; align-items: center; gap: 7px;
+    padding: 7px 12px; border: 1px solid #e4e7ec; border-radius: 8px;
+    background: #fff; min-width: 240px; flex: 1;
+}
+.tl-search:focus-within { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+.tl-search i { color: #9ca3af; font-size: 14px; }
+.tl-search input { border: none; outline: none; font-size: 13px; width: 100%; background: transparent; }
+.tl-total { font-size: 13px; color: #6b7280; margin-left: auto; }
+.tl-total strong { color: #18181b; }
+
+/* ── GRID ── */
+.tl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 14px;
+}
+.tl-card {
+    background: #fff; border: 1px solid #e4e7ec; border-radius: 12px;
+    padding: 16px 18px; transition: border-color .15s, box-shadow .15s;
+}
+.tl-card:hover { border-color: #c4b5fd; box-shadow: 0 3px 12px rgba(124,58,237,.08); }
+
+.tl-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.tl-card-head i { color: #a855f7; font-size: 16px; }
+.tl-card-name { font-size: 15px; font-weight: 700; color: #18181b; }
+.tl-card-desc {
+    font-size: 12px; color: #6b7280; line-height: 1.6; margin: 0 0 12px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.tl-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 10px; border-top: 1px solid #f4f4f5;
+}
+.tl-card-count { font-size: 12px; color: #7c3aed; font-weight: 600; }
+.tl-card-actions { display: flex; gap: 4px; }
+.tl-action-btn {
+    width: 26px; height: 26px; border-radius: 6px; border: 1px solid #e4e7ec;
+    background: transparent; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; cursor: pointer; transition: all .12s; color: #52525b;
+}
+.tl-action-edit:hover   { background: #fefce8; color: #b45309; border-color: #fde68a; }
+.tl-action-delete:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+.tl-empty {
+    grid-column: 1 / -1; text-align: center; padding: 60px; color: #9ca3af;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.tl-empty i { font-size: 36px; }
+
+/* ── MODAL ── */
+.tl-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,.45); align-items: center; justify-content: center;
+}
+.tl-modal-overlay.show { display: flex; }
+.tl-modal { background: #fff; border-radius: 16px; padding: 28px 26px; max-width: 400px; width: 90%; }
+.tl-modal-title {
+    font-size: 16px; font-weight: 600; color: #18181b; margin: 0 0 18px;
+    display: flex; align-items: center; gap: 8px;
+}
+.tl-modal-title i { color: #7c3aed; }
+.tl-modal-icon {
+    width: 52px; height: 52px; border-radius: 50%; background: #fef2f2; color: #dc2626;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 16px;
+}
+.tl-modal-msg { font-size: 13px; color: #52525b; line-height: 1.7; margin-bottom: 20px; text-align: center; }
+
+.tl-field { margin-bottom: 14px; }
+.tl-field label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+.tl-required { color: #dc2626; }
+.tl-field input, .tl-field textarea {
+    width: 100%; padding: 8px 12px; border: 1px solid #e4e7ec; border-radius: 8px;
+    font-size: 13px; color: #18181b; outline: none;
+    transition: border-color .15s, box-shadow .15s; font-family: inherit; resize: vertical;
+}
+.tl-field input:focus, .tl-field textarea:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+.tl-modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }

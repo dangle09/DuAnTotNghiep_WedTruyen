@@ -1,0 +1,159 @@
+﻿@model IEnumerable<TeenNovel_Wed.Models.GoiNapXu>
+@{
+    ViewData["Title"] = "QuanLyGoiNap";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+}
+
+@section TopbarAction {
+    <a asp-action="ThemGoiNap" class="ad-topbar-btn ad-topbar-btn--primary">
+        <i class="bi bi-plus-lg"></i> Thêm gói nạp
+    </a>
+}
+<link rel="stylesheet" href="~/css/quan-ly-goi-nap.css" asp-append-version="true" />
+
+<!-- ── BỘ LỌC ── -->
+<div class="ql-filter-bar">
+    <form method="get" asp-action="QuanLyGoiNap" class="ql-filter-form">
+        <div class="ql-filter-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm tên gói nạp..." />
+        </div>
+
+        <select name="trangthai" class="ql-select">
+            <option value="">Tất cả trạng thái</option>
+            <option value="true" selected="@(ViewBag.TrangThai == true)">Hiển thị</option>
+            <option value="false" selected="@(ViewBag.TrangThai == false)">Ẩn</option>
+        </select>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-funnel"></i> Lọc
+        </button>
+        @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()) || ViewBag.TheLoai != null || !string.IsNullOrEmpty(ViewBag.TrangThai?.ToString()))
+        {
+            <a asp-action="QuanLyGoiNap" class="ql-clear-btn">
+                <i class="bi bi-x-circle"></i> Xoá lọc
+            </a>
+        }
+    </form>
+    <span class="ql-total">Tổng: <strong>@ViewBag.Total</strong> gói nạp</span>
+</div>
+
+<!-- ── BẢNG ── -->
+<div class="ad-table-wrap">
+    <table class="ad-table">
+        <thead>
+            <tr>
+                <th style="width:40%">Tên gói nạp</th>
+                <th>Giá tiền</th>
+                <th>Số xu</th>
+                <th>Khuyến mãi</th>
+                <th>Trạng thái</th>
+                <th style="width:100px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" class="ql-empty">
+                        <i class="bi bi-inbox"></i>
+                        <span>Không có gói nạp nào</span>
+                    </td>
+                </tr>
+            }
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="ql-story-row">
+                            @if (!string.IsNullOrEmpty(t.Anh))
+                            {
+                                <img src="@t.Anh" class="ql-cover" alt="@t.TenGoi" />
+                            }
+                            else
+                            {
+                                <div class="ql-cover-placeholder"><i class="bi bi-book"></i></div>
+                            }
+                            <div>
+                                <div class="ql-story-name">@t.TenGoi</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@t.SoTien</td>
+                    <td>@t.SoXuNhan</td>
+                    <td>@t.KhuyenMai</td>
+                    <td>
+                        @switch (t.HienThi)
+                        {
+                            case true:
+                                <span class="ad-chip ad-chip--green">Hiển thị</span>
+                                break;
+                            case false:
+                                <span class="ad-chip ad-chip--blue">Ẩn</span>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        <div class="ql-actions">
+                            <a asp-action="SuaGoiNap" asp-route-id="@t.MaGoiNap"
+                                   class="ql-action-btn ql-action-edit" title="Sửa">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button class="ql-action-btn ql-action-delete"
+                                    title="Xoá"
+                                    onclick="confirmDelete(@t.MaGoiNap, '@t.TenGoi.Replace("'", "\\'")')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- ── PHÂN TRANG ── -->
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="ql-pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyGoiNap"
+               asp-route-page="@i"
+               asp-route-search="@ViewBag.Search"
+               asp-route-trangthai="@ViewBag.TrangThai"
+               class="ql-page-btn @(i == (int)ViewBag.Page ? "active" : "")">@i</a>
+        }
+    </div>
+}
+
+<!-- ── MODAL XOÁ ── -->
+<div class="ql-modal-overlay" id="deleteModal">
+    <div class="ql-modal">
+        <div class="ql-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+        <h3 class="ql-modal-title">Xác nhận xoá</h3>
+        <p class="ql-modal-msg">Bạn có chắc muốn xoá gói nạp <strong id="deleteName"></strong>?<br />Thao tác này không thể hoàn tác.</p>
+        <form id="deleteForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="ql-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeDelete()">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none">Xoá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id, name) {
+            document.getElementById('deleteName').textContent = name;
+            document.getElementById('deleteForm').action = '/QuanLy/XoaGoiNap/' + id;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+        function closeDelete() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDelete();
+        });
+    </script>
+}

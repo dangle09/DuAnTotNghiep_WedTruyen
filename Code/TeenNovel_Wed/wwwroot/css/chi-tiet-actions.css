@@ -1,0 +1,293 @@
+/* =========================================================
+   TeenNovel_WED — chi-tiet-actions.css  (dark theme)
+   ========================================================= */
+
+/* ── 3 NÚT HÀNH ĐỘNG ── */
+.ct-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0 16px;
+}
+
+.ct-action-form { margin: 0; }
+
+/* Base button */
+.ct-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .15s;
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: inherit;
+}
+.ct-btn i { font-size: 15px; }
+
+/* Outline — mặc định */
+.ct-btn--outline {
+    background: transparent;
+    border-color: rgba(255,255,255,.2);
+    color: #c084fc;
+}
+.ct-btn--outline:hover {
+    border-color: white;
+    background: #000;
+    color: #f3e8ff;
+    box-shadow: 0 0 12px rgba(168,85,247,.4);
+}
+
+/* Đang theo dõi (active) */
+.ct-btn--active {
+    background: rgba(168,85,247,.15);
+    border-color: #a855f7;
+    color: #d8b4fe;
+}
+.ct-btn--active:hover {
+    background: rgba(168,85,247,.25);
+    border-color: #c084fc;
+    color: #f3e8ff;
+}
+
+/* Đã thích */
+.ct-btn--liked {
+    background: rgba(239,68,68,.12);
+    border-color: #f87171;
+    color: #fca5a5;
+}
+.ct-btn--liked:hover {
+    background: rgba(239,68,68,.22);
+    border-color: #ef4444;
+    color: #fecaca;
+}
+
+/* Đánh giá */
+.ct-btn--rate {
+    background: rgba(234,179,8,.1);
+    border-color: #ca8a04;
+    color: #fbbf24;
+}
+.ct-btn--rate:hover {
+    background: rgba(234,179,8,.2);
+    border-color: #fbbf24;
+    color: #fef08a;
+    box-shadow: 0 0 12px rgba(234,179,8,.3);
+}
+
+/* Primary (gửi đánh giá) */
+.ct-btn--primary {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    color: #fff;
+}
+.ct-btn--primary:hover {
+    background: #6d28d9;
+    border-color: #6d28d9;
+    box-shadow: 0 0 14px rgba(124,58,237,.5);
+}
+
+/* ── FORM ĐÁNH GIÁ ── */
+.ct-rate-form {
+    margin-bottom: 16px;
+    animation: fadeSlideIn .2s ease;
+}
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.ct-rate-form-inner {
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 14px;
+    padding: 20px 22px;
+}
+
+.ct-rate-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f3e8ff;
+    margin: 0 0 16px;
+}
+
+/* Chọn sao */
+.ct-stars-pick {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+.ct-star-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 28px;
+    color: rgba(255,255,255,.2);
+    transition: color .12s, transform .1s;
+    line-height: 1;
+}
+.ct-star-btn:hover,
+.ct-star-btn.on {
+    color: #f59e0b;
+}
+.ct-star-btn:hover { transform: scale(1.15); }
+
+.ct-star-label {
+    font-size: 12px;
+    color: #a78bfa;
+    margin: 0 0 14px;
+    min-height: 18px;
+}
+
+.ct-rate-textarea {
+    width: 100%;
+    background: #080812;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 9px;
+    color: #f3e8ff;
+    font-size: 13px;
+    padding: 10px 14px;
+    resize: vertical;
+    outline: none;
+    font-family: inherit;
+    transition: border-color .15s;
+    margin-bottom: 14px;
+}
+.ct-rate-textarea:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168,85,247,.15);
+}
+.ct-rate-textarea::placeholder { color: rgba(255,255,255,.25); }
+
+.ct-rate-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ── ĐIỂM TB ── */
+.ct-rating-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.ct-stars-display {
+    display: flex;
+    gap: 2px;
+}
+.ct-stars-display i { font-size: 18px; color: #f59e0b; }
+.ct-stars-display .bi-star { color: rgba(255,255,255,.2); }
+
+.ct-rating-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f3e8ff;
+}
+.ct-rating-count {
+    font-size: 13px;
+    color: rgba(255,255,255,.4);
+}
+
+/* Nút link xem chi tiết */
+.ct-btn-link {
+    background: none;
+    border: none;
+    color: #a855f7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    transition: color .12s;
+    margin-left: auto;
+    font-family: inherit;
+}
+.ct-btn-link:hover { color: #d8b4fe; }
+.ct-btn-link i { font-size: 12px; transition: transform .2s; }
+.ct-btn-link.open i { transform: rotate(180deg); }
+
+/* ── DANH SÁCH ĐÁNH GIÁ ── */
+.ct-reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    animation: fadeSlideIn .2s ease;
+}
+
+.ct-review-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #0f0f1a;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+}
+
+.ct-review-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ct-review-body { flex: 1; min-width: 0; }
+
+.ct-review-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+.ct-review-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #f3e8ff;
+}
+.ct-review-stars {
+    display: flex;
+    gap: 2px;
+}
+.ct-review-stars i { font-size: 12px; color: #f59e0b; }
+.ct-review-stars .bi-star { color: rgba(255,255,255,.2); }
+.ct-review-date {
+    font-size: 11px;
+    color: rgba(255,255,255,.35);
+    margin-left: auto;
+}
+.ct-review-text {
+    font-size: 13px;
+    color: rgba(255,255,255,.6);
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    .ct-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .ct-action-form, .ct-btn { width: 100%; }
+    .ct-btn { justify-content: center; padding: 9px 12px; }
+    .ct-rate-form-inner { padding: 16px 14px; }
+    .ct-star-btn { font-size: 24px; }
+    .ct-rate-actions { flex-direction: column-reverse; }
+    .ct-rate-actions .ct-btn { width: 100%; justify-content: center; }
+    .ct-review-item { padding: 12px; gap: 9px; }
+    .ct-review-date { width: 100%; margin-left: 0; }
+}

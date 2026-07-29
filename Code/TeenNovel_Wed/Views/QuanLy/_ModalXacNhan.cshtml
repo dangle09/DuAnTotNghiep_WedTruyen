@@ -1,0 +1,33 @@
+@* _ModalXacNhan.cshtml — modal dùng chung cho xoá và khoá/mở khoá *@
+
+<!-- MODAL XOÁ -->
+<div class="nd-modal-overlay" id="deleteModal">
+    <div class="nd-modal">
+        <div class="nd-modal-icon nd-modal-icon--danger"><i class="bi bi-exclamation-triangle"></i></div>
+        <h3 class="nd-modal-title">Xác nhận xoá</h3>
+        <p class="nd-modal-msg">Bạn có chắc muốn xoá <strong id="deleteName"></strong>?<br/>Thao tác này không thể hoàn tác.</p>
+        <form id="deleteForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="nd-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeModal('deleteModal')">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none">Xoá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL KHOÁ / MỞ KHOÁ -->
+<div class="nd-modal-overlay" id="toggleModal">
+    <div class="nd-modal">
+        <div class="nd-modal-icon nd-modal-icon--warn" id="toggleIcon"><i class="bi bi-lock"></i></div>
+        <h3 class="nd-modal-title" id="toggleTitle">Xác nhận khoá tài khoản</h3>
+        <p class="nd-modal-msg" id="toggleMsg"></p>
+        <form id="toggleForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="nd-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeModal('toggleModal')">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="toggleSubmitBtn">Xác nhận</button>
+            </div>
+        </form>
+    </div>
+</div>
