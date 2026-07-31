@@ -8,8 +8,15 @@ btn.addEventListener("click", async () => {
     const id = btn.dataset.id;
 
     try {
+        const token = document.querySelector(
+            'input[name="__RequestVerificationToken"]'
+        ).value;
+
         const res = await fetch("/DocGia/TaoDonNap?id=" + id, {
-            method: "POST"
+            method: "POST",
+            headers: {
+                "RequestVerificationToken": token
+            }
         });
 
         const data = await res.json();
