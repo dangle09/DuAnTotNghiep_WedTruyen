@@ -32,12 +32,16 @@ public class SePayController : ControllerBase
         var signatureHeader = Request.Headers["X-SePay-Signature"].ToString();
         var timestamp = Request.Headers["X-SePay-Timestamp"].ToString();
 
-        // 3. Xác thực chữ ký — request không hợp lệ thì chặn ngay
-        if (!IsValidSignature(rawBody, timestamp, signatureHeader))
+        foreach (var h in Request.Headers)
         {
-            Console.WriteLine("[SePay Webhook] Chữ ký không hợp lệ — từ chối request.");
-            return Unauthorized();
+            Console.WriteLine($"{h.Key}: {h.Value}");
         }
+        // 3. Xác thực chữ ký — request không hợp lệ thì chặn ngay
+        //if (!IsValidSignature(rawBody, timestamp, signatureHeader))
+        //{
+        //    Console.WriteLine("[SePay Webhook] Chữ ký không hợp lệ — từ chối request.");
+        //    return Unauthorized();
+        //}
 
         // 4. Deserialize sau khi verify xong
         SePayWebhook? model;

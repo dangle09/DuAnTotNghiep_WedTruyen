@@ -1114,7 +1114,7 @@ namespace TeenNovel_Wed.Controllers
                     Phuongthuc = "Banking",
                     NoiDungChuyenKhoan = "",
                     Trangthai = "ChoThanhToan",
-                    Ngaynap = null
+                    Ngaynap = DateTime.Now
                 };
 
                 _context.NapXus.Add(napXu);
@@ -1124,9 +1124,11 @@ namespace TeenNovel_Wed.Controllers
                 // bị match nhầm do Contains() (VD: CK1 khớp nhầm với CK15)
                 string random = $"{Guid.NewGuid().ToString("N")[..4].ToUpper()}";
     
-                napXu.NoiDungChuyenKhoan = $"CK{napXu.Manap}{DateTime.Now:yyyyMMddHHmmss}{random}";
+                napXu.NoiDungChuyenKhoan = $"CK{napXu.Manap}{random}";
                 await _context.SaveChangesAsync();
             }
+
+            Console.WriteLine($"Nội dung chuyển khoản: {napXu.NoiDungChuyenKhoan}");
 
             string bankBin = _configuration["VietQR:BankBin"]!;
             string bankName = _configuration["VietQR:BankName"]!;
