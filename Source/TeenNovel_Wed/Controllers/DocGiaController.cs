@@ -1111,7 +1111,7 @@ namespace TeenNovel_Wed.Controllers
                     MaGoiNap = goiNap.MaGoiNap,
                     Sotien = goiNap.SoTien,
                     Soxunhan = goiNap.SoXuNhan,
-                    Phuongthuc = "VietQR",
+                    Phuongthuc = "Banking",
                     NoiDungChuyenKhoan = "",
                     Trangthai = "ChoThanhToan",
                     Ngaynap = null
@@ -1122,7 +1122,9 @@ namespace TeenNovel_Wed.Controllers
 
                 // Dùng chính ID vừa sinh ra làm nội dung chuyển khoản, thêm hậu tố để giảm rủi ro
                 // bị match nhầm do Contains() (VD: CK1 khớp nhầm với CK15)
-                napXu.NoiDungChuyenKhoan = $"CK{napXu.Manap}X";
+                string random = $"{Guid.NewGuid().ToString("N")[..4].ToUpper()}";
+    
+                napXu.NoiDungChuyenKhoan = $"CK{napXu.Manap}{DateTime.Now:yyyyMMddHHmmss}{random}";
                 await _context.SaveChangesAsync();
             }
 
