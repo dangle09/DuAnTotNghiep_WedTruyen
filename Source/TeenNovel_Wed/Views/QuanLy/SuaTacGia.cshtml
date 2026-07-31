@@ -1,0 +1,173 @@
+﻿@model TeenNovel_Wed.Models.TacGia
+
+@{
+    ViewData["Title"] = "SuaTacGia";
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["ActivePage"] = "TacGia";
+    ViewData["Breadcrumb"] = "Sửa tác giả";
+}
+
+@section TopbarAction {
+    <a asp-action="ChiTietTacGia"
+           asp-route-id="@Model.MaTacGia"
+           class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i>
+        Quay lại
+    </a>
+}
+
+<div class="ql-form-wrap">
+
+    <form asp-action="SuaTacGia"
+          method="post"
+          enctype="multipart/form-data"
+          id="tacGiaForm">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="MaTacGia" />
+        <input type="hidden" asp-for="AnhDaiDien" />
+
+        <div class="ql-form-grid">
+
+            <!-- LEFT -->
+            <div class="ql-form-left">
+
+                <div class="ad-card">
+
+                    <div class="ad-card-head">
+                        <span class="ad-card-title">
+                            Thông tin tác giả
+                        </span>
+                    </div>
+
+                    <div class="ad-card-body">
+
+                        <div class="ql-field">
+                            <label>Tên tác giả <span class="ql-required">*</span></label>
+
+                            <input asp-for="TenTacGia"
+                                   id="TenTacGia"
+                                   maxlength="100" />
+
+                            <span class="ql-field-error"
+                                  id="err-ten"></span>
+                        </div>
+
+                        <div class="ql-field">
+
+                            <label>Bút danh</label>
+
+                            <input asp-for="ButDanh"
+                                   maxlength="100" />
+
+                        </div>
+
+                        <div class="ql-field">
+
+                            <label>Quốc gia</label>
+
+                            <input asp-for="QuocGia"
+                                   maxlength="100" />
+
+                        </div>
+
+                        <div class="ql-field">
+
+                            <label>Tiểu sử</label>
+
+                            <textarea asp-for="TieuSu"
+                                      rows="8"
+                                      maxlength="1000"></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="ql-form-right">
+
+                <div class="ad-card">
+
+                    <div class="ad-card-head">
+
+                        <span class="ad-card-title">
+                            Ảnh đại diện
+                        </span>
+
+                    </div>
+
+                    <div class="ad-card-body">
+
+                        <div class="ql-upload-area"
+                             id="uploadArea">
+
+                            <img id="previewImg"
+                                 src="@Model.AnhDaiDien"
+                                 style="@(string.IsNullOrEmpty(Model.AnhDaiDien) ? "display:none" : "display:block")" />
+
+                            <div id="uploadPlaceholder"
+                                 style="@(string.IsNullOrEmpty(Model.AnhDaiDien) ? "" : "display:none")">
+
+                                <i class="bi bi-person-circle"
+                                   style="font-size:40px"></i>
+
+                                <p>Chọn ảnh đại diện</p>
+
+                                <span>PNG, JPG, WEBP</span>
+
+                            </div>
+
+                            <input type="file"
+                                   name="anh"
+                                   id="anh"
+                                   accept=".png,.jpg,.jpeg,.webp" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="ql-form-actions">
+
+            <a asp-action="ChiTietTacGia"
+                   asp-route-id="@Model.MaTacGia"
+                   class="ad-topbar-btn ad-topbar-btn--outline">
+
+                Huỷ
+
+            </a>
+
+            <button class="ad-topbar-btn ad-topbar-btn--primary"
+                    id="submitBtn">
+
+                <i class="bi bi-floppy"></i>
+
+                Lưu thay đổi
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/js/quan-ly-tac-gia.js" asp-append-version="true"></script>
+
+    <script>
+        initTacGiaForm();
+    </script>
+
+}

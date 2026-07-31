@@ -1,0 +1,127 @@
+@model IEnumerable<TeenNovel_Wed.Models.NhanVien>
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Quản lý nhân viên";
+    ViewData["ActivePage"] = "NhanVien";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-nguoidung.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="ThemNhanVien" class="ad-topbar-btn ad-topbar-btn--primary">
+        <i class="bi bi-plus-lg"></i> Thêm nhân viên
+    </a>
+}
+
+<!-- ── BỘ LỌC ── -->
+<div class="nd-filter-bar">
+    <form method="get" asp-action="QuanLyNhanVien" class="nd-filter-form">
+        <div class="nd-filter-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" value="@ViewBag.Search"
+                   placeholder="Tìm tên, email..." />
+        </div>
+        <select name="trangthai" class="nd-select">
+            <option value="">Tất cả trạng thái</option>
+            <option value="true" selected="@(ViewBag.TrangThai == "hoatdong")">Hoạt động</option>
+            <option value="false"  selected="@(ViewBag.TrangThai == "khoatai")">Đã khoá</option>
+        </select>
+        <button type="submit" class="ad-topbar-btn ad-topbar-btn--outline">
+            <i class="bi bi-funnel"></i> Lọc
+        </button>
+        @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()) || !string.IsNullOrEmpty(ViewBag.TrangThai?.ToString()))
+        {
+            <a asp-action="QuanLyNhanVien" class="nd-clear-btn">
+                <i class="bi bi-x-circle"></i> Xoá lọc
+            </a>
+        }
+    </form>
+    <span class="nd-total">Tổng: <strong>@ViewBag.Total</strong> nhân viên</span>
+</div>
+
+<!-- ── BẢNG ── -->
+<div class="ad-table-wrap">
+    <table class="ad-table">
+        <thead>
+            <tr>
+                <th>Nhân viên</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Ngày vào làm</th>
+                <th>Trạng thái</th>
+                <th style="width:140px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="6" class="nd-empty"><i class="bi bi-inbox"></i><span>Không có nhân viên nào</span></td></tr>
+            }
+            @foreach (var nv in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="nd-user-row">
+                            <div class="nd-avatar">@nv.Ten.Substring(0, 1).ToUpper()</div>
+                            <div class="nd-name">@nv.Ten</div>
+                        </div>
+                    </td>
+                    <td>@nv.MatkNavigation?.Email</td>
+                    <td>@(nv.Sodienthoai ?? "—")</td>
+                    <td>@nv.Ngayvaolamm.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @if (nv.MatkNavigation?.Trangthai == true)
+                        {
+                            <span class="ad-chip ad-chip--green">Hoạt động</span>
+                        }
+                        else
+                        {
+                            <span class="ad-chip ad-chip--red">Đã khoá</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="nd-actions">
+                            <a asp-action="ChiTietNhanVien" asp-route-id="@nv.Manv"
+                               class="nd-action-btn nd-action-view" title="Chi tiết">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="SuaNhanVien" asp-route-id="@nv.Manv"
+                               class="nd-action-btn nd-action-edit" title="Sửa">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button class="nd-action-btn @(nv.MatkNavigation?.Trangthai == true ? "nd-action-lock" : "nd-action-unlock")"
+                                    title="@(nv.MatkNavigation?.Trangthai == true ? "Khoá" : "Mở khoá")"
+                                    onclick="confirmToggle(@nv.Manv, '@nv.Ten.Replace("'", "\\'")', '@nv.MatkNavigation?.Trangthai', 'nv')">
+                                <i class="bi @(nv.MatkNavigation?.Trangthai == true ? "bi-lock" : "bi-unlock")"></i>
+                            </button>
+                            <button class="nd-action-btn nd-action-delete" title="Xoá"
+                                    onclick="confirmDelete(@nv.Manv, '@nv.Ten.Replace("'", "\\'")', 'nv')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="nd-pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+        {
+            <a asp-action="QuanLyNhanVien" asp-route-page="@i"
+               asp-route-search="@ViewBag.Search" asp-route-trangthai="@ViewBag.TrangThai"
+               class="nd-page-btn @(i == (int)ViewBag.Page ? "active" : "")">@i</a>
+        }
+    </div>
+}
+
+@await Html.PartialAsync("_ModalXacNhan")
+
+@section Scripts {
+    <script src="~/js/quan-ly-nguoidung.js" asp-append-version="true"></script>
+}

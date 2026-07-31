@@ -1,0 +1,116 @@
+﻿@model TeenNovel_Wed.Models.HoTro
+
+@{
+    ViewData["Title"] = "Gửi yêu cầu";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/hotro.css" asp-append-version="true" />
+}
+
+<div class="hotro-page">
+
+    <div class="hotro-header">
+
+        <div>
+            <div class="breadcrumb">
+                <a asp-action="TrangChu">Trang chủ</a>
+                <span>></span>
+                <a asp-action="HoTro">Liên hệ CSKH</a>
+                <span>></span>
+                Gửi yêu cầu
+            </div>
+
+            <h2>Tạo yêu cầu hỗ trợ</h2>
+            <p>Hãy mô tả thật chi tiết để được hỗ trợ nhanh hơn.</p>
+        </div>
+
+        <div class="hotro-actions">
+
+            <a asp-action="HoTro" asp-controller="DocGia" class="hotro-btn">
+                <i class="bi bi-arrow-left"></i>
+                Quay lại
+            </a>
+
+            <a asp-action="LichSuHoTro" asp-controller="DocGia"
+                   class="hotro-btn hotro-btn-primary">
+                <i class="bi bi-clock-history"></i>
+                Lịch sử
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <form asp-action="GuiYeuCau"
+          method="post"
+          class="ticket-form">
+
+        @Html.AntiForgeryToken()
+
+        <div class="ticket-card">
+
+            <div class="form-group">
+
+                <label>Tiêu đề</label>
+
+                <input asp-for="TieuDe"
+                       class="form-control"
+                       maxlength="200"
+                       placeholder="Ví dụ: Không nhận được xu sau khi nạp..." />
+
+                <span asp-validation-for="TieuDe"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Nội dung</label>
+
+                <textarea asp-for="NoiDung"
+                          rows="10"
+                          class="form-control"
+                          placeholder="Mô tả chi tiết vấn đề bạn gặp phải..."></textarea>
+
+                <span asp-validation-for="NoiDung"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="ticket-note">
+
+                <i class="bi bi-info-circle"></i>
+
+                Sau khi gửi, yêu cầu sẽ chuyển sang trạng thái
+                <strong>Đang chờ xử lý</strong>.
+
+                Quản trị viên sẽ phản hồi trong thời gian sớm nhất.
+
+            </div>
+
+            <div class="ticket-footer">
+
+                <button class="submit-btn">
+
+                    <i class="bi bi-send-fill"></i>
+
+                    Gửi yêu cầu
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

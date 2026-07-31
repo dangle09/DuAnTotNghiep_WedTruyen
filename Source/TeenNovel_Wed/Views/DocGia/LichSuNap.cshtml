@@ -1,0 +1,105 @@
+@model IEnumerable<TeenNovel_Wed.Models.NapXu>
+@{
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+    ViewData["Title"]      = "Lịch sử nạp xu";
+    ViewData["ActivePage"] = "LichSuNap";
+    var docGia = ViewBag.DocGia as TeenNovel_Wed.Models.DocGia;
+}
+
+<link rel="stylesheet" href="~/css/lich-su-nap.css" asp-append-version="true" />
+
+<!-- ── BREADCRUMB ── -->
+<div class="lsn-breadcrumb">
+    <a asp-controller="DocGia" asp-action="TrangChu">Trang chủ</a>
+    <span>&gt;</span>
+    <span>Lịch sử nạp xu</span>
+</div>
+
+<!-- ── TIÊU ĐỀ ── -->
+<h1 class="lsn-title">Lịch sử nạp xu</h1>
+<p class="lsn-sub">Kho lưu xu</p>
+
+<div class="lsn-top-grid">
+
+    <!-- ── THẺ AVATAR / TÊN ── -->
+    <div class="lsn-profile-card">
+        <div class="lsn-avatar-box">
+            @if (!string.IsNullOrEmpty(docGia?.Avatar))
+            {
+                <img src="@docGia.Avatar" alt="@docGia.Ten" />
+            }
+            else
+            {
+                <div class="lsn-avatar-placeholder">
+                    @(docGia?.Ten?.Substring(0, 1).ToUpper() ?? "?")
+                </div>
+            }
+        </div>
+        <div class="lsn-profile-name">@docGia?.Ten</div>
+    </div>
+
+    <!-- ── TÌM KIẾM THỜI GIAN ── -->
+    <div class="lsn-search-card">
+        <div class="lsn-search-head">
+            <i class="bi bi-person-circle"></i>
+            <span>Tìm kiếm thời gian</span>
+        </div>
+        <form method="get" asp-action="LichSuNap" class="lsn-search-form">
+            <div class="lsn-field">
+                <label>Từ</label>
+                <input type="date" name="tu" value="@ViewBag.Tu" />
+            </div>
+            <div class="lsn-field">
+                <label>Đến</label>
+                <input type="date" name="den" value="@ViewBag.Den" />
+            </div>
+            <button type="submit" class="lsn-search-btn">Tìm kiếm</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- ── DANH SÁCH GIAO DỊCH ── -->
+<div class="lsn-list">
+    @if (!Model.Any())
+    {
+        <div class="lsn-empty">
+            <i class="bi bi-inbox"></i>
+            <span>Không có giao dịch nào trong khoảng thời gian này</span>
+        </div>
+    }
+    @foreach (var n in Model)
+    {
+        <div class="lsn-item">
+            <div class="lsn-item-left">
+                <span class="lsn-code">#LS@(n.Manap.ToString("D3"))</span>
+                <div class="lsn-coin-icon">
+                    <i class="bi bi-currency-bitcoin"></i>
+                </div>
+                <div class="lsn-item-info">
+                    <div class="lsn-item-money">@n.Sotien.ToString("N0")đ</div>
+                    <div class="lsn-item-xu">@n.Soxunhan.ToString("N0") xu</div>
+                </div>
+            </div>
+            <div class="lsn-item-right">
+                <div class="lsn-item-time">@n.Ngaynap?.ToString("dd/MM/yyyy HH\\hmm\\pss\\s")</div>
+                <a asp-action="ChiTietLSNap" asp-route-id="@n.Manap" class="lsn-detail-link">
+                    Xem chi tiết <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- ── XEM THÊM ── -->
+@if (ViewBag.ConThem)
+{
+    <form method="get" asp-action="LichSuNap" class="lsn-more-form">
+        <input type="hidden" name="tu" value="@ViewBag.Tu" />
+        <input type="hidden" name="den" value="@ViewBag.Den" />
+        <input type="hidden" name="soLuong" value="@(ViewBag.SoLuong + 3)" />
+        <button type="submit" class="lsn-more-btn">
+            Xem thêm <i class="bi bi-chevron-down"></i>
+        </button>
+    </form>
+}

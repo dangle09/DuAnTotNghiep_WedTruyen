@@ -1,0 +1,212 @@
+﻿
+@model TeenNovel_Wed.Models.Truyen
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"] = "ChiTietTruyen";
+    ViewData["ActivePage"] = "Truyen";
+    var chuongs = (IEnumerable<TeenNovel_Wed.Models.Chuong>)ViewBag.Chuongs;
+    var danhgias = (IEnumerable<TeenNovel_Wed.Models.DanhGia>)ViewBag.DanhGias;
+    double diemTb = ViewBag.DiemTb;
+}
+
+@section TopbarAction {
+    <a asp-action="SuaTruyen" asp-route-id="@Model.Matruyen"
+           class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-pencil"></i> Sửa truyện
+    </a>
+    <button class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none"
+            onclick="confirmDelete(@Model.Matruyen, '@Model.Tentruyen.Replace("'", "\\'")')">
+        <i class="bi bi-trash"></i> Xoá
+    </button>
+}
+
+<!-- ── HEADER TRUYỆN ── -->
+<div class="ql-detail-header ad-card" style="margin-bottom:20px">
+    <div class="ql-detail-header-inner">
+        @if (!string.IsNullOrEmpty(Model.AnhBia))
+        {
+            <img src="@Model.AnhBia" class="ql-detail-cover" alt="@Model.Tentruyen" />
+        }
+        else
+        {
+            <div class="ql-detail-cover-placeholder"><i class="bi bi-book"></i></div>
+        }
+        <div class="ql-detail-info">
+            <div class="ql-detail-title">@Model.Tentruyen</div>
+            <div class="ql-detail-meta">
+                <span><i class="bi bi-person"></i> @(Model.MaTacGiaNavigation?.TenTacGia ?? "Chưa có")</span>
+                <span><i class="bi bi-tags"></i> @foreach (var tl in Model.MaTheLoais)
+                                                    {
+                                                        <span>@(tl?.Tentheloai ?? "—")</span>
+                                                    }
+                <span><i class="bi bi-calendar3"></i> @Model.Ngaydang.ToString("dd/MM/yyyy")</span>
+            </div>
+            @switch (Model.Trangthai)
+            {
+                case "dangtien":
+                    <span class="ad-chip ad-chip--green">Đang ra</span>
+                    ; break;
+                case "hoanthanh":
+                    <span class="ad-chip ad-chip--blue">Hoàn thành</span>
+                    ; break;
+                case "tamngung":
+                    <span class="ad-chip ad-chip--amber">Tạm ngưng</span>
+                    ; break;
+            }
+            @if (!string.IsNullOrEmpty(Model.Mota))
+            {
+                <p class="ql-detail-mota">@Model.Mota</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ── 4 STAT CARDS ── -->
+<div class="ad-stats-grid" style="margin-bottom:20px">
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">
+            Lượt đọc <i class="bi bi-eye" style="color:#4f46e5"></i>
+        </div>
+        <div class="ad-stat-val">@(Model.LuotDoc.ToString("N0"))</div>
+        <div class="ad-stat-sub">Tổng lượt đọc tất cả chương</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">
+            Lượt thích <i class="bi bi-heart" style="color:#e11d48"></i>
+        </div>
+        <div class="ad-stat-val">@(Model.LuotThich.ToString("N0"))</div>
+        <div class="ad-stat-sub">Độc giả đang theo dõi</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">
+            Đánh giá <i class="bi bi-star-fill" style="color:#d97706"></i>
+        </div>
+        <div class="ad-stat-val">@diemTb <span style="font-size:14px;color:#9ca3af">/ 5</span></div>
+        <div class="ad-stat-sub">@danhgias.Count() lượt đánh giá</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">
+            Số chương <i class="bi bi-file-earmark-text" style="color:#059669"></i>
+        </div>
+        <div class="ad-stat-val">@ViewBag.SoChuong</div>
+        <div class="ad-stat-sub">Tổng số chương đã đăng</div>
+    </div>
+</div>
+
+<!-- ── 2 CỘT: CHƯƠNG + ĐÁNH GIÁ ── -->
+<div class="ql-two-col">
+
+    <!-- DANH SÁCH CHƯƠNG -->
+    <div class="ad-card">
+        <div class="ad-card-head">
+            <span class="ad-card-title"><i class="bi bi-list-ol"></i> Danh sách chương</span>
+            <span style="font-size:12px;color:#6b7280">@ViewBag.SoChuong chương</span>
+        </div>
+        <div class="ql-chuong-list">
+            @if (!chuongs.Any())
+            {
+                <div class="ql-empty-sm">Chưa có chương nào</div>
+            }
+            @foreach (var c in chuongs)
+            {
+                <div class="ql-chuong-item">
+                    <div class="ql-chuong-num">@c.Thutu</div>
+                    <div class="ql-chuong-info">
+                        <div class="ql-chuong-title">@c.Tenchuong</div>
+                        <div class="ql-chuong-meta">
+                            <span><i class="bi bi-eye"></i> @(c.LuotDoc.ToString("N0") ?? "0")</span>
+                            @if (c.Giaxu > 0)
+                            {
+                                <span class="ql-xu-badge"><i class="bi bi-coin"></i> @c.Giaxu xu</span>
+                            }
+                            else
+                            {
+                                <span class="ql-free-badge">Miễn phí</span>
+                            }
+                            <span>@c.Ngaydang.ToString("dd/MM/yy")</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- ĐÁNH GIÁ -->
+    <div class="ad-card">
+        <div class="ad-card-head">
+            <span class="ad-card-title"><i class="bi bi-star"></i> Đánh giá gần đây</span>
+            <div class="ql-rating-avg">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <i class="bi @(i <= Math.Round(diemTb) ? "bi-star-fill" : "bi-star")"
+                       style="color:#f59e0b;font-size:13px"></i>
+                }
+                <span>@diemTb</span>
+            </div>
+        </div>
+        <div class="ql-review-list">
+            @if (!danhgias.Any())
+            {
+                <div class="ql-empty-sm">Chưa có đánh giá nào</div>
+            }
+            @foreach (var d in danhgias)
+            {
+                <div class="ql-review-item">
+                    <div class="ql-review-avatar">
+                        @(d.MaDocGiaNavigation.Ten.Substring(0, 1).ToUpper() ?? "?")
+                    </div>
+                    <div class="ql-review-body">
+                        <div class="ql-review-top">
+                            <span class="ql-review-name">@(d.MaDocGiaNavigation.Ten ?? "Ẩn danh")</span>
+                            <div class="ql-review-stars">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="bi @(i <= (d.Sosao) ? "bi-star-fill" : "bi-star")"
+                                       style="color:#f59e0b;font-size:11px"></i>
+                                }
+                            </div>
+                            <span class="ql-review-date">@d.Ngaydanhgia.ToString("dd/MM/yy")</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(d.Nhanxet))
+                        {
+                            <p class="ql-review-text">@d.Nhanxet</p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<!-- ── MODAL XOÁ ── -->
+<div class="ql-modal-overlay" id="deleteModal">
+    <div class="ql-modal">
+        <div class="ql-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+        <h3 class="ql-modal-title">Xác nhận xoá</h3>
+        <p class="ql-modal-msg">Bạn có chắc muốn xoá truyện <strong id="deleteName"></strong>?<br />Thao tác này không thể hoàn tác.</p>
+        <form id="deleteForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="ql-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeDelete()">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none">Xoá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id, name) {
+            document.getElementById('deleteName').textContent = name;
+            document.getElementById('deleteForm').action = '/QuanLy/XoaTruyen/' + id;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+        function closeDelete() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDelete();
+        });
+    </script>
+}

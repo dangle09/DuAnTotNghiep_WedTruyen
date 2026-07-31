@@ -1,0 +1,155 @@
+﻿@model TeenNovel_Wed.Models.HoTro
+
+@{
+    ViewData["Title"] = "Chi tiết hỗ trợ";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/hotro.css" asp-append-version="true" />
+}
+
+<div class="hotro-page">
+
+    <div class="hotro-header">
+
+        <div>
+
+            <div class="breadcrumb">
+                <a asp-action="TrangChu">Trang chủ</a>
+                <span>></span>
+                <a asp-action="LichSuYeuCau">Lịch sử yêu cầu</a>
+                <span>></span>
+                Chi tiết
+            </div>
+
+            <h2>@Model.TieuDe</h2>
+
+            <p>
+                Gửi lúc:
+                <strong>@Model.NgayGui.ToString("dd/MM/yyyy HH:mm")</strong>
+            </p>
+
+        </div>
+
+        <div class="hotro-actions">
+
+            <a asp-action="LichSuHoTro" class="hotro-btn">
+                <i class="bi bi-arrow-left"></i>
+                Quay lại
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="ticket-detail-card">
+
+        <div class="ticket-status-row">
+
+            <span class="ticket-label">
+                Trạng thái
+            </span>
+
+            @switch (Model.TrangThai)
+            {
+                case 0:
+                    <span class="ticket-status waiting">
+                        Chờ xử lý
+                    </span>
+                    break;
+
+                case 1:
+                    <span class="ticket-status processing">
+                        Đang xử lý
+                    </span>
+                    break;
+
+                default:
+                    <span class="ticket-status done">
+                        Đã phản hồi
+                    </span>
+                    break;
+            }
+
+        </div>
+
+        <hr />
+
+        <div class="ticket-section">
+
+            <h5>
+                <i class="bi bi-chat-left-text"></i>
+                Nội dung yêu cầu
+            </h5>
+
+            <div class="ticket-box user-box">
+
+                @Html.Raw(Model.NoiDung.Replace("\n", "<br/>"))
+
+            </div>
+
+        </div>
+
+        <div class="ticket-section">
+
+            <h5>
+
+                <i class="bi bi-headset"></i>
+
+                Phản hồi từ CSKH
+
+            </h5>
+
+            @if (string.IsNullOrWhiteSpace(Model.PhanHoi))
+            {
+                <div class="ticket-box waiting-box">
+
+                    <i class="bi bi-hourglass-split"></i>
+
+                    Yêu cầu đang được xử lý.
+
+                    Vui lòng quay lại sau.
+
+                </div>
+            }
+            else
+            {
+                <div class="ticket-box staff-box">
+
+                    @Html.Raw(Model.PhanHoi.Replace("\n", "<br/>"))
+
+                </div>
+
+                <div class="ticket-footer-info">
+
+                    <span>
+
+                        Nhân viên:
+
+                        <strong>
+
+                            @(Model.ManvNavigation?.Ten ?? "Nhân viên")
+
+                        </strong>
+
+                    </span>
+
+                    @if (Model.NgayXuLy != null)
+                    {
+                        <span>
+
+                            @Model.NgayXuLy.Value.ToString("dd/MM/yyyy HH:mm")
+
+                        </span>
+                    }
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>

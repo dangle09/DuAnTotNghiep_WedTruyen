@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Liên hệ CSKH";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/hotro.css" asp-append-version="true" />
+}
+
+<div class="hotro-page">
+
+    <div class="hotro-header">
+
+        <div>
+            <div class="breadcrumb">
+                <a asp-action="TrangChu">Trang chủ</a>
+                <span>></span>
+                <a asp-action="HoTro">Liên hệ CSKH</a>
+                <span>></span>
+            </div>
+
+            <h2>Liên hệ CSKH</h2>
+            <p>Gọn gàng - Nhanh chóng</p>
+        </div>
+
+        <div class="hotro-actions">
+
+            <a asp-action="GuiYeuCau" asp-controller="DocGia"
+                   class="hotro-btn hotro-btn-primary">
+                <i class="bi bi-plus-circle"></i>
+                Tạo yêu cầu
+            </a>
+
+            <a asp-action="LichSuHoTro" asp-controller="DocGia"
+                   class="hotro-btn">
+                <i class="bi bi-clock-history"></i>
+                Lịch sử yêu cầu
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="hotro-box">
+
+        <div class="box-title">
+            THÔNG TIN LIÊN QUAN
+        </div>
+
+        <ol>
+
+            <li>
+                Các chương mới nhất sẽ thu phí (1 chương 500 xu) hoặc xem quảng cáo.
+            </li>
+
+            <li>
+                Các ngày lễ sẽ có khuyến mãi nạp xu cũng như sự kiện Free Chapter.
+            </li>
+
+            <li>
+                Nạp xu sẽ tăng cấp, càng cao xu nhận được khi xem quảng cáo càng nhiều.
+            </li>
+
+            <li>
+                Để xem nhiều chương miễn phí hãy tích cực điểm danh và xem quảng cáo.
+            </li>
+
+            <li>
+                Không ngừng cải thiện, cùng nhau phát triển TeenNovel.
+            </li>
+
+        </ol>
+
+    </div>
+
+
+    <div class="hotro-box about-box">
+
+        <div class="box-title">
+            ABOUT US
+        </div>
+
+        <p>Gửi chủ sở hữu</p>
+
+        <p>
+            Hầu hết nội dung được sưu tầm trên Internet và chỉ dùng cho mục đích học tập.
+        </p>
+
+        <p>
+            Nếu bạn không muốn nội dung xuất hiện trên website, vui lòng liên hệ.
+        </p>
+
+        <p>Email: support@teennovel.vn</p>
+
+        <p>Facebook: facebook.com/TeenNovel</p>
+
+    </div>
+
+</div>

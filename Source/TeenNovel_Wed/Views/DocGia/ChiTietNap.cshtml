@@ -1,0 +1,125 @@
+﻿@model TeenNovel_Wed.Models.GoiNapXu
+
+@{
+    ViewData["Title"] = "Chi tiết nạp";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/chitiet-nap.css" />
+
+<div class="nap-container">
+
+    <div class="nap-left">
+
+        <h3>@Model.TenGoi</h3>
+
+        <div class="info-item">
+            <span>Số tiền</span>
+            <strong id="soTien">@Model.SoTien.ToString("N0") VNĐ</strong>
+        </div>
+
+        <div class="info-item">
+            <span>Xu nhận</span>
+            <strong>@Model.SoXuNhan Xu</strong>
+        </div>
+
+        <hr />
+
+        <div class="info-item">
+            <span>Ngân hàng</span>
+            <strong id="bankName">MB Bank</strong>
+        </div>
+
+        <div class="info-item">
+            <span>Số tài khoản</span>
+
+            <div>
+                <strong id="stk">***********</strong>
+
+                <button class="copy-btn" data-copy="stk">
+                    Copy
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="info-item">
+            <span>Chủ tài khoản</span>
+            <strong id="chuTK">***********</strong>
+        </div>
+
+        <div class="info-item">
+            <span>Nội dung CK</span>
+
+            <div>
+
+                <strong id="noiDung">
+                    Chưa tạo
+                </strong>
+
+                <button class="copy-btn" data-copy="noiDung">
+                    Copy
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="nap-right">
+
+        <button id="btnQR"
+                data-id="@Model.MaGoiNap"
+                class="btn-taoqr">
+
+            TẠO MÃ QR
+
+        </button>
+
+        <img id="imgQR"
+             style="display:none;" />
+
+    </div>
+
+    <div id="paymentProcessing" class="payment-popup" style="display:none">
+        <div class="payment-box">
+
+            <div class="loader"></div>
+
+            <h4>Đang xử lý thanh toán</h4>
+
+            <p>Vui lòng không đóng trang này...</p>
+
+        </div>
+    </div>
+
+    <div id="paymentSuccess"
+         class="payment-popup"
+         style="display:none">
+
+        <div class="payment-box">
+
+            <div class="success-check">
+                ✓
+            </div>
+
+            <h3>Thanh toán thành công</h3>
+
+            <p>Xu đã được cộng vào tài khoản.</p>
+
+            <a href="/DocGia/NapXu"
+                   class="btn-back">
+
+                Quay lại trang nạp
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="~/js/chitiet-nap.js"></script>

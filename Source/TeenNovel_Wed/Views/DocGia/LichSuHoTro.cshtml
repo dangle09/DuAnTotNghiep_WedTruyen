@@ -1,0 +1,141 @@
+﻿@model IEnumerable<TeenNovel_Wed.Models.HoTro>
+
+@{
+    ViewData["Title"] = "Lịch sử yêu cầu";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/hotro.css" asp-append-version="true" />
+}
+
+<div class="hotro-page">
+
+    <div class="hotro-header">
+
+        <div>
+            <div class="breadcrumb">
+                <a asp-action="TrangChu">Trang chủ</a>
+                <span>></span>
+                <a asp-action="HoTro">Liên hệ CSKH</a>
+                <span>></span>
+                Lịch sử yêu cầu
+            </div>
+
+            <h2>Lịch sử yêu cầu</h2>
+            <p>Theo dõi trạng thái các ticket bạn đã gửi.</p>
+        </div>
+
+        <div class="hotro-actions">
+
+            <a asp-action="HoTro" class="hotro-btn">
+                <i class="bi bi-arrow-left"></i>
+                Quay lại
+            </a>
+
+            <a asp-action="TaoYeuCau"
+                   class="hotro-btn hotro-btn-primary">
+                <i class="bi bi-plus-circle"></i>
+                Tạo yêu cầu
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="ticket-card">
+
+        @if (!Model.Any())
+        {
+            <div class="ticket-empty">
+
+                <i class="bi bi-chat-left-text"></i>
+
+                <h3>Bạn chưa gửi yêu cầu nào</h3>
+
+                <p>Nhấn "Tạo yêu cầu" để liên hệ CSKH.</p>
+
+            </div>
+        }
+        else
+        {
+            <table class="ticket-table">
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Tiêu đề</th>
+                        <th>Ngày gửi</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @{
+                        int stt = 1;
+                    }
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@stt</td>
+
+                            <td>@item.TieuDe</td>
+
+                            <td>@item.NgayGui.ToString("dd/MM/yyyy HH:mm")</td>
+
+                            <td>
+
+                                @switch (item.TrangThai)
+                                {
+                                    case 0:
+                                        <span class="ticket-status waiting">
+                                            Chờ xử lý
+                                        </span>
+                                        break;
+
+                                    case 1:
+                                        <span class="ticket-status processing">
+                                            Đang xử lý
+                                        </span>
+                                        break;
+
+                                    default:
+                                        <span class="ticket-status done">
+                                            Đã phản hồi
+                                        </span>
+                                        break;
+                                }
+
+                            </td>
+
+                            <td>
+
+                                <a asp-action="ChiTietHoTro"
+                                       asp-route-id="@item.MaHoTro"
+                                       class="ticket-detail-btn">
+
+                                    Chi tiết
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        stt++;
+                    }
+
+                </tbody>
+
+            </table>
+        }
+
+    </div>
+
+</div>

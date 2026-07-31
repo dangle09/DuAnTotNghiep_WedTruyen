@@ -1,0 +1,68 @@
+﻿@model IEnumerable<TeenNovel_Wed.Models.LichSuDoc>
+
+@{
+    ViewData["Title"] = "Lịch sử đọc";
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+}
+
+<link rel="stylesheet"
+      href="~/css/lichsudoc.css"
+      asp-append-version="true" />
+
+<div class="history-page container-fluid">
+
+    <h2 class="history-title">
+        <i class="bi bi-clock-history"></i>
+        Lịch sử đọc
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="history-empty">
+
+            <i class="bi bi-book"></i>
+
+            <p>Bạn chưa đọc truyện nào.</p>
+
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            var truyen = item.MachuongNavigation.MatruyenNavigation;
+
+            <a class="history-card"
+                   asp-controller="DocGia"
+                   asp-action="DocChuong"
+                   asp-route-id="@item.Machuong">
+
+                <img src="@truyen.AnhBia"
+                     class="history-cover" />
+
+                <div class="history-info">
+
+                    <h4>@truyen.Tentruyen</h4>
+
+                    <p class="chapter">
+
+                        @item.MachuongNavigation.Tenchuong
+
+                    </p>
+
+                    <span>
+
+                        Đọc lúc
+                        @item.Ngaydoc.ToString("dd/MM/yyyy HH:mm")
+
+                    </span>
+
+                </div>
+
+                <i class="bi bi-chevron-right"></i>
+
+            </a>
+        }
+    }
+
+</div>

@@ -1,0 +1,260 @@
+﻿
+.hotro-page {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.hotro-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+    .hotro-header h2 {
+        font-size: 34px;
+        color: white;
+        margin-bottom: 6px;
+    }
+
+    .hotro-header p {
+        color: white;
+    }
+
+.breadcrumb {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.hotro-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.hotro-btn {
+    width: 165px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid #7c3aed;
+    color: #7c3aed;
+    background: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: .25s;
+}
+
+    .hotro-btn:hover {
+        transform: translateY(-2px);
+    }
+
+.hotro-btn-primary {
+    background: #7c3aed;
+    color: white;
+}
+
+.hotro-box {
+    margin-top: 25px;
+    border: 1px solid #45305d;
+    border-radius: 12px;
+    padding: 28px;
+    background: #1b1126;
+}
+
+.box-title {
+    color: #8b5cf6;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hotro-box ol {
+    padding-left: 25px;
+}
+
+.hotro-box li {
+    margin-bottom: 14px;
+    line-height: 1.8;
+    color: white;
+}
+
+.about-box {
+    max-width: 650px;
+    margin: 30px auto;
+}
+
+    .about-box p {
+        margin-bottom: 10px;
+        line-height: 1.7;
+        color: white;
+    }
+
+.ticket-form {
+    margin-top: 25px;
+}
+
+.ticket-card {
+    background: #1b1126;
+    border: 1px solid #45305d;
+    border-radius: 14px;
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ddd;
+        font-weight: 600;
+    }
+
+.form-control {
+    width: 100%;
+    border: 1px solid #4b5563;
+    border-radius: 10px;
+    padding: 14px;
+    background: #10091a;
+    color: white;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139,92,246,.2);
+    }
+
+textarea.form-control {
+    resize: vertical;
+}
+
+.ticket-note {
+    margin-top: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #231437;
+    color: #d1d5db;
+    line-height: 1.7;
+}
+
+.ticket-footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    border: none;
+    background: #7c3aed;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: .25s;
+}
+
+    .submit-btn:hover {
+        background: #6d28d9;
+    }
+
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .ticket-table th {
+        padding: 16px;
+        background: #241238;
+        color: #fff;
+    }
+
+    .ticket-table td {
+        padding: 18px 16px;
+        border-bottom: 1px solid #3b2457;
+    }
+
+    .ticket-table tr:hover {
+        background: #20122f;
+    }
+
+.ticket-status {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.waiting {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.processing {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.done {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.ticket-detail-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    background: #7c3aed;
+}
+
+    .ticket-detail-btn:hover {
+        background: #6d28d9;
+    }
+
+.ticket-empty {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+    .ticket-empty i {
+        font-size: 70px;
+        color: #8b5cf6;
+    }
+
+    .ticket-empty h3 {
+        margin-top: 15px;
+    }
+
+    .ticket-empty p {
+        color: #999;
+    }
+
+@media(max-width:768px) {
+
+    .hotro-header {
+        flex-direction: column;
+    }
+
+    .hotro-actions {
+        margin-top: 18px;
+        width: 100%;
+    }
+
+    .hotro-btn {
+        flex: 1;
+        width: auto;
+    }
+
+    .ticket-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

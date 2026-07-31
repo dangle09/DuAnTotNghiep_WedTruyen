@@ -1,0 +1,72 @@
+@model TeenNovel_Wed.Models.NapXu
+@{
+    Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+    ViewData["Title"]      = "Chi tiết lịch sử nạp xu";
+    ViewData["ActivePage"] = "LichSuNap";
+    var docGia = ViewBag.DocGia as TeenNovel_Wed.Models.DocGia;
+
+    string phuongThuc = Model.Phuongthuc switch
+    {
+        "momo"    => "Ví Momo",
+        "vnpay"   => "VNPay",
+        "banking" => "Chuyển khoản ngân hàng",
+        _         => Model.Phuongthuc
+    };
+}
+
+<link rel="stylesheet" href="~/css/lich-su-nap.css" asp-append-version="true" />
+
+<!-- ── BREADCRUMB ── -->
+<div class="lsn-breadcrumb">
+    <a asp-controller="DocGia" asp-action="TrangChu">Trang chủ</a>
+    <span>&gt;</span>
+    <a asp-action="LichSuNap">Lịch sử nạp xu</a>
+    <span>&gt;</span>
+    <span>Chi tiết</span>
+</div>
+
+<!-- ── TIÊU ĐỀ ── -->
+<h1 class="lsn-title">Lịch sử nạp xu</h1>
+<p class="lsn-sub">Kho lưu xu</p>
+
+<!-- ── CHI TIẾT THANH TOÁN ── -->
+<div class="lsn-search-card lsn-detail-card">
+    <div class="lsn-search-head">
+        <i class="bi bi-receipt"></i>
+        <span>Chi tiết thanh toán</span>
+    </div>
+
+    <div class="lsn-detail-list">
+
+        <div class="lsn-detail-row">
+            <label>Mã đơn</label>
+            <div class="lsn-detail-val">LS@(Model.Manap.ToString("D3"))</div>
+        </div>
+
+        <div class="lsn-detail-row">
+            <label>Tên độc giả</label>
+            <div class="lsn-detail-val">@docGia?.Ten</div>
+        </div>
+
+        <div class="lsn-detail-row">
+            <label>Mệnh giá</label>
+            <div class="lsn-detail-val">@Model.Sotien.ToString("N0")đ</div>
+        </div>
+
+        <div class="lsn-detail-row">
+            <label>Số xu nhận</label>
+            <div class="lsn-detail-val">@Model.Soxunhan.ToString("N0") xu</div>
+        </div>
+
+        <div class="lsn-detail-row">
+            <label>Thời gian thực hiện giao dịch</label>
+            <div class="lsn-detail-val">@Model.Ngaynap?.ToString("dd/MM/yyyy HH\\hmm\\pss\\s")</div>
+        </div>
+
+        <div class="lsn-detail-row">
+            <label>Phương thức thanh toán</label>
+            <div class="lsn-detail-val">@phuongThuc</div>
+        </div>
+
+    </div>
+</div>

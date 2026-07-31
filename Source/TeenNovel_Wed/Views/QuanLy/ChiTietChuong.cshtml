@@ -1,0 +1,132 @@
+@model TeenNovel_Wed.Models.Truyen
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Danh sách chương";
+    ViewData["ActivePage"] = "Chuong";
+    var chuongs = ViewBag.Chuongs as IEnumerable<TeenNovel_Wed.Models.Chuong> ?? Enumerable.Empty<TeenNovel_Wed.Models.Chuong>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-chuong.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="QuanLyChuong" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+    <a asp-action="ThemChuong" asp-route-matruyen="@Model.Matruyen" class="ad-topbar-btn ad-topbar-btn--primary">
+        <i class="bi bi-plus-lg"></i> Thêm chương
+    </a>
+}
+
+<!-- ── HEADER TRUYỆN ── -->
+<div class="ad-card qc-detail-header" style="margin-bottom:20px">
+    <div class="qc-detail-inner">
+        @if (!string.IsNullOrEmpty(Model.AnhBia))
+        {
+            <img src="@Model.AnhBia" class="qc-detail-cover" alt="@Model.Tentruyen" />
+        }
+        else
+        {
+            <div class="qc-detail-cover-placeholder"><i class="bi bi-book"></i></div>
+        }
+        <div class="qc-detail-info">
+            <div class="qc-detail-title">@Model.Tentruyen</div>
+            <div class="qc-detail-meta">
+                <span><i class="bi bi-person"></i> @(Model.MaTacGiaNavigation?.TenTacGia ?? "Chưa có")</span>
+                <span>
+                    <i class="bi bi-tags"></i> @foreach (var tl in Model.MaTheLoais)
+                    {
+                        <span>@tl.Tentheloai</span>
+                    }
+                </span>
+                <span><i class="bi bi-file-earmark-text"></i> @chuongs.Count() chương</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── DANH SÁCH CHƯƠNG ── -->
+<div class="ad-table-wrap">
+    <table class="ad-table">
+        <thead>
+            <tr>
+                <th style="width:60px">STT</th>
+                <th>Tên chương</th>
+                <th>Giá xu</th>
+                <th>Lượt đọc</th>
+                <th>Ngày đăng</th>
+                <th style="width:100px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!chuongs.Any())
+            {
+                <tr><td colspan="6" class="qc-empty-row"><i class="bi bi-inbox"></i><span>Chưa có chương nào</span></td></tr>
+            }
+            @foreach (var c in chuongs)
+            {
+                <tr>
+                    <td><span class="qc-thutu">@c.Thutu</span></td>
+                    <td><span class="qc-tenchuong">@c.Tenchuong</span></td>
+                    <td>
+                        @if (c.Giaxu > 0)
+                        {
+                            <span class="qc-xu-badge"><i class="bi bi-coin"></i> @c.Giaxu xu</span>
+                        }
+                        else
+                        {
+                            <span class="qc-free-badge">Miễn phí</span>
+                        }
+                    </td>
+                    <td>@(c.LuotDoc).ToString("N0")</td>
+                    <td>@c.Ngaydang.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="qc-actions">
+                            <a asp-action="SuaChuong" asp-route-id="@c.Machuong"
+                               class="qc-action-btn qc-action-edit" title="Sửa">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button class="qc-action-btn qc-action-delete" title="Xoá"
+                                    onclick="confirmDeleteChuong(@c.Machuong, '@c.Tenchuong.Replace("'", "\\'")')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL XOÁ -->
+<div class="qc-modal-overlay" id="deleteChuongModal">
+    <div class="qc-modal">
+        <div class="qc-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+        <h3 class="qc-modal-title">Xác nhận xoá chương</h3>
+        <p class="qc-modal-msg">Bạn có chắc muốn xoá chương <strong id="deleteChuongName"></strong>?<br/>Thao tác này không thể hoàn tác.</p>
+        <form id="deleteChuongForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="qc-modal-actions">
+                <button type="button" class="ad-topbar-btn ad-topbar-btn--outline" onclick="closeDeleteChuong()">Huỷ</button>
+                <button type="submit" class="ad-topbar-btn" style="background:#dc2626;color:#fff;border:none">Xoá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function confirmDeleteChuong(id, name) {
+    document.getElementById('deleteChuongName').textContent = name;
+    document.getElementById('deleteChuongForm').action = '/QuanLy/XoaChuong/' + id;
+    document.getElementById('deleteChuongModal').classList.add('show');
+}
+function closeDeleteChuong() {
+    document.getElementById('deleteChuongModal').classList.remove('show');
+}
+document.getElementById('deleteChuongModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteChuong();
+});
+</script>
+}

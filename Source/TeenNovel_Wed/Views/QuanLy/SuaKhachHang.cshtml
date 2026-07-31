@@ -1,0 +1,64 @@
+@model TeenNovel_Wed.Models.DocGia
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"] = "Sửa khách hàng";
+    ViewData["ActivePage"] = "KhachHang";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-nguoidung.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="ChiTietKhachHang" asp-route-id="@Model.MaDocGia" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+}
+
+<div class="nd-form-wrap">
+    <form asp-action="SuaKhachHang" asp-route-id="@Model.MaDocGia" method="post" id="dgForm" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="ad-card">
+            <div class="ad-card-head"><span class="ad-card-title">Thông tin khách hàng</span></div>
+            <div class="ad-card-body">
+
+                <div class="nd-field">
+                    <label>Email</label>
+                    <input type="text" value="@Model.MatkNavigation?.Email" class="nd-input--readonly" readonly />
+                </div>
+
+                <div class="nd-field">
+                    <label>Họ tên <span class="nd-required">*</span></label>
+                    <input type="text" name="ten" id="ten" value="@Model.Ten" maxlength="100" />
+                    <span class="nd-err" id="err-ten"></span>
+                </div>
+
+                <div class="nd-field-row">
+                    <div class="nd-field">
+                        <label>Số điện thoại</label>
+                        <input type="text" name="sodienthoai" value="@Model.Sodienthoai" />
+                    </div>
+                    <div class="nd-field">
+                        <label>Số xu <span class="nd-required">*</span></label>
+                        <input type="number" name="soxu" id="soxu" value="@Model.Soxu" min="0" />
+                        <span class="nd-err" id="err-soxu"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="nd-form-actions">
+            <a asp-action="ChiTietKhachHang" asp-route-id="@Model.MaDocGia" class="ad-topbar-btn ad-topbar-btn--outline">Huỷ</a>
+            <button type="submit" class="ad-topbar-btn ad-topbar-btn--primary" id="submitBtn">
+                <i class="bi bi-check-lg"></i> Lưu thay đổi
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/quan-ly-nguoidung.js" asp-append-version="true"></script>
+    <script>initKhachHangForm();</script>
+}

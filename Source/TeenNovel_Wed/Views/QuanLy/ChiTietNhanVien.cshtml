@@ -1,0 +1,65 @@
+@model TeenNovel_Wed.Models.NhanVien
+@{
+    Layout = "~/Views/Shared/_LayoutQuanLy.cshtml";
+    ViewData["Title"]      = "Chi tiết nhân viên";
+    ViewData["ActivePage"] = "NhanVien";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quan-ly-nguoidung.css" asp-append-version="true" />
+}
+
+@section TopbarAction {
+    <a asp-action="SuaNhanVien" asp-route-id="@Model.Manv" class="ad-topbar-btn ad-topbar-btn--outline">
+        <i class="bi bi-pencil"></i> Sửa
+    </a>
+    <button class="ad-topbar-btn @(Model.MatkNavigation?.Trangthai == true ? "" : "")"
+            style="@(Model.MatkNavigation?.Trangthai == true ? "background:#d97706;color:#fff;border:none" : "background:#16a34a;color:#fff;border:none")"
+            onclick="confirmToggle(@Model.Manv, '@Model.Ten.Replace("'", "\\'")', '@Model.MatkNavigation?.Trangthai', 'nv')">
+        <i class="bi @(Model.MatkNavigation?.Trangthai == true ? "bi-lock" : "bi-unlock")"></i>
+        @(Model.MatkNavigation?.Trangthai == true ? "Khoá tài khoản" : "Mở khoá")
+    </button>
+}
+<div class="nd-detail-header ad-card" style="margin-bottom:20px">
+    <div class="nd-detail-inner">
+        <div class="nd-detail-avatar">@Model.Ten.Substring(0, 1).ToUpper()</div>
+        <div class="nd-detail-info">
+            <div class="nd-detail-name">@Model.Ten</div>
+            <div class="nd-detail-meta">
+                <span><i class="bi bi-envelope"></i> @Model.MatkNavigation?.Email</span>
+                <span><i class="bi bi-telephone"></i> @(Model.Sodienthoai ?? "Chưa cập nhật")</span>
+                <span><i class="bi bi-gender-ambiguous"></i> @(Model.Gioitinh ?? "—")</span>
+            </div>
+            <div class="nd-detail-meta">
+                <span><i class="bi bi-cake2"></i> Sinh: @(Model.Ngaysinh?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</span>
+                <span><i class="bi bi-calendar-check"></i> Vào làm: @Model.Ngayvaolamm.ToString("dd/MM/yyyy")</span>
+            </div>
+            @if (Model.MatkNavigation?.Trangthai == true)
+            {
+                <span class="ad-chip ad-chip--green">Đang hoạt động</span>
+            }
+            else
+            {
+                <span class="ad-chip ad-chip--red">Đã khoá</span>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="ad-stats-grid">
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Truyện đã đăng <i class="bi bi-book" style="color:#4f46e5"></i></div>
+        <div class="ad-stat-val">@ViewBag.SoTruyenDaDang</div>
+    </div>
+    <div class="ad-stat-card">
+        <div class="ad-stat-label">Yêu cầu CSKH đã xử lý <i class="bi bi-headset" style="color:#059669"></i></div>
+        <div class="ad-stat-val">@ViewBag.SoHoTroDaXuLy</div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ModalXacNhan")
+
+
+@section Scripts {
+    <script src="~/js/quan-ly-nguoidung.js" asp-append-version="true"></script>
+}
