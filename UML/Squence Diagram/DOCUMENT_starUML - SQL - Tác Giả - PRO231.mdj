@@ -25,7 +25,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGecutRWygpe00="
 							},
-							"name": "SEQ- Thêm khuyến mãi",
+							"name": "SEQ- Thêm tác giả",
 							"ownedViews": [
 								{
 									"_type": "UMLFrameView",
@@ -14103,7 +14103,8 @@
 					"_parent": {
 						"$ref": "AAAAAAGecmUTrB8u1jM="
 					},
-					"name": "Role26"
+					"name": "Role26",
+					"type": ""
 				},
 				{
 					"_type": "UMLAttribute",
@@ -14138,7 +14139,8 @@
 					"_parent": {
 						"$ref": "AAAAAAGecmUTrB8u1jM="
 					},
-					"name": "Role30"
+					"name": "Role30",
+					"type": ""
 				},
 				{
 					"_type": "UMLAttribute",
@@ -14173,7 +14175,8 @@
 					"_parent": {
 						"$ref": "AAAAAAGecmUTrB8u1jM="
 					},
-					"name": "Role34"
+					"name": "Role34",
+					"type": ""
 				},
 				{
 					"_type": "UMLAttribute",
@@ -14506,7 +14509,8 @@
 					"_parent": {
 						"$ref": "AAAAAAGecmUTrB8u1jM="
 					},
-					"name": "Role70"
+					"name": "Role70",
+					"type": ""
 				},
 				{
 					"_type": "UMLAttribute",
