@@ -769,8 +769,8 @@ namespace TeenNovel_Wed.Controllers
                 return RedirectToAction("Login", "Login_Register");
 
             ViewBag.TongXuNap = docGia.NapXus
-                .Where(x => x.Trangthai == "thanhcong")
-                .Sum(x => x.Soxunhan);
+                 .Where(x => x.Trangthai == "DaThanhToan")
+                 .Sum(x => x.Soxunhan);
 
             return View(docGia);
         }
@@ -1077,6 +1077,7 @@ namespace TeenNovel_Wed.Controllers
         // ================================================================
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> TaoDonNap(int id)
         {
             var goiNap = await _context.GoiNapXus

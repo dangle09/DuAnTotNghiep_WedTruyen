@@ -61,18 +61,21 @@ public class SePayController : ControllerBase
             return Ok();
 
         // 6. Tìm đơn nạp khớp nội dung chuyển khoản
-        var candidates = await _context.NapXus
+        var napXu = await _context.NapXus
             .Include(x => x.MaDocGiaNavigation)
             .Where(x => x.Trangthai == "ChoThanhToan")
-            .ToListAsync();
-
-        var napXu = candidates.FirstOrDefault(x =>
-            !string.IsNullOrEmpty(x.NoiDungChuyenKhoan) &&
-            model.Content.Contains(x.NoiDungChuyenKhoan, StringComparison.OrdinalIgnoreCase));
+            .FirstOrDefaultAsync(x =>
+        model.Content.Contains(x.NoiDungChuyenKhoan!));
 
         if (napXu == null)
         {
             Console.WriteLine($"[SePay Webhook] Không tìm thấy đơn khớp với nội dung: {model.Content}");
+            return Ok();
+        }
+        // Nếu đơn đã thanh toán rồi thì bỏ qua
+        if (napXu.Trangthai == "DaThanhToan")
+        {
+            Console.WriteLine($"[SePay Webhook] Đơn {napXu.Manap} đã được xử lý trước đó.");
             return Ok();
         }
 
@@ -84,13 +87,25 @@ public class SePayController : ControllerBase
         }
 
         // 8. Cập nhật trạng thái
-        napXu.Trangthai = "DaThanhToan";
-        napXu.Ngaynap = DateTime.Now;
-        napXu.MaGiaoDich = model.ReferenceCode;
+        using var transaction = await _context.Database.BeginTransactionAsync();
 
-        napXu.MaDocGiaNavigation.Soxu += napXu.Soxunhan;
+        try
+        {
+            napXu.Trangthai = "DaThanhToan";
+            napXu.Ngaynap = DateTime.Now;
+            napXu.MaGiaoDich = model.ReferenceCode;
 
-        await _context.SaveChangesAsync();
+            napXu.MaDocGiaNavigation.Soxu += napXu.Soxunhan;
+
+            await _context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
 
         return Ok(new { success = true });
     }
