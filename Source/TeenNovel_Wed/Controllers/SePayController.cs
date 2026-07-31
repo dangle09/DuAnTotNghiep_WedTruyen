@@ -29,13 +29,9 @@ public class SePayController : ControllerBase
         Request.Body.Position = 0;
 
         // 2. Lấy signature + timestamp
-        var signatureHeader = Request.Headers["X-SePay-Signature"].ToString();
-        var timestamp = Request.Headers["X-SePay-Timestamp"].ToString();
+        //var signatureHeader = Request.Headers["X-SePay-Signature"].ToString();
+        //var timestamp = Request.Headers["X-SePay-Timestamp"].ToString();
 
-        foreach (var h in Request.Headers)
-        {
-            Console.WriteLine($"{h.Key}: {h.Value}");
-        }
         // 3. Xác thực chữ ký — request không hợp lệ thì chặn ngay
         //if (!IsValidSignature(rawBody, timestamp, signatureHeader))
         //{

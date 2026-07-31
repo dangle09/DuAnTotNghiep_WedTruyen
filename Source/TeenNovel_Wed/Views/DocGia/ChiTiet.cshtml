@@ -4,85 +4,47 @@
     ViewData["Title"] = Model.Tentruyen;
     Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
 }
-
-
 @section Styles {
 
     <link rel="stylesheet" href="~/css/chitiet-truyen.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/chi-tiet-actions.css" asp-append-version="true" />
 }
 
-
-
 <!-- BREADCRUMB -->
 
 <div class="ct-breadcrumb">
-
-
     <a asp-controller="DocGia"
            asp-action="TrangChu">
 
         Trang chủ
 
     </a>
-
-
     >
-
 
     <a asp-controller="DocGia"
            asp-action="TheLoai"
            asp-route-id="@Model.MaTheLoais">
-
-
         @foreach (var tl in Model.MaTheLoais)
         {
             @tl.Tentheloai
         }
 
     </a>
-
-
-
     >
-
-
     <span>
 
         @Model.Tentruyen
 
     </span>
-
-
-
 </div>
 
-
-
-
-
 <div class="ct-box">
-
-
-
-
-
     <div class="ct-info-wrap">
-
-
-
         <!-- POSTER -->
 
         <div class="ct-poster">
-
-
             <img src="@Model.AnhBia" />
-
-
-
-
             <div class="rating">
-
 
                 @{
 
@@ -91,8 +53,6 @@
                     int full = (int)sao;
 
                 }
-
-
 
                 @for (int i = 1; i <= 5; i++)
                 {
@@ -123,14 +83,6 @@
 
         </div>
 
-
-
-
-
-
-
-
-
         <!-- THÔNG TIN -->
 
         <div class="ct-info">
@@ -141,15 +93,7 @@
                 @Model.Tentruyen
 
             </h1>
-
-
-
             <hr />
-
-
-
-
-
             <p>
 
                 <i class="bi bi-eye"></i>
@@ -162,11 +106,6 @@
 
 
             </p>
-
-
-
-
-
             <p>
 
                 <i class="bi bi-heart"></i>
@@ -179,12 +118,6 @@
 
 
             </p>
-
-
-
-
-
-
             <p>
 
                 <b>Tác giả:</b>
@@ -193,12 +126,6 @@
 
 
             </p>
-
-
-
-
-
-
             <p>
 
                 <b>Thể loại:</b>
@@ -215,10 +142,6 @@
 
             </p>
 
-
-
-
-
             <p>
 
                 <b>Số chương:</b>
@@ -227,10 +150,6 @@
 
 
             </p>
-
-
-
-
 
             <p>
 
@@ -253,17 +172,7 @@
 
     </div>
 
-
-
-
-
-
-
-
-
     <!-- MÔ TẢ -->
-
-
     <div class="ct-description">
 
 
@@ -279,18 +188,7 @@
             @Model.Mota
 
         </p>
-
-
-
     </div>
-
-
-
-
-
-
-
-
 
     <!-- NÚT ĐỌC -->
 
@@ -337,28 +235,44 @@
 
 
     <!-- DANH SÁCH CHƯƠNG -->
-    @if (Model.Chuongs.Any())
-    {
-        @foreach (var c in Model.Chuongs.OrderBy(x => x.Thutu))
+    <div class="chapter-list">
+
+        @if (Model.Chuongs.Any())
         {
-            <a asp-controller="DocGia"
-                   asp-action="DocChuong"
-                   asp-route-id="@c.Machuong">
-                @c.Tenchuong
-            </a>
+            @foreach (var c in Model.Chuongs.OrderBy(x => x.Thutu))
+            {
+                <a asp-controller="DocGia"
+                       asp-action="DocChuong"
+                       asp-route-id="@c.Machuong"
+                       class="chapter-item">
+
+                    <div class="chapter-title">
+                        Chương @c.Thutu : @c.Tenchuong
+                    </div>
+
+                    <div class="chapter-price">
+                        @if (c.Giaxu > 0)
+                        {
+                            <span>@c.Giaxu Xu</span>
+                        }
+                        else
+                        {
+                            <span class="free">Miễn phí</span>
+                        }
+                    </div>
+
+                </a>
+            }
         }
-    }
-    else
-    {
-        <div class="chapter-empty">
-            <i class="bi bi-journal-x"></i>
-            Truyện hiện chưa có chương nào.
-        </div>
-    }
+        else
+        {
+            <div class="chapter-empty">
+                <i class="bi bi-journal-x"></i>
+                Truyện hiện chưa có chương nào.
+            </div>
+        }
 
-
-
-
+    </div>
 
 </div>
 
