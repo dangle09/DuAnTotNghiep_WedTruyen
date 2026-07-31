@@ -253,22 +253,6 @@ body,
         color: white;
     }
 
-/* ================= TITLE CHƯƠNG ================= */
-.chapter-title {
-    margin-top: 45px;
-    border-top: 2px solid #f97316;
-    text-align: center;
-}
-
-    .chapter-title span {
-        position: relative;
-        top: -20px;
-        background: #11111c;
-        padding: 0 25px;
-        font-size: 28px;
-        font-weight: 700;
-        color: #f97316;
-    }
 
 /* ================= DANH SÁCH CHƯƠNG ================= */
 .chapter-list {
@@ -276,24 +260,6 @@ body,
     flex-direction: column;
     gap: 8px;
 }
-
-    .chapter-list a {
-        padding: 14px 20px;
-        border-radius: 8px;
-        background: #fafafa;
-        border: 1px solid #ddd;
-        color: #333;
-        text-decoration: none;
-        font-size: 17px;
-        transition: .25s;
-    }
-
-        .chapter-list a:hover {
-            background: #f3e8ff;
-            border-color: #9333ea;
-            color: #9333ea;
-            transform: translateX(8px);
-        }
 .ct-info h1,
 .ct-info p,
 .ct-description h2,
@@ -305,21 +271,6 @@ body,
     background: rgba(255,255,255,.2);
 }
 
-
-
-.chapter-list a {
-    background: #090912;
-    border: 1px solid rgba(255,255,255,.15);
-    color: #d8b4fe;
-}
-
-
-
-    .chapter-list a:hover {
-        background: #000;
-        border: 1px solid white;
-        color: #e9d5ff;
-    }
 
 /* ===============================
    FIX KHÔNG ĐÈ LAYOUT DOCGIA

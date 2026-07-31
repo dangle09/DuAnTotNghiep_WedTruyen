@@ -241,27 +241,41 @@
         {
             @foreach (var c in Model.Chuongs.OrderBy(x => x.Thutu))
             {
-                <a asp-controller="DocGia"
-                       asp-action="DocChuong"
-                       asp-route-id="@c.Machuong"
-                       class="chapter-item">
+                @if (c.Giaxu == 0)
+                {
+                    <a asp-controller="DocGia"
+                           asp-action="DocChuong"
+                           asp-route-id="@c.Machuong"
+                           class="chapter-item">
 
-                    <div class="chapter-title">
-                        Chương @c.Thutu : @c.Tenchuong
-                    </div>
+                        <div class="chapter-name">
+                            @c.Tenchuong
+                        </div>
 
-                    <div class="chapter-price">
-                        @if (c.Giaxu > 0)
-                        {
-                            <span>@c.Giaxu Xu</span>
-                        }
-                        else
-                        {
-                            <span class="free">Miễn phí</span>
-                        }
-                    </div>
+                        <div class="chapter-price">
+                            
+                        </div>
 
-                </a>
+                    </a>
+                }
+                else
+                {
+                    <a href="#"
+                           class="chapter-item btn-buy-chapter"
+                           data-id="@c.Machuong"
+                           data-name="@c.Tenchuong"
+                           data-price="@c.Giaxu">
+
+                        <div class="chapter-name">
+                            @c.Tenchuong
+                        </div>
+
+                        <div class="chapter-price">
+                            @c.Giaxu Xu
+                        </div>
+
+                    </a>
+                }
             }
         }
         else
@@ -276,6 +290,38 @@
 
 </div>
 
+<div class="buy-modal" id="buyModal">
+
+    <div class="buy-box">
+
+        <h3>Mua chương</h3>
+
+        <p id="buyContent"></p>
+
+        <div class="buy-actions">
+
+            <button type="button"
+                    class="buy-cancel"
+                    id="btnCancelBuy">
+                Hủy
+            </button>
+
+            <button type="button"
+                    class="buy-confirm"
+                    id="btnConfirmBuy">
+                Xác nhận
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 @section Scripts {
+
     <script src="~/js/chi-tiet-actions.js" asp-append-version="true"></script>
+
+    <script src="~/js/mua-chuong.js" asp-append-version="true"></script>
+
 }

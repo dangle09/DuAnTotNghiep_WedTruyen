@@ -280,6 +280,109 @@
     margin: 0;
 }
 
+/* ==========================
+   Danh sách chương
+========================== */
+
+.chapter-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chapter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    min-height: 40px;
+    background: #0b0b12;
+    border: 1px solid rgba(168,85,247,.18);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: .2s;
+}
+
+    .chapter-item:hover {
+        border-color: #a855f7;
+        background: #12121d;
+    }
+
+.chapter-name {
+    color: #c084fc;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.chapter-price {
+    color: #f59e0b;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+    .chapter-price .free {
+        color: #22c55e;
+    }
+
+.buy-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.65);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+    .buy-modal.show {
+        display: flex;
+    }
+
+.buy-box {
+    width: 360px;
+    background: #12121d;
+    border: 1px solid rgba(168,85,247,.35);
+    border-radius: 14px;
+    padding: 24px;
+    color: #fff;
+}
+
+    .buy-box h3 {
+        margin: 0 0 15px;
+        font-size: 20px;
+    }
+
+    .buy-box p {
+        color: #ddd;
+        margin-bottom: 25px;
+        line-height: 1.7;
+    }
+
+.buy-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+    .buy-actions button {
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+.buy-cancel {
+    background: #2b2b39;
+    color: white;
+}
+
+.buy-confirm {
+    background: #9333ea;
+    color: white;
+}
+
 @media (max-width: 575.98px) {
     .ct-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
     .ct-action-form, .ct-btn { width: 100%; }

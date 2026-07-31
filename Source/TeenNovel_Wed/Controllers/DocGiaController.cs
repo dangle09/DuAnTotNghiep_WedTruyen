@@ -459,6 +459,13 @@ namespace TeenNovel_Wed.Controllers
         {
             ViewData["ActivePage"] = "";
 
+            int maDocGia = 0;
+
+            if (User.Identity!.IsAuthenticated)
+            {
+                maDocGia = int.Parse(User.FindFirst("MaDocGia")!.Value);
+            }
+
             var chuong = await _context.Chuongs
 
                 .Include(c => c.MatruyenNavigation)
@@ -468,6 +475,30 @@ namespace TeenNovel_Wed.Controllers
 
             if (chuong == null)
                 return NotFound();
+
+            // Nếu chương có giá
+            if (chuong.Giaxu > 0)
+            {
+                if (!User.Identity!.IsAuthenticated)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                bool daMua = await _context.SuDungXus.AnyAsync(x =>
+                    x.MaDocGia == maDocGia &&
+                    x.Machuong == id);
+
+                if (!daMua)
+                {
+                    TempData["Error"] = "Bạn cần mua chương này trước.";
+
+                    return RedirectToAction("ChiTiet",
+                        new
+                        {
+                            id = chuong.Matruyen
+                        });
+                }
+            }
 
             var binhLuans = await _context.BinhLuans
                 .Include(x => x.MaDocGiaNavigation)
@@ -495,8 +526,6 @@ namespace TeenNovel_Wed.Controllers
             //---------------------------------------
 
             var maDocGiaClaim = User.FindFirst("MaDocGia")?.Value;
-
-            int maDocGia = 0;
 
             if (int.TryParse(maDocGiaClaim, out maDocGia))
             {
@@ -1174,6 +1203,88 @@ namespace TeenNovel_Wed.Controllers
                 return Json(new { status = "khongtimthay" });
 
             return Json(new { status = nap.Trangthai });
+        }
+
+
+        // ================================================================
+        // MUA TRUYỆN TIÊU XU
+        // ================================================================
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> MuaChuong(int maChuong)
+        {
+            int maDocGia = int.Parse(User.FindFirst("MaDocGia")!.Value);
+
+            var chuong = await _context.Chuongs
+                .Include(x => x.MatruyenNavigation)
+                .FirstOrDefaultAsync(x => x.Machuong == maChuong);
+
+            if (chuong == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Không tìm thấy chương."
+                });
+            }
+
+            // Chương miễn phí
+            if (chuong.Giaxu <= 0)
+            {
+                return Json(new
+                {
+                    success = true,
+                    redirect = Url.Action("DocChuong", new { id = maChuong })
+                });
+            }
+
+            // Đã mua chưa
+            bool daMua = await _context.SuDungXus.AnyAsync(x =>
+                x.MaDocGia == maDocGia &&
+                x.Machuong == maChuong);
+
+            if (daMua)
+            {
+                return Json(new
+                {
+                    success = true,
+                    redirect = Url.Action("DocChuong", new { id = maChuong })
+                });
+            }
+
+            var docGia = await _context.DocGias
+                .FirstAsync(x => x.MaDocGia == maDocGia);
+
+            // Không đủ xu
+            if (docGia.Soxu < chuong.Giaxu)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Bạn không đủ xu để mua chương."
+                });
+            }
+
+            // Trừ xu
+            docGia.Soxu -= chuong.Giaxu;
+
+            // Lưu lịch sử
+            _context.SuDungXus.Add(new SuDungXu
+            {
+                MaDocGia = maDocGia,
+                Machuong = maChuong,
+                SoXu = chuong.Giaxu,
+                NgaySuDung = DateTime.Now
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Json(new
+            {
+                success = true,
+                redirect = Url.Action("DocChuong", new { id = maChuong }),
+                soXu = docGia.Soxu
+            });
         }
     }
 }
