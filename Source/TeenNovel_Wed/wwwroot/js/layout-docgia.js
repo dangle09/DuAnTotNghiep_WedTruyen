@@ -37,3 +37,18 @@ document.querySelectorAll('.ih-nav-links a, .ih-mobile-menu a').forEach(link => 
         link.classList.add('active');
     }
 });
+
+const overlay = document.getElementById("genreOverlay");
+const btn = document.getElementById("mobileGenreToggle");
+
+btn?.addEventListener("click", () => {
+    overlay.classList.add("show");
+});
+
+overlay?.addEventListener("click", e => {
+
+    if (e.target === overlay) {
+        overlay.classList.remove("show");
+    }
+
+});

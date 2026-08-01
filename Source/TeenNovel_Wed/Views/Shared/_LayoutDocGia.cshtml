@@ -163,7 +163,30 @@
             <!-- Mobile menu -->
             <div class="ih-mobile-menu" id="mobileMenu">
                 <a asp-controller="DocGia" asp-action="TrangChu">Trang chủ</a>
-                <a asp-controller="DocGia" asp-action="TheLoai">Thể loại</a>
+                <div class="ih-mobile-theloai">
+
+                    <button type="button" id="mobileGenreToggle" class="ih-mobile-theloai-btn">
+                        <span>Thể loại</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+
+                    <div class="ih-mobile-theloai-overlay" id="genreOverlay">
+
+                        <div class="ih-mobile-theloai-popup">
+
+                            @foreach (var tl in (IEnumerable<TeenNovel_Wed.Models.TheLoai>)ViewBag.NavTheLoai)
+                            {
+                                <a href="/DocGia/TheLoai/@tl.Matheloai"
+                                       class="ih-mobile-theloai-item">
+                                    @tl.Tentheloai
+                                </a>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
                 <a asp-controller="DocGia" asp-action="XepHang">Xếp hạng</a>
                 <a asp-controller="DocGia" asp-action="MoiCapNhat">Mới cập nhật</a>
             </div>

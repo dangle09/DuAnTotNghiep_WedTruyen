@@ -164,6 +164,9 @@ public partial class TeenNovelDbContext : DbContext
             entity.Property(e => e.Ngaynap);
             entity.Property(e => e.Phuongthuc).HasDefaultValue("VietQR");
             entity.Property(e => e.Trangthai).HasDefaultValue("chờ thanh toán");
+            entity.Property(e => e.TgHetHan)
+                                            .HasColumnName("TGHetHan")
+                                            .HasColumnType("datetime");
 
             entity.HasOne(d => d.MaDocGiaNavigation).WithMany(p => p.NapXus)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -171,6 +174,7 @@ public partial class TeenNovelDbContext : DbContext
             entity.HasOne(d => d.MaGoiNapNavigation)
                 .WithMany(p => p.NapXus)
                 .HasForeignKey(d => d.MaGoiNap);
+
         });
 
         modelBuilder.Entity<NhanVien>(entity =>

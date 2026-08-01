@@ -38,6 +38,9 @@ public partial class NapXu
     [Column(TypeName = "datetime")]
     public DateTime? Ngaynap { get; set; }
 
+    [Column("TGHetHan", TypeName = "datetime")]
+    public DateTime TgHetHan { get; set; }
+
     [ForeignKey(nameof(MaDocGia))]
     [InverseProperty(nameof(DocGia.NapXus))]
     public virtual DocGia MaDocGiaNavigation { get; set; } = null!;

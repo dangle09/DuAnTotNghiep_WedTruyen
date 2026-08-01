@@ -788,16 +788,96 @@ ul {
     color: #c084fc;
 }
 
-
-
-
-
 /* ================= BODY DARK NHẸ ================= */
 
 
 .ih-body {
     background: #0b0b14;
 }
+
+/* ================= Mobile thể loại ================= */
+
+.ih-mobile-theloai-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #c084fc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    font-size: 15px;
+}
+
+.ih-mobile-theloai-btn a {
+    color: #c084fc !important;
+}
+
+    .ih-mobile-theloai-btn a:hover {
+        background: #000;
+        border: 1px solid white;
+        color: #f5d0fe !important;
+    }
+
+    .ih-mobile-theloai-btn i {
+        transition: .3s;
+    }
+
+    .ih-mobile-theloai-btn.active i {
+        transform: rotate(180deg);
+    }
+
+.ih-mobile-theloai-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 9999;
+    padding-top: 70px;
+}
+
+    .ih-mobile-theloai-overlay.show {
+        display: flex;
+    }
+
+
+/* popup */
+
+.ih-mobile-theloai-popup {
+    width: 92%;
+    max-width: 420px;
+    background: #090912;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 18px;
+    padding: 18px;
+    display: grid;
+    gap: 10px;
+    /* quan trọng */
+
+    grid-template-columns: repeat(auto-fit,minmax(120px,max-content));
+    justify-content: center;
+}
+
+.ih-mobile-theloai-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    white-space: nowrap;
+    border-radius: 12px;
+    background: #171727;
+    color: #c084fc;
+    border: 1px solid rgba(255,255,255,.08);
+    transition: .25s;
+}
+
+    .ih-mobile-theloai-item:hover {
+        border-color: #fff;
+        background: #000;
+    }
 
 /* =========================================================
    RESPONSIVE

@@ -1089,6 +1089,10 @@ namespace TeenNovel_Wed.Controllers
             ViewData["Title"] = "Nạp xu";
             ViewData["ActivePage"] = "NapXu";
 
+            int maDocGia = int.Parse(User.FindFirst("MaDocGia")!.Value);
+
+            await XoaDonNapHetHan(maDocGia);
+
             var goiNap = await _context.GoiNapXus
                 .Where(x => x.HienThi)
                 .OrderBy(x => x.SoTien)
@@ -1130,6 +1134,8 @@ namespace TeenNovel_Wed.Controllers
             }
 
             var maDocGia = int.Parse(User.FindFirst("MaDocGia")!.Value);
+
+            await XoaDonNapHetHan(maDocGia);
 
             // Tối ưu: nếu người dùng đã có đơn "ChoThanhToan" y hệt gói này chưa quá hạn (ví dụ 15 phút),
             // dùng lại đơn cũ thay vì tạo rác trong DB khi họ bấm nút nhiều lần / F5 lại trang.
@@ -1297,6 +1303,21 @@ namespace TeenNovel_Wed.Controllers
                 redirect = Url.Action("DocChuong", new { id = maChuong }),
                 soXu = docGia.Soxu
             });
+        }
+
+        private async Task XoaDonNapHetHan(int maDocGia)
+        {
+            var dsHetHan = await _context.NapXus
+                .Where(x => x.MaDocGia == maDocGia
+                         && x.Trangthai == "ChoThanhToan"
+                         && x.TgHetHan < DateTime.Now)
+                .ToListAsync();
+
+            if (dsHetHan.Any())
+            {
+                _context.NapXus.RemoveRange(dsHetHan);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

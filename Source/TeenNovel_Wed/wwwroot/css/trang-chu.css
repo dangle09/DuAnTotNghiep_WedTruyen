@@ -545,3 +545,10 @@
     .tc-card-title { font-size: 12px; }
     .tc-card-author, .tc-card-meta { font-size: 10px; }
 }
+
+@media (max-width: 768px) {
+
+    .tc-genre-wrap {
+        display: none !important;
+    }
+}
