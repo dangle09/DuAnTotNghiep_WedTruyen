@@ -813,6 +813,13 @@ ul {
         gap: 12px;
     }
 
+    .ih-nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
     .ih-sidebar {
         display: none;
     }
@@ -828,6 +835,58 @@ ul {
     .ih-mobile-menu {
         padding-left: 16px;
         padding-right: 16px;
+    }
+}
+
+@media (max-width:575.98px) {
+
+    .ih-navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+    }
+
+    .ih-nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .ih-mobile-toggle {
+        order: 0;
+        margin: 0;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ih-logo img {
+        height: 36px !important;
+    }
+
+    .ih-nav-right {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+    .ih-user-btn {
+        padding: 3px;
+        border: none;
+        background: none;
+    }
+
+    .ih-avatar {
+        width: 38px;
+        height: 38px;
+    }
+
+    .ih-xu-badge {
+        margin-right: 8px;
+        display: flex;
     }
 }
 
@@ -860,7 +919,11 @@ ul {
     .ih-nav-right { gap: 6px; }
     .ih-btn-outline, .ih-btn-filled { padding: 6px 9px; font-size: 12px; }
     .ih-user-btn { padding-right: 6px; }
-    .ih-xu-badge { display: none; }
+    .ih-xu-badge {
+        display: flex;
+        align-items: center;
+        margin-right: 8px;
+    }
     .ih-mobile-toggle { padding: 5px 8px; }
 
     .ih-mobile-menu { padding: 8px 12px 12px; }

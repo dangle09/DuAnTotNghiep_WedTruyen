@@ -69,7 +69,23 @@ btnConfirm.onclick = async () => {
         if (soXu && data.soXu != null)
             soXu.innerText = data.soXu;
 
-        window.location.href = data.redirect;
+        const item = document.querySelector(
+            `.btn-buy-chapter[data-id="${chapterId}"]`
+        );
+
+        if (item) {
+
+            item.classList.remove("btn-buy-chapter");
+
+            item.href = data.redirect;
+
+            item.removeAttribute("data-id");
+            item.removeAttribute("data-name");
+            item.removeAttribute("data-price");
+
+            // Chuyển sang đọc luôn
+            window.location.href = data.redirect;
+        }
 
     }
     finally {

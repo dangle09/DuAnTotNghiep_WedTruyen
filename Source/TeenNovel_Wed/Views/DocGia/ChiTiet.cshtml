@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = Model.Tentruyen;
     Layout = "~/Views/Shared/_LayoutDocGia.cshtml";
+    var daMua = ViewBag.DaMua as HashSet<int> ?? new HashSet<int>();
 }
 @section Styles {
 
@@ -241,7 +242,9 @@
         {
             @foreach (var c in Model.Chuongs.OrderBy(x => x.Thutu))
             {
-                @if (c.Giaxu == 0)
+                bool coTheDoc = c.Giaxu == 0 || daMua.Contains(c.Machuong);
+
+                if (coTheDoc)
                 {
                     <a asp-controller="DocGia"
                            asp-action="DocChuong"
@@ -253,7 +256,10 @@
                         </div>
 
                         <div class="chapter-price">
-                            
+                            @if (c.Giaxu > 0)
+                            {
+                                <span>@c.Giaxu Xu</span>
+                            }
                         </div>
 
                     </a>

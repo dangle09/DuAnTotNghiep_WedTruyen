@@ -296,7 +296,19 @@ namespace TeenNovel_Wed.Controllers
                 }
             }
 
+            HashSet<int> daMua = new();
 
+            if (User.Identity!.IsAuthenticated)
+            {
+                int maDocGia = int.Parse(User.FindFirst("MaDocGia")!.Value);
+
+                daMua = await _context.SuDungXus
+                    .Where(x => x.MaDocGia == maDocGia)
+                    .Select(x => x.Machuong)
+                    .ToHashSetAsync();
+            }
+
+            ViewBag.DaMua = daMua;
             ViewBag.ChuongMoi = chuongMoi;
             ViewBag.MaTruyen = id;
             ViewBag.DanhGias = danhGias;

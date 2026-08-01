@@ -25,10 +25,23 @@
     <nav class="ih-navbar">
         <div class="ih-navbar-inner">
 
-            <!-- Logo -->
-            <a class="ih-logo" asp-controller="DocGia" asp-action="TrangChu">
-                <img src="~/images/logo2_Wed.png" alt="Logo" style="height: 50px;" />
-            </a>
+            <!-- LEFT -->
+            <div class="ih-nav-left">
+
+                <button class="ih-mobile-toggle d-lg-none"
+                        id="mobileMenuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <a class="ih-logo"
+                       asp-controller="DocGia"
+                       asp-action="TrangChu">
+                    <img src="~/images/logo2_Wed.png"
+                         alt="Logo"
+                         style="height:50px;">
+                    </a>
+
+                </div>
 
             <!-- Nav links (giữa) -->
             <ul class="ih-nav-links d-none d-lg-flex">
@@ -82,13 +95,14 @@
                     <!-- Đã đăng nhập -->
                     <div class="ih-user-menu dropdown">
                         <button class="ih-user-btn dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="ih-avatar">
-                                @User.Identity.Name?.Substring(0, 1).ToUpper()
-                            </span>
-                            <span class="ih-xu-badge">
-                                <i class="bi bi-coin"></i>
-                                @ViewData["SoXu"]
-                            </span>
+                                <span class="ih-xu-badge">
+                                    <i class="bi bi-coin"></i>
+                                    @ViewData["SoXu"]
+                                </span>
+
+                                <span class="ih-avatar">
+                                    @User.Identity.Name?.Substring(0, 1).ToUpper()
+                                </span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end ih-dropdown">
                             <li class="ih-dropdown-header">
@@ -97,7 +111,7 @@
                             </li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
-                                <a class="dropdown-item" asp-controller="DocGia" asp-action="ThongTin">
+                                <a class="dropdown-item" asp-controller="DocGia" asp-action="ThongTinCaNhan">
                                     <i class="bi bi-person"></i> Thông tin cá nhân
                                 </a>
                             </li>
@@ -144,19 +158,16 @@
                 }
             </div>
 
-            <!-- Mobile toggle -->
-            <button class="ih-mobile-toggle d-lg-none" id="mobileMenuToggle">
-                <i class="bi bi-list"></i>
-            </button>
         </div>
 
-        <!-- Mobile menu -->
-        <div class="ih-mobile-menu" id="mobileMenu">
-            <a asp-controller="DocGia" asp-action="TrangChu">Trang chủ</a>
-            <a asp-controller="DocGia" asp-action="TheLoai">Thể loại</a>
-            <a asp-controller="DocGia" asp-action="XepHang">Xếp hạng</a>
-            <a asp-controller="DocGia" asp-action="MoiCapNhat">Mới cập nhật</a>
-        </div>
+            <!-- Mobile menu -->
+            <div class="ih-mobile-menu" id="mobileMenu">
+                <a asp-controller="DocGia" asp-action="TrangChu">Trang chủ</a>
+                <a asp-controller="DocGia" asp-action="TheLoai">Thể loại</a>
+                <a asp-controller="DocGia" asp-action="XepHang">Xếp hạng</a>
+                <a asp-controller="DocGia" asp-action="MoiCapNhat">Mới cập nhật</a>
+            </div>
+
     </nav>
 
     <!-- ===================== BODY ===================== -->
@@ -270,7 +281,6 @@
                 <div>
                     <h6>Khám phá</h6>
                     <ul>
-                        <li><a asp-controller="DocGia" asp-action="Index">Thể loại</a></li>
                         <li><a asp-controller="DocGia" asp-action="XepHang">Xếp hạng</a></li>
                         <li><a asp-controller="DocGia" asp-action="MoiCapNhat">Mới cập nhật</a></li>
                         <li><a asp-controller="DocGia" asp-action="HoanThanh">Truyện hoàn thành</a></li>
