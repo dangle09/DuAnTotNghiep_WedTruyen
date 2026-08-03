@@ -18,16 +18,11 @@ namespace TeenNovel_WED
             builder.Services.AddDbContext<TeenNovelDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            // ─── MVC ──────────────────────────────────────────────────
-            builder.Services.AddControllersWithViews();
-
             // ─── Authentication + Cookie ──────────────────────────────
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
