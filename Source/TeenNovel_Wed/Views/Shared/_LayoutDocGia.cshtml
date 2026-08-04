@@ -174,12 +174,15 @@
 
                         <div class="ih-mobile-theloai-popup">
 
-                            @foreach (var tl in (IEnumerable<TeenNovel_Wed.Models.TheLoai>)ViewBag.NavTheLoai)
+                            @if (ViewBag.NavTheLoai != null)
                             {
-                                <a href="/DocGia/TheLoai/@tl.Matheloai"
-                                       class="ih-mobile-theloai-item">
-                                    @tl.Tentheloai
-                                </a>
+                                foreach (var tl in (IEnumerable<TeenNovel_Wed.Models.TheLoai>)ViewBag.NavTheLoai)
+                                {
+                                    <a href="/DocGia/TheLoai/@tl.Matheloai"
+                                           class="ih-mobile-theloai-item">
+                                        @tl.Tentheloai
+                                    </a>
+                                }
                             }
 
                         </div>
