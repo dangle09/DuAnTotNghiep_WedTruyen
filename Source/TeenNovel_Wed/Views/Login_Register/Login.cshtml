@@ -4,16 +4,12 @@
     Layout = "~/Views/Shared/_LayoutLogin_Register.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
     <link rel="icon" type="image/png" href="~/images/logo.png" />
-    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
-</head>
-<body>
+
+    @section Styles {
+        <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+    }
+
 
     <div class="auth-page">
         <div class="auth-bg"></div>
@@ -67,7 +63,7 @@
                 </div>
 
                 <div class="auth-forgot">
-                    <a asp-controller="Login_Register" asp-action="ForgotPassword">Quên mật khẩu?</a>
+                    <a asp-controller="Login_Register" asp-action="QuenMatKhau">Quên mật khẩu?</a>
                 </div>
 
                 <button type="submit" class="auth-btn-main" id="loginBtn">
@@ -102,7 +98,6 @@
     <script>
             initLoginForm();
     </script>
-</body>
-</html>
+
 
 

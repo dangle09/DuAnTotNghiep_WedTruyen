@@ -49,29 +49,28 @@
 
 
 
-    <div class="tc-hero-content">
+    <div class="tc-search-wrap">
+
         <form class="tc-hero-search"
               asp-controller="DocGia"
               asp-action="TimKiem"
               method="get">
 
-
             <i class="bi bi-search"></i>
 
-
             <input type="text"
+                   id="txtSearch"
                    name="q"
-                   placeholder="Tìm kiếm tên truyện, tác giả, thể loại..."
+                   placeholder="Tìm kiếm tên truyện..."
                    autocomplete="off" />
-
 
             <button type="submit">
                 Tìm kiếm
             </button>
 
-
         </form>
 
+        <div id="searchSuggest" class="search-suggest"></div>
 
     </div>
 
@@ -399,5 +398,56 @@
 
 
     }
+
+        const txt = document.getElementById("txtSearch");
+    const box = document.getElementById("searchSuggest");
+
+    txt.addEventListener("input", async function () {
+
+        let keyword = this.value.trim();
+
+        if (keyword.length == 0) {
+
+            box.style.display = "none";
+            return;
+        }
+
+        let res = await fetch("/DocGia/GoiYTimKiem?q=" + encodeURIComponent(keyword));
+
+        let data = await res.json();
+
+        if (data.length == 0) {
+
+            box.style.display = "none";
+            return;
+        }
+
+        let html = "";
+
+        data.forEach(x => {
+
+            html += `
+                <a class="search-item" href="/DocGia/ChiTiet/${x.id}">
+                    <img src="${x.anh}" />
+                    <div class="search-title">${x.ten}</div>
+                </a>
+            `;
+
+        });
+
+        box.innerHTML = html;
+        box.style.display = "block";
+
+    });
+
+    document.addEventListener("click", function (e) {
+
+        if (!box.contains(e.target) && e.target != txt) {
+
+            box.style.display = "none";
+
+        }
+
+    });
 
 </script>

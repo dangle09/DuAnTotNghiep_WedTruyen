@@ -106,6 +106,49 @@ namespace TeenNovel_Wed.Controllers
             return View();
         }
 
+        //============================================
+        //TÌM KIẾM GỢI Ý
+        //============================================
+        [HttpGet]
+        public async Task<IActionResult> GoiYTimKiem(string q)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return Json(new List<object>());
+
+            q = q.Trim();
+
+            var lower = q.ToLower();
+
+            IQueryable<Truyen> query;
+
+            // Nếu nhập đúng tên truyện
+            bool tonTaiChinhXac = await _context.Truyens
+                .AnyAsync(x => x.Tentruyen.ToLower() == lower);
+
+            if (tonTaiChinhXac)
+            {
+                query = _context.Truyens
+                    .Where(x => x.Tentruyen.ToLower() == lower);
+            }
+            else
+            {
+                query = _context.Truyens
+                    .Where(x => x.Tentruyen.ToLower().Contains(lower));
+            }
+
+            var ds = await query
+                .Select(x => new
+                {
+                    id = x.Matruyen,
+                    ten = x.Tentruyen,
+                    anh = x.AnhBia
+                })
+                .Take(8)
+                .ToListAsync();
+
+            return Json(ds);
+        }
+
         // ─── TRANG XẾP HẠNG ───────────────────────────────
         // /DocGia/XepHang
         public async Task<IActionResult> XepHang()
